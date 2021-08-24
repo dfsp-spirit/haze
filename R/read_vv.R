@@ -10,8 +10,8 @@
 #'
 #' @export
 read.vv <- function(filepath, datatype=integer()) {
-  MAGIC_FILE_TYPE_NUMBER_1 = 47;
-  MAGIC_FILE_TYPE_NUMBER_2 = 11;
+  MAGIC_FILE_TYPE_NUMBER_1 = 42;
+  MAGIC_FILE_TYPE_NUMBER_2 = 13;
   endian = "big";
 
   fh = file(filepath, "rb");
