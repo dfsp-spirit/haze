@@ -30,7 +30,7 @@ read.vv <- function(filepath, datatype=integer()) {
   num_vectors = readBin(fh, integer(), n = 1, size = 4, endian = endian);
   for(vec_idx in seq.int(num_vectors)) {
     this_vec_len = readBin(fh, integer(), n = 1, size = 4, endian = endian);
-    data[vec_idx] = readBin(fh, datatype, n = this_vec_len, size = 4, endian = endian);
+    data[[length(data)+1L]] = readBin(fh, datatype, n = this_vec_len, size = 4, endian = endian);
   }
   return(data);
 }
