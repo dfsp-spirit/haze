@@ -4,9 +4,7 @@
 #'
 #' @param filepath string. Full path to the input vv file.
 #'
-#' @param datatype one of `integer()` or `double()`, suitable for the given file.
-#'
-#' @return list of vectors, the data.
+#' @return list of vectors, the data. The vv files may can store double or int, which is encoded in the file header and used accordingly.
 #'
 #' @export
 read.vv <- function(filepath) {
