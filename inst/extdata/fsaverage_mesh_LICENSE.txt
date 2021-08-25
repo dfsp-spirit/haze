@@ -1,0 +1,5 @@
+The files `fsaverage_mesh_lh_white` and `fsaverage_mesh_rh_white` are distributed under the terms of the FreeSurfer software licence.
+
+See [surfer.nmr.mgh.harvard.edu/fswiki/FreeSurferSoftwareLicense](https://surfer.nmr.mgh.harvard.edu/fswiki/FreeSurferSoftwareLicense) for the license text.
+
+
