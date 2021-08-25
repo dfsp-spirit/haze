@@ -19,7 +19,7 @@ To avoid any confusion: `smoothr` does **not** smooth the mesh itself (use the `
 * nearest neighbor smoothing based on edge distance (e.g., `k`-ring neighborhood of each vertex, with arbitrary `k`)
 * Gaussian smoothing based on geodesic distances on the mesh (geodesic computation is slow for large meshes), WIP
 * re-use of neighborhood data for smoothing several datasets on the same mesh
-* ignores values set to NA during smoothing, which can be used to mask certain mesh areas (like medial wall in neuroimaging)
+* ignores values set to `NA` during smoothing, which can be used to mask certain mesh areas (like the medial wall in neuroimaging)
 * comes with pre-computed neighborhood data for meshes commonly used in surface-based neuroimaging (FreeSurfer's fsaverage and fsaverage6)
 
 ## Usage
