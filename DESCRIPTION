@@ -14,7 +14,9 @@ Imports:
 Suggests:
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    Rvcg,
+    rgl
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 Config/testthat/edition: 3
