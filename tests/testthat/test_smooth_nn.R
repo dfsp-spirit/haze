@@ -22,7 +22,7 @@ test_that("One can smooth data on fsaverage using the raw mesh.", {
   smoothed_data = pervertexdata.smoothnn(mesh, data, 15L);
 
   # This shows that the C++ version is a lot faster than the R version (55 times faster on our Linux server).
-  #microbenchmark::microbenchmark(pervertexdata.smoothnn(mesh, data, 100L, method="C++"), pervertexdata.smoothnn(mesh, data, 100L, method="R"), times=100L)
+  #microbenchmark::microbenchmark(pervertexdata.smoothnn(mesh, data, 100L, method="C++"), pervertexdata.smoothnn(mesh, data, 100L, method="R"), times=10L)
 
   testthat::expect_equal(length(smoothed_data), num_verts);
 })
