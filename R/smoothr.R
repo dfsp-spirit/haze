@@ -3,3 +3,4 @@
 #' @docType package
 #' @name smoothr
 #' @useDynLib smoothr, .registration=TRUE
+NULL
