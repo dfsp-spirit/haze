@@ -1,10 +1,10 @@
 #' @title Read vv binary file.
 #'
-#' @description Read matrix-like data from vv files.
+#' @description Read matrix-like data from vv files. This is a custom format from the cpp_geodesic repo, designed to allow fast reading of vector-of-vectors data. The format does NOT require that all inner vectors have the same length, so it is NOT limited to matrices. The format is designed for storing graphs as adjacency lists.
 #'
 #' @param filepath string. Full path to the input vv file.
 #'
-#' @param datatype on of `integer()` or `float()`.
+#' @param datatype one of `integer()` or `float()`, suitable for the given file.
 #'
 #' @return list of vectors, the data.
 #'
