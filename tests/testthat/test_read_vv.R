@@ -5,4 +5,8 @@ test_that("The demo integer vv file can be read.", {
 
   testthat::expect_true(is.list(vv));
   testthat::expect_equal(length(vv), 40962L);
+
+  neighbors_per_vertex = unlist(lapply(vv, length));
+  testthat::expect_equal(min(neighbors_per_vertex), 6L);
+  testthat::expect_equal(max(neighbors_per_vertex), 7L);
 })
