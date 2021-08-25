@@ -11,6 +11,13 @@ This package performs smoothing of per-vertex data:
 
 To avoid any confusion: `smoothr` does **not** smooth the mesh itself (use the `Rvcg` R package for that).
 
+## Features
+
+* nearest neighbor smoothing based on edge distance (e.g., `k`-ring neighborhood of each vertex, with arbitrary `k`)
+* Gaussian smoothing based on geodesic distances on the mesh (geodesic computation is slow for large meshes), WIP
+* re-use of neighborhood data for smoothing several data sets on the same mesh
+* comes with pre-computed neighborhood data for common meshes used in surface-based neuroimaging (FreeSurfer's fsaverage and fsaverage6) for highest performance
+
 ## Usage
 
 This is WIP, come back another day.
