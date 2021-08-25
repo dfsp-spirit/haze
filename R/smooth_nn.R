@@ -42,12 +42,20 @@ pervertexdata.smoothnn <- function(surface, data, num_iter) {
 #'
 #' @param num_iter positive integer, number of smoothing iterations.
 #'
+#' @param method character string, one of 'C++' or 'R'. The C++ version is much faster, and there is little reason to ever use the R version in production code, so just ignore this.
+#'
 #' @return numerical vector, the smoothed data.
 #'
 #' @seealso \code{\link{pervertexdata.smoothnn}} if you have a mesh and still need the connectivity to be computed.
 #'
 #' @export
-pervertexdata.smoothnn.adj <- function(mesh_adj, data, num_iter) {
+pervertexdata.smoothnn.adj <- function(mesh_adj, data, num_iter, method="C++") {
+  if(method == "C++") {
+    return(pervertexdata.smoothnn.adj.cpp(mesh_adj, data, num_iter));
+  }
+  if(method != "R") {
+    stop("Parameter 'method' must be one of 'C++' or 'R'.");
+  }
   nv = length(data);
   data_smoothed = rep(NA, nv);
 
@@ -65,4 +73,19 @@ pervertexdata.smoothnn.adj <- function(mesh_adj, data, num_iter) {
     }
   }
   return(data_smoothed);
+}
+
+#' @title Smooth data, C++ version.
+#' @export
+pervertexdata.smoothnn.adj.cpp <- function(mesh_adj, data, num_iter) {
+  if(! is.list(mesh_adj)) {
+    stop("Parameter 'mesh_adj' must be a list of integer vectors.");
+  }
+  if(! is.vector(data)) {
+    stop("Parameter 'data' must be a numeric vector.");
+  }
+  if(length(num_iter) != 1L) {
+    stop("Parameter 'num_iter' must be a scalar, positive integer.");
+  }
+  return(.Call("smooth_data", mesh_adj, data, num_iter));
 }

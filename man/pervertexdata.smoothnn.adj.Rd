@@ -4,7 +4,7 @@
 \alias{pervertexdata.smoothnn.adj}
 \title{Smooth per-vertex data based on mesh adjacency information.}
 \usage{
-pervertexdata.smoothnn.adj(mesh_adj, data, num_iter)
+pervertexdata.smoothnn.adj(mesh_adj, data, num_iter, method = "C++")
 }
 \arguments{
 \item{mesh_adj}{list of vectors of integers, the adjacency list representation of the mesh. One can use the pre-computed adjacency for some special meshes, see \code{\link{mesh_neigh_pre}}. Data for vertices should include the vertex itself.}
@@ -12,6 +12,8 @@ pervertexdata.smoothnn.adj(mesh_adj, data, num_iter)
 \item{data}{numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.}
 
 \item{num_iter}{positive integer, number of smoothing iterations.}
+
+\item{method}{character string, one of 'C++' or 'R'. The C++ version is much faster, and there is little reason to ever use the R version in production code, so just ignore this.}
 }
 \value{
 numerical vector, the smoothed data.
