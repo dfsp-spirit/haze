@@ -10,7 +10,8 @@ Encoding: UTF-8
 URL: https://github.com/dfsp-spirit/smoothr
 BugReports: https://github.com/dfsp-spirit/smoothr/issues
 Imports:
-    freesurferformats (>= 0.1.14)
+    freesurferformats (>= 0.1.14),
+    Rcpp
 Suggests:
     knitr,
     rmarkdown,
@@ -20,3 +21,5 @@ Suggests:
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 Config/testthat/edition: 3
+LinkingTo: 
+    Rcpp
