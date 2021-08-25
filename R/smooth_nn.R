@@ -10,7 +10,7 @@
 #' @seealso \code{\link{pervertexdata.smoothnn.adj}} if you already have pre-computed adjacency data for the mesh. Using that data can increase performance considerably, especially if you need to smooth many data sets.
 #'
 #' @export
-pervertexdata.smoothnn <- function(surface, data, num_iter) {
+pervertexdata.smoothnn <- function(surface, data, num_iter, method="C++") {
   k = 1L;
   if(! freesurferformats::is.fs.surface(surface)) {
     stop("Parameter 'surface' must be an fs.surface instance.");
@@ -30,7 +30,7 @@ pervertexdata.smoothnn <- function(surface, data, num_iter) {
   if(length(data) != nv) {
     stop("Data and vertex count mismatch");
   }
-  return(pervertexdata.smoothnn.adj(adj, data, num_iter));
+  return(pervertexdata.smoothnn.adj(adj, data, num_iter, method=method));
 }
 
 
@@ -56,7 +56,9 @@ pervertexdata.smoothnn.adj <- function(mesh_adj, data, num_iter, method="C++") {
   if(method != "R") {
     stop("Parameter 'method' must be one of 'C++' or 'R'.");
   }
+
   nv = length(data);
+  cat(sprintf("Smoothing %d iterations over the %d data values in R.\n", num_iter, nv));
   data_smoothed = rep(NA, nv);
 
   for(iteration in seq.int(num_iter)) {

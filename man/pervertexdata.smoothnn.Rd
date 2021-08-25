@@ -4,7 +4,7 @@
 \alias{pervertexdata.smoothnn}
 \title{Smooth per-vertex data based on mesh.}
 \usage{
-pervertexdata.smoothnn(surface, data, num_iter)
+pervertexdata.smoothnn(surface, data, num_iter, method = "C++")
 }
 \arguments{
 \item{surface}{a mesh, represented as an \code{fs.surface} instance from the \code{freesurferformats} package or a \code{tmesh3d} instance from \code{rgl}.}
@@ -12,6 +12,8 @@ pervertexdata.smoothnn(surface, data, num_iter)
 \item{data}{numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.}
 
 \item{num_iter}{positive integer, number of smoothing iterations.}
+
+\item{method}{character string, one of 'C++' or 'R'. The C++ version is much faster, and there is little reason to ever use the R version in production code, so just ignore this.}
 }
 \value{
 numerical vector, the smoothed data.

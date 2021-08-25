@@ -18,7 +18,7 @@ RcppExport SEXP smooth_data(SEXP _mesh_adj, SEXP _data, SEXP _num_iter) {
   float neigh_sum;
   int num_non_na_values;
 
-  std::cout << "Smoothing " << std::to_string(num_iter) << " iterations over the " << std::to_string(num_values) << " data values.\n";
+  std::cout << "Smoothing " << std::to_string(num_iter) << " iterations over the " << std::to_string(num_values) << " data values in C++.\n";
 
   for (int i = 0; i < num_iter; i++){
     if(i == 0) {
