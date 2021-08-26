@@ -15,3 +15,4 @@ an fs.surface instance, as returned by \code{subject.surface} or \code{freesurfe
 \description{
 Get an fs.surface brain mesh from an rgl tmesh3d instance.
 }
+\keyword{internal}

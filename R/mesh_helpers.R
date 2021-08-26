@@ -29,7 +29,7 @@ ensure.tmesh3d <- function(mesh) {
 #'
 #' @return a tmesh3d instance, see \code{rgl::tmesh3d} for details.
 #'
-#' @export
+#' @keywords internal
 fs.surface.to.tmesh3d <- function(surface) {
   if( ! freesurferformats::is.fs.surface(surface)) {
     stop("Parameter 'surface' must be an instance of freesurferformats::fs.surface.");
@@ -44,11 +44,31 @@ fs.surface.to.tmesh3d <- function(surface) {
 #'
 #' @return an fs.surface instance, as returned by \code{subject.surface} or \code{freesurferformats::read.fs.surface}.
 #'
-#' @export
+#' @keywords internal
 tmesh3d.to.fs.surface <- function(tmesh) {
   vertices = t(tmesh$vb[1:3,]);
   faces = t(tmesh$it);
   surface = list('vertices'=vertices, 'faces'=faces);
   class(surface) <- c(class(surface), 'fs.surface');
   return(surface);
+}
+
+
+#' @title Check whether parameter is an fs.surface instance.
+#'
+#' @param surface an fs.surface instance which will be returned as-is, a tmesh3d which will be converted to a surface, or a character string which will be interpreted as a file system path and loaded with \code{freesurferformats::read.fs.surface}. Anything else will stop with an error.
+#'
+#' @return an fs.surface instance, unless an error occurs.
+#'
+#' @keywords internal
+ensure.fs.surface <- function(surface) {
+  if(freesurferformats::is.fs.surface(surface)) {
+    return(surface);
+  } else if(is.character(surface)) {
+    return(freesurferformats::read.fs.surface(surface));
+  } else if('mesh3d' %in% class(surface)) {
+    return(tmesh3d.to.fs.surface(surface));
+  } else {
+    stop("Parameter 'surface' must be an fs.surface instance or a character string.");
+  }
 }

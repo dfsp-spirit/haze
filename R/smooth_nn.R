@@ -1,17 +1,19 @@
 
 #' @title Smooth per-vertex data based on mesh.
 #'
-#' @param surface a mesh, represented as an \code{fs.surface} instance from the \code{freesurferformats} package or a \code{tmesh3d} instance from \code{rgl}.
+#' @param surface a mesh, represented as an \code{fs.surface} instance from the \code{freesurferformats} package or a \code{tmesh3d} instance from \code{rgl}, or a character string representing the path of a mesh to load with \code{freesurferformats::read.fs.surface}.
 #'
 #' @inheritParams pervertexdata.smoothnn.adj
+#'
+#' @inheritParams mesh.adj
 #'
 #' @return numerical vector, the smoothed data.
 #'
 #' @seealso \code{\link{pervertexdata.smoothnn.adj}} if you already have pre-computed adjacency data for the mesh. Using that data can increase performance considerably, especially if you need to smooth many data sets.
 #'
 #' @export
-pervertexdata.smoothnn <- function(surface, data, num_iter, method="C++") {
-  k = 1L;
+pervertexdata.smoothnn <- function(surface, data, num_iter, k=1L, method="C++") {
+  surface = ensure.fs.surface(surface);
   if(! freesurferformats::is.fs.surface(surface)) {
     stop("Parameter 'surface' must be an fs.surface instance.");
   }
@@ -19,12 +21,8 @@ pervertexdata.smoothnn <- function(surface, data, num_iter, method="C++") {
     stop("Number of surface vertices must match data length.");
   }
 
-  if(requireNamespace("Rvcg", quietly = TRUE)) {
-    tmesh = ensure.tmesh3d(surface);
-    adj = Rvcg::vcgVertexNeighbors(tmesh, vi = NULL, numstep = k, include_self = TRUE);
-  } else {
-    stop("The 'Rvcg' package must be installed to use this functionality.");
-  }
+  tmesh = ensure.tmesh3d(surface);
+  adj = mesh.adj(tmesh, k = k);
 
   nv = nrow(surface$vertices);
   if(length(data) != nv) {
@@ -34,7 +32,24 @@ pervertexdata.smoothnn <- function(surface, data, num_iter, method="C++") {
 }
 
 
-#' @title Smooth per-vertex data based on mesh adjacency information.
+#' @title Compute vertex neighborhoods for a mesh.
+#'
+#' @inheritParams pervertexdata.smoothnn.adj
+#'
+#' @param k scalar positive integer, the k value for the k-ring neighborhood. For k=1, this function computes the adjacency list representation of the graph (where the neighbors include the vertex itself).
+#'
+#' @export
+mesh.adj <- function(surface, k = 1L) {
+  if(requireNamespace("Rvcg", quietly = TRUE)) {
+    tmesh = ensure.tmesh3d(surface);
+    adj = Rvcg::vcgVertexNeighbors(tmesh, vi = NULL, numstep = k, include_self = TRUE);
+  } else {
+    stop("The 'Rvcg' package must be installed to use this functionality.");
+  }
+}
+
+
+#' @title Smooth per-vertex data using nearest-neighbor smoothing based on mesh adjacency information.
 #'
 #' @param mesh_adj list of vectors of integers, the adjacency list representation of the mesh. One can use the pre-computed adjacency for some special meshes, see \code{\link{mesh_neigh_pre}}. Data for vertices should include the vertex itself.
 #'
@@ -42,7 +57,7 @@ pervertexdata.smoothnn <- function(surface, data, num_iter, method="C++") {
 #'
 #' @param num_iter positive integer, number of smoothing iterations.
 #'
-#' @param method character string, one of 'C++' or 'R'. The C++ version is much faster, and there is little reason to ever use the R version in production code, so just ignore this.
+#' @param method character string, one of 'C++' or 'R'. The C++ version is much faster (about 50 times faster on our test machine), and there is little reason to ever use the R version in production code, so just ignore this.
 #'
 #' @return numerical vector, the smoothed data.
 #'
@@ -78,7 +93,12 @@ pervertexdata.smoothnn.adj <- function(mesh_adj, data, num_iter, method="C++") {
 }
 
 #' @title Smooth data, C++ version.
-#' @export
+#'
+#' @inheritParams pervertexdata.smoothnn.adj
+#'
+#' @return numerical vector, the smoothed data.
+#'
+#' @keywords internal
 pervertexdata.smoothnn.adj.cpp <- function(mesh_adj, data, num_iter) {
   if(! is.list(mesh_adj)) {
     stop("Parameter 'mesh_adj' must be a list of integer vectors.");

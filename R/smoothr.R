@@ -2,5 +2,7 @@
 #'
 #' @docType package
 #' @name smoothr
-#' @useDynLib smoothr, .registration=TRUE
+## usethis namespace: start
+#' @useDynLib smoothr, .registration = TRUE
+## usethis namespace: end
 NULL

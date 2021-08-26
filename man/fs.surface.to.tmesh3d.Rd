@@ -15,3 +15,4 @@ a tmesh3d instance, see \code{rgl::tmesh3d} for details.
 \description{
 Get an rgl tmesh3d instance from a brain surface mesh.
 }
+\keyword{internal}

@@ -3,7 +3,7 @@ using namespace Rcpp;
 // [[Rcpp::plugins(cpp11)]]
 
 #include <vector>
-#include <iostream>
+//#include <iostream>
 
 /// Perform nearest-neighbor smoothing of the given data, based on mesh adjacency list representation.
 /// @param _mesh_adj an R list of integer vectors, the adjacency list representation of the mesh. This must not be the 1-ring neighborhood, you can pass any neighborhood definition you want.
@@ -21,7 +21,7 @@ RcppExport SEXP smooth_data(SEXP _mesh_adj, SEXP _data, SEXP _num_iter) {
   float neigh_sum;
   int num_non_na_values;
 
-  std::cout << "Smoothing " << std::to_string(num_iter) << " iterations over the " << std::to_string(num_values) << " data values in C++.\n";
+  //std::cout << "Smoothing " << std::to_string(num_iter) << " iterations over the " << std::to_string(num_values) << " data values in C++.\n";
 
   for (int i = 0; i < num_iter; i++){
     if(i == 0) {
