@@ -1,4 +1,4 @@
-# smoothr
+# haze
 Fast smoothing of per-vertex data on triangular meshes for R.
 
 
@@ -10,7 +10,7 @@ This package performs smoothing of per-vertex data on triangular meshes, as illu
 
 **Fig.1**: *Per-vertex data on a brain mesh before (left) and after (right) smoothing. White represents NA values.*
 
-Such smoothing is typically used to reduce high-frequency noise and improve SNR. To avoid any confusion: `smoothr` does **not** smooth the mesh itself. One can use `Rvcg::vcgSmooth` from the `Rvcg` R package to do that.
+Such smoothing is typically used to reduce high-frequency noise and improve SNR. To avoid any confusion: `haze` does **not** smooth the mesh itself, use `Rvcg::vcgSmooth()` for that.
 
 
 ## Features
@@ -40,7 +40,7 @@ This is WIP, come back another day.
 * Here are some examples to get you started:
 
 ```r
-library("smoothr");
+library("haze");
 
 # Example 1: Smooth neuroimaging data on a human brain mesh in FreeSurfer format (see Fig.1 above):
 mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh_lh_white", package = "smoothr", mustWork = TRUE));
