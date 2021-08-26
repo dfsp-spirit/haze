@@ -4,7 +4,7 @@ Fast smoothing of per-vertex data on triangular meshes for R.
 
 ## About
 
-This pacakge package performs smoothing of per-vertex data on triangular meshes, as illustrated here:
+This package package performs smoothing of per-vertex data on triangular meshes, as illustrated here:
 
 ![Vis](./web/haze.jpg?raw=true "Per-vertex data on a brain mesh before (left) and after (right) smoothing.")
 
