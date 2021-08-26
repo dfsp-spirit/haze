@@ -5,7 +5,10 @@ using namespace Rcpp;
 #include <vector>
 #include <iostream>
 
-
+/// Perform nearest-neighbor smoothing of the given data, based on mesh adjacency list representation.
+/// @param _mesh_adj an R list of integer vectors, the adjacency list representation of the mesh. This must not be the 1-ring neighborhood, you can pass any neighborhood definition you want.
+/// @param _data an R numerical vector with one value per mesh vertex
+/// @param _num_iter an R scalar positive integer, the number of smoothing iterations to perform
 RcppExport SEXP smooth_data(SEXP _mesh_adj, SEXP _data, SEXP _num_iter) {
 
   Rcpp::List mesh_adj(_mesh_adj);
@@ -27,11 +30,16 @@ RcppExport SEXP smooth_data(SEXP _mesh_adj, SEXP _data, SEXP _num_iter) {
       source_data = smoothed_data;
     }
     for (int j = 0; j < num_values; j++){
+      if (NumericVector::is_na(source_data[j])) {
+        continue;
+      }
       vert_neighbors = mesh_adj[j];
       neigh_sum = 0.0;
       num_non_na_values = 0;
       for(int k=0; k<vert_neighbors.size(); k++) {
-        // Could check for NA here
+        if (NumericVector::is_na(source_data[vert_neighbors[k]])) {
+          continue; // Ignore NA values.
+        }
         num_non_na_values++;
         neigh_sum += data[vert_neighbors[k]];
       }
