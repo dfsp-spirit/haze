@@ -33,6 +33,8 @@ This is WIP, come back another day.
 
 ## Usage
 
+* The most important function in the package is `pervertexdata.smoothnn()`. 
+* If you would like to pre-compute the mesh neighborhood once and re-use it for smoothing many datasets on the same mesh, use `mesh.adj` in combination with `pervertexdata.smoothnn.adj` instead.
 * Help for a specific function can be accessed in the usual R manner: `?<function>`, where you replace `<function>` with a function name. Like this: `?pervertexdata.smoothnn`.
 * The [unit tests](./tests/testthat/) that come with this package are essentially a list of examples that illustrate how to use the functions.
 * Here are some examples to get you started:

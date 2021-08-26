@@ -21,6 +21,15 @@ numerical vector, the smoothed data.
 \description{
 Smooth per-vertex data using nearest-neighbor smoothing based on mesh adjacency information.
 }
+\examples{
+\dontrun{
+mesh = rgl::tetrahedron3d();
+mesh_adj = mesh.adj(mesh, k = 1L);
+pvd = rnorm(nrow(mes2$vb), mean = 5.0, sd = 1.0);
+pvd_smoothed = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 30L);
+}
+
+}
 \seealso{
 \code{\link{pervertexdata.smoothnn}} if you have a mesh and still need the connectivity to be computed.
 }

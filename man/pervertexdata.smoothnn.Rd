@@ -23,6 +23,14 @@ numerical vector, the smoothed data.
 \description{
 Smooth per-vertex data based on mesh.
 }
+\examples{
+\dontrun{
+mesh = rgl::tetrahedron3d();
+pvd = rnorm(nrow(mes2$vb), mean = 5.0, sd = 1.0);
+pvd_smoothed = pervertexdata.smoothnn(mesh, pvd, num_iter = 30L);
+}
+
+}
 \seealso{
 \code{\link{pervertexdata.smoothnn.adj}} if you already have pre-computed adjacency data for the mesh. Using that data can increase performance considerably, especially if you need to smooth many data sets.
 }

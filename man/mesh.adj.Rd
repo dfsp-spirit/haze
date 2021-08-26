@@ -7,8 +7,20 @@
 mesh.adj(surface, k = 1L)
 }
 \arguments{
+\item{surface}{a mesh, represented as an \code{fs.surface} instance from the \code{freesurferformats} package or a \code{tmesh3d} instance from \code{rgl}, or a character string representing the path of a mesh to load with \code{freesurferformats::read.fs.surface}.}
+
 \item{k}{scalar positive integer, the k value for the k-ring neighborhood. For k=1, this function computes the adjacency list representation of the graph (where the neighbors include the vertex itself).}
+}
+\value{
+list of integer vectors, the neighborhood data
 }
 \description{
 Compute vertex neighborhoods for a mesh.
+}
+\examples{
+\dontrun{
+mesh = rgl::tetrahedron3d();
+mesh_adj = mesh.adj(mesh, k = 1L);
+}
+
 }

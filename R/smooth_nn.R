@@ -11,6 +11,13 @@
 #'
 #' @seealso \code{\link{pervertexdata.smoothnn.adj}} if you already have pre-computed adjacency data for the mesh. Using that data can increase performance considerably, especially if you need to smooth many data sets.
 #'
+#' @examples
+#' \dontrun{
+#' mesh = rgl::tetrahedron3d();
+#' pvd = rnorm(nrow(mes2$vb), mean = 5.0, sd = 1.0);
+#' pvd_smoothed = pervertexdata.smoothnn(mesh, pvd, num_iter = 30L);
+#' }
+#'
 #' @export
 pervertexdata.smoothnn <- function(surface, data, num_iter, k=1L, method="C++") {
   surface = ensure.fs.surface(surface);
@@ -36,7 +43,17 @@ pervertexdata.smoothnn <- function(surface, data, num_iter, k=1L, method="C++") 
 #'
 #' @inheritParams pervertexdata.smoothnn.adj
 #'
+#' @inheritParams pervertexdata.smoothnn
+#'
 #' @param k scalar positive integer, the k value for the k-ring neighborhood. For k=1, this function computes the adjacency list representation of the graph (where the neighbors include the vertex itself).
+#'
+#' @return list of integer vectors, the neighborhood data
+#'
+#' @examples
+#' \dontrun{
+#' mesh = rgl::tetrahedron3d();
+#' mesh_adj = mesh.adj(mesh, k = 1L);
+#' }
 #'
 #' @export
 mesh.adj <- function(surface, k = 1L) {
@@ -62,6 +79,14 @@ mesh.adj <- function(surface, k = 1L) {
 #' @return numerical vector, the smoothed data.
 #'
 #' @seealso \code{\link{pervertexdata.smoothnn}} if you have a mesh and still need the connectivity to be computed.
+#'
+#' @examples
+#' \dontrun{
+#' mesh = rgl::tetrahedron3d();
+#' mesh_adj = mesh.adj(mesh, k = 1L);
+#' pvd = rnorm(nrow(mes2$vb), mean = 5.0, sd = 1.0);
+#' pvd_smoothed = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 30L);
+#' }
 #'
 #' @export
 pervertexdata.smoothnn.adj <- function(mesh_adj, data, num_iter, method="C++") {
