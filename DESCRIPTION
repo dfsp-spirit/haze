@@ -18,7 +18,8 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     Rvcg,
-    rgl
+    rgl,
+    fsbrain
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 Config/testthat/edition: 3

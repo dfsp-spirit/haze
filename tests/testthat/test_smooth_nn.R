@@ -48,3 +48,55 @@ test_that("One can compute mesh adjacency and re-use it for smoothing.", {
 })
 
 
+test_that("Smoothing of thickness data looks plausible.", {
+  # This test produces 2 figures, look at them.
+
+  if(requireNamespace("fsbrain", quietly = TRUE)) {
+    fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "smoothr", mustWork = TRUE);
+    pervertexdata_file = system.file("extdata", "fsaverage_lh_thickness", package = "smoothr", mustWork = TRUE);
+
+    thickness = freesurferformats::read.fs.morph(pervertexdata_file);
+    smooth_thickness = pervertexdata.smoothnn(fsmesh_file, thickness, 300L);
+
+    fsbrain::vis.data.on.fsaverage(morph_data_lh = thickness);
+    fsbrain::vis.data.on.fsaverage(morph_data_lh = smooth_thickness);
+
+  } else {
+    testthat::skip("This test requires the optional 'fsbrain' package to be installed.");
+  }
+  testthat::expect_equal(1L, 1L); # Tests without checks would be skipped by testthat.
+})
+
+
+test_that("Ignoring NA values in the data works as expected.", {
+  # This test produces 2 figures, look at them.
+
+  if(requireNamespace("fsbrain", quietly = TRUE)) {
+    fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "smoothr", mustWork = TRUE);
+    pervertexdata_file = system.file("extdata", "fsaverage_lh_thickness", package = "smoothr", mustWork = TRUE);
+    label_file = system.file("extdata", "fsaverage_lh_cortex_label", package = "smoothr", mustWork = TRUE);
+
+    thickness = freesurferformats::read.fs.morph(pervertexdata_file);
+
+    # Set medial wall thickness values to NA using the cortex label file.
+    num_verts = length(thickness);
+    label = freesurferformats::read.fs.label(label_file);
+    mask = rep(TRUE, num_verts);
+    mask[label] = FALSE;
+    thickness[mask] = NA;
+    testthat::expect_equal(length(which(is.na(thickness))), 13887L);
+
+
+    smooth_thickness = pervertexdata.smoothnn(fsmesh_file, thickness, 300L);
+    testthat::expect_equal(length(which(is.na(smooth_thickness))), 13887L);
+
+    fsbrain::vis.data.on.fsaverage(morph_data_lh = thickness);
+    fsbrain::vis.data.on.fsaverage(morph_data_lh = smooth_thickness);
+
+  } else {
+    testthat::skip("This test requires the optional 'fsbrain' package to be installed.");
+  }
+  testthat::expect_equal(1L, 1L); # Tests without checks would be skipped by testthat.
+})
+
+

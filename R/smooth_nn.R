@@ -110,5 +110,9 @@ pervertexdata.smoothnn.adj.cpp <- function(mesh_adj, data, num_iter) {
   if(length(num_iter) != 1L) {
     stop("Parameter 'num_iter' must be a scalar, positive integer.");
   }
+
+  # Adapt the vertex indices for C++
+  mesh_adj = lapply(mesh_adj, function(x){x-1L});
+
   return(.Call("smooth_data", mesh_adj, data, num_iter));
 }
