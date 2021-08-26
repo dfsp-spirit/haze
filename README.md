@@ -8,7 +8,7 @@ This package performs smoothing of per-vertex data on triangular meshes, as illu
 
 ![Vis](./web/smoothr.jpg?raw=true "Per-vertex data on a brain mesh before (left) and after (right) smoothing.")
 
-**Fig.1**: *Per-vertex data on a brain mesh before (left) and after (right) smoothing.*
+**Fig.1**: *Per-vertex data on a brain mesh before (left) and after (right) smoothing. White represents NA values.*
 
 Such smoothing is typically used to reduce high-frequency noise and improve SNR. To avoid any confusion: `smoothr` does **not** smooth the mesh itself. One can use `Rvcg::vcgSmooth` from the `Rvcg` R package to do that.
 
@@ -20,10 +20,10 @@ Such smoothing is typically used to reduce high-frequency noise and improve SNR.
 
 ### Properties
 
-* the smoothing is done in C++ using the Rcpp package
+* fast: the smoothing is done in C++
 * works with various standard mesh file formats like PLY, OBJ, OFF as well as FreeSurfer brain meshes
 * the internal mesh representation is `tmesh3d` from the `rgl` package, which allows for easy visualization
-* re-use of neighborhood data for smoothing several datasets on the same mesh
+* supports re-use of neighborhood data for faster smoothing of several datasets on the same mesh
 * ignores values set to `NA` during smoothing, which can be used to mask certain mesh areas (like the medial wall in neuroimaging)
 * comes with pre-computed neighborhood data for meshes commonly used in surface-based neuroimaging (FreeSurfer's fsaverage and fsaverage6)
 
