@@ -30,9 +30,17 @@ To avoid any confusion: haze does not smooth the mesh itself, use [Rvcg](https:/
 * ignores values set to `NA` during smoothing, which can be used to mask certain mesh areas (like the medial wall in neuroimaging)
 * comes with pre-computed neighborhood data for meshes commonly used in surface-based neuroimaging (FreeSurfer's fsaverage and fsaverage6)
 
+
 ## Installation
 
-This is WIP, come back another day.
+This is WIP and it's maybe a bit early to try it, but if you insist:
+
+```r
+install.packages("devtools");
+devtools::install_github("zarquon42b/Rvcg");
+devtools::install_github("dfsp-spirit/haze");
+```
+
 
 ## Usage
 
