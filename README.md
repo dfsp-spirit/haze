@@ -20,10 +20,10 @@ Such smoothing is typically used to reduce high-frequency noise and improve SNR.
 
 ### Properties
 
-* the smoothing is done in C++ using the Rcpp package
+* fast: the smoothing is done in C++
 * works with various standard mesh file formats like PLY, OBJ, OFF as well as FreeSurfer brain meshes
 * the internal mesh representation is `tmesh3d` from the `rgl` package, which allows for easy visualization
-* re-use of neighborhood data for smoothing several datasets on the same mesh
+* supports re-use of neighborhood data for faster smoothing of several datasets on the same mesh
 * ignores values set to `NA` during smoothing, which can be used to mask certain mesh areas (like the medial wall in neuroimaging)
 * comes with pre-computed neighborhood data for meshes commonly used in surface-based neuroimaging (FreeSurfer's fsaverage and fsaverage6)
 
