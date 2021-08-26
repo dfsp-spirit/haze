@@ -92,6 +92,7 @@ pervertexdata.smoothnn.adj <- function(mesh_adj, data, num_iter, method="C++") {
   return(data_smoothed);
 }
 
+
 #' @title Smooth data, C++ version.
 #'
 #' @inheritParams pervertexdata.smoothnn.adj
