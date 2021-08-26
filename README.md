@@ -45,7 +45,7 @@ mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh
 per_vertex_data = freesurferformats::read.fs.morph(system.file("extdata", "fsaverage_lh_thickness", package = "smoothr", mustWork = TRUE));
 smoothed_data = pervertexdata.smoothnn(mesh, per_vertex_data, num_iter = 300L, k = 2);
 
-Example 2: Smooth random data on an rgl tetrahedon:
+Example 2: Smooth random data on an rgl tetrahedron:
 mesh2 = rgl::tetrahedron3d();
 pvd = rnorm(nrow(mesh2$vb), mean = 5.0, sd = 1.0);
 pvd_smoothed = pervertexdata.smoothnn(mesh2, pvd, num_iter = 30L);
