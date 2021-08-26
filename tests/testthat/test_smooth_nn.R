@@ -50,6 +50,7 @@ test_that("One can compute mesh adjacency and re-use it for smoothing.", {
 
 test_that("Smoothing of thickness data looks plausible.", {
   # This test produces 2 figures, look at them.
+  testthat::skip_on_cran();
 
   if(requireNamespace("fsbrain", quietly = TRUE)) {
     fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
@@ -72,6 +73,7 @@ test_that("Smoothing of thickness data looks plausible.", {
 
 
 test_that("Ignoring NA values in the data works as expected.", {
+  testthat::skip_on_cran();
   # This test produces 2 figures, look at them.
 
   fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
