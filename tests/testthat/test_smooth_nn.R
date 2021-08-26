@@ -21,7 +21,7 @@ test_that("One can smooth data on fsaverage using the raw mesh.", {
 
   smoothed_data = pervertexdata.smoothnn(mesh, data, 15L);
 
-  # This shows that the C++ version is a lot faster than the R version (55 times faster on our Linux server).
+  ## This shows that the C++ version is a lot faster than the R version (55 times faster on our Linux server).
   #microbenchmark::microbenchmark(pervertexdata.smoothnn(mesh, data, 100L, method="C++"), pervertexdata.smoothnn(mesh, data, 100L, method="R"), times=10L);
 
   testthat::expect_equal(length(smoothed_data), num_verts);
@@ -40,10 +40,11 @@ test_that("One can compute mesh adjacency and re-use it for smoothing.", {
 
   testthat::expect_equal(length(smoothed_data), num_verts);
 
-  # Compare performance with pre-computed mesh vs having to compute mesh (only makes sense if you smooth several data sets).
-  # Obvisouly, the pervertexdata.smoothnn.adj version should be faster, but the difference is most noticeable for small iteration counts.
+  ## Compare performance with pre-computed mesh vs having to compute mesh (only makes sense if you smooth several data sets).
+  ## Obviously, the pervertexdata.smoothnn.adj version should be faster, but the difference is most noticeable for small iteration counts:
   #mesh = freesurferformats::read.fs.surface(fsmesh_file);
   #microbenchmark::microbenchmark(pervertexdata.smoothnn.adj(mesh_adj, data, 100L), pervertexdata.smoothnn(mesh, data, 100L), times=5L);
+  #microbenchmark::microbenchmark(pervertexdata.smoothnn.adj(mesh_adj, data, 10L), pervertexdata.smoothnn(mesh, data, 10L), times=5L);
 })
 
 
