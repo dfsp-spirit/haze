@@ -27,15 +27,20 @@ Such smoothing is typically used to reduce high-frequency noise and improve SNR.
 * ignores values set to `NA` during smoothing, which can be used to mask certain mesh areas (like the medial wall in neuroimaging)
 * comes with pre-computed neighborhood data for meshes commonly used in surface-based neuroimaging (FreeSurfer's fsaverage and fsaverage6)
 
-
-## Usage
-
-```
-mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh_lh_white", package = "smoothr", mustWork = TRUE));
-per_vertex_data = freesurferformats::read.fs.morph(system.file("extdata", "fsaverage_lh_thickness", package = "smoothr", mustWork = TRUE));
-
-smoothed_data = pervertexdata.smoothnn(mesh, per_vertex_data, num_iter = 300L);
-```
+## Installation
 
 This is WIP, come back another day.
 
+## Usage
+
+```r
+# Example 1: Smooth neuroimaging data on a human brain mesh in FreeSurfer format:
+mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh_lh_white", package = "smoothr", mustWork = TRUE));
+per_vertex_data = freesurferformats::read.fs.morph(system.file("extdata", "fsaverage_lh_thickness", package = "smoothr", mustWork = TRUE));
+smoothed_data = pervertexdata.smoothnn(mesh, per_vertex_data, num_iter = 300L);
+
+Example 2: Smooth random data on an rgl tetrahedon:
+mesh2 = rgl::tetrahedron3d();
+pvd = rnorm(nrow(mesh2$vb), mean = 5.0, sd = 1.0);
+pvd_smoothed = pervertexdata.smoothnn(mesh2, pvd, num_iter = 30L);
+```
