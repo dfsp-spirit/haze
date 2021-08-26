@@ -30,5 +30,12 @@ Such smoothing is typically used to reduce high-frequency noise and improve SNR.
 
 ## Usage
 
+```
+mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh_lh_white", package = "smoothr", mustWork = TRUE));
+per_vertex_data = freesurferformats::read.fs.morph(system.file("extdata", "fsaverage_lh_thickness", package = "smoothr", mustWork = TRUE));
+
+smoothed_data = pervertexdata.smoothnn(mesh, per_vertex_data, num_iter = 300L);
+```
+
 This is WIP, come back another day.
 
