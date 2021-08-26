@@ -1,8 +1,8 @@
 #' smoothr: Smoothing of per-vertex data on triangular meshes
 #' @description Smoothing of per-vertex data on triangular meshes
 #' @docType package
-#' @name smoothr
+#' @name haze
 ## usethis namespace: start
-#' @useDynLib smoothr, .registration = TRUE
+#' @useDynLib haze, .registration = TRUE
 ## usethis namespace: end
 NULL
