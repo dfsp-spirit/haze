@@ -4,7 +4,7 @@ Fast smoothing of per-vertex data on triangular meshes for R.
 
 ## About
 
-The `haze` package performs smoothing of per-vertex data on triangular meshes, as illustrated here:
+This pacakge package performs smoothing of per-vertex data on triangular meshes, as illustrated here:
 
 ![Vis](./web/haze.jpg?raw=true "Per-vertex data on a brain mesh before (left) and after (right) smoothing.")
 
@@ -12,9 +12,9 @@ The `haze` package performs smoothing of per-vertex data on triangular meshes, a
 
 Such smoothing is typically used to reduce high-frequency noise and improve SNR.
 
-### What `haze` is not
+### What haze is not
 
-To avoid any confusion: `haze` does not smooth the mesh itself, use `Rvcg::vcgSmooth()` for that.
+To avoid any confusion: haze does not smooth the mesh itself, use [Rvcg](https://github.com/zarquon42b/Rvcg)`::vcgSmooth()` for that.
 
 ## Features
 
