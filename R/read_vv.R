@@ -4,26 +4,31 @@
 #'
 #' @param filepath string. Full path to the input vv file.
 #'
-#' @param datatype one of `integer()` or `float()`, suitable for the given file.
-#'
-#' @return list of vectors, the data.
+#' @return list of vectors, the data. The vv files may can store double or int, which is encoded in the file header and used accordingly.
 #'
 #' @export
-read.vv <- function(filepath, datatype=integer()) {
-  MAGIC_FILE_TYPE_NUMBER_1 = 42;
-  MAGIC_FILE_TYPE_NUMBER_2 = 13;
+read.vv <- function(filepath) {
+  MAGIC_FILE_TYPE_NUMBER = 42;
+  DATA_TYPE_INT32 = 13;
+  DATA_TYPE_FLOAT32 = 14;
   endian = "big";
 
   fh = file(filepath, "rb");
   on.exit({ close(fh) }, add=TRUE);
 
-  magic1 = readBin(fh, integer(), n = 1, size = 4, endian = endian);
-  magic2 = readBin(fh, integer(), n = 1, size = 4, endian = endian);
-  if (magic1 != MAGIC_FILE_TYPE_NUMBER_1) {
-    stop(sprintf("Magic number mismatch (%d != %d).", magic1, MAGIC_FILE_TYPE_NUMBER_1)); # nocov
+  magic = readBin(fh, integer(), n = 1, size = 4, endian = endian);
+  data_type_code = readBin(fh, integer(), n = 1, size = 4, endian = endian);
+  if (magic != MAGIC_FILE_TYPE_NUMBER) {
+    stop(sprintf("Magic number mismatch (%d != %d).", magic, MAGIC_FILE_TYPE_NUMBER)); # nocov
   }
-  if (magic2 != MAGIC_FILE_TYPE_NUMBER_2) {
-    stop(sprintf("Magic number mismatch (%d != %d).", magic2, MAGIC_FILE_TYPE_NUMBER_2)); # nocov
+  if (!(data_type_code %in% c(DATA_TYPE_INT32, DATA_TYPE_FLOAT32))) {
+    stop(sprintf("Invalid data type code '%d', supported are '13' for int32 and '14' for float32.\n", data_type_code)); # nocov
+  }
+
+  if(data_type_code == DATA_TYPE_INT32) {
+    datatype = integer();
+  } else {
+    datatype = numeric();
   }
 
   data = list();
