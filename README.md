@@ -8,7 +8,7 @@ This package performs smoothing of per-vertex data on triangular meshes, as illu
 
 ![Vis](./web/smoothr.jpg?raw=true "Per-vertex data on a brain mesh before (left) and after (right) smoothing.")
 
-**Fig.1**: *Per-vertex data on a brain mesh before (left) and after (right) smoothing.*
+**Fig.1**: *Per-vertex data on a brain mesh before (left) and after (right) smoothing. White represents NA values.*
 
 Such smoothing is typically used to reduce high-frequency noise and improve SNR. To avoid any confusion: `smoothr` does **not** smooth the mesh itself. One can use `Rvcg::vcgSmooth` from the `Rvcg` R package to do that.
 
