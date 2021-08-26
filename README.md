@@ -33,7 +33,13 @@ This is WIP, come back another day.
 
 ## Usage
 
+* Help for a specific function can be accessed in the usual R manner: `?<function>`, where you replace `<function>` with a function name. Like this: `?pervertexdata.smoothnn`.
+* The [unit tests](./tests/testthat/) that come with this package are essentially a list of examples that illustrate how to use the functions.
+* Here are some examples to get you started:
+
 ```r
+library("smoothr");
+
 # Example 1: Smooth neuroimaging data on a human brain mesh in FreeSurfer format (see Fig.1 above):
 mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh_lh_white", package = "smoothr", mustWork = TRUE));
 per_vertex_data = freesurferformats::read.fs.morph(system.file("extdata", "fsaverage_lh_thickness", package = "smoothr", mustWork = TRUE));
