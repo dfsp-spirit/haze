@@ -1,4 +1,4 @@
 library(testthat)
-library(smoothr)
+library(haze)
 
-test_check("smoothr")
+test_check("haze")

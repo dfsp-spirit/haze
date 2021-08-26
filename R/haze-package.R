@@ -1,4 +1,4 @@
-#' smoothr: Smoothing of per-vertex data on triangular meshes
+#' haze: Smoothing of per-vertex data on triangular meshes
 #' @description Smoothing of per-vertex data on triangular meshes
 #' @docType package
 #' @name haze

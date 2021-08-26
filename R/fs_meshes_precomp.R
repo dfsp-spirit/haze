@@ -10,13 +10,13 @@
 mesh_neigh_pre <- function(meshname) {
   vvfile = NULL;
   if(meshname == "lh_fsaverage") {
-    vvfile = system.file("extdata", "fsaverage_lh_white_meshdist_edge_1.vv", package = "smoothr", mustWork = TRUE);
+    vvfile = system.file("extdata", "fsaverage_lh_white_meshdist_edge_1.vv", package = "haze", mustWork = TRUE);
   } else if(meshname == "rh_fsaverage") {
-    vvfile = system.file("extdata", "fsaverage_rh_white_meshdist_edge_1.vv", package = "smoothr", mustWork = TRUE);
+    vvfile = system.file("extdata", "fsaverage_rh_white_meshdist_edge_1.vv", package = "haze", mustWork = TRUE);
   } else if(meshname == "lh_fsaverage6") {
-    vvfile = system.file("extdata", "fsaverage6_lh_white_meshdist_edge_1.vv", package = "smoothr", mustWork = TRUE);
+    vvfile = system.file("extdata", "fsaverage6_lh_white_meshdist_edge_1.vv", package = "haze", mustWork = TRUE);
   } else if(meshname == "rh_fsaverage6") {
-    vvfile = system.file("extdata", "fsaverage6_rh_white_meshdist_edge_1.vv", package = "smoothr", mustWork = TRUE);
+    vvfile = system.file("extdata", "fsaverage6_rh_white_meshdist_edge_1.vv", package = "haze", mustWork = TRUE);
   } else {
     stop("Invalid mesh name. See function help for supported ones.");
   }

@@ -1,6 +1,6 @@
 
 test_that("One can smooth data on fsaverage6 using pre-computed adjacency.", {
-  vvfile = system.file("extdata", "fsaverage6_lh_white_meshdist_edge_1.vv", package = "smoothr", mustWork = TRUE);
+  vvfile = system.file("extdata", "fsaverage6_lh_white_meshdist_edge_1.vv", package = "haze", mustWork = TRUE);
   vv = read.vv(vvfile);
 
   num_verts = 40962L;
@@ -13,7 +13,7 @@ test_that("One can smooth data on fsaverage6 using pre-computed adjacency.", {
 
 
 test_that("One can smooth data on fsaverage using the raw mesh.", {
-  fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "smoothr", mustWork = TRUE);
+  fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
   mesh = freesurferformats::read.fs.surface(fsmesh_file);
 
   num_verts = nrow(mesh$vertices);
@@ -29,7 +29,7 @@ test_that("One can smooth data on fsaverage using the raw mesh.", {
 
 
 test_that("One can compute mesh adjacency and re-use it for smoothing.", {
-  fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "smoothr", mustWork = TRUE);
+  fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
 
   mesh_adj = mesh.adj(fsmesh_file, k = 1L);
 
@@ -52,8 +52,8 @@ test_that("Smoothing of thickness data looks plausible.", {
   # This test produces 2 figures, look at them.
 
   if(requireNamespace("fsbrain", quietly = TRUE)) {
-    fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "smoothr", mustWork = TRUE);
-    pervertexdata_file = system.file("extdata", "fsaverage_lh_thickness", package = "smoothr", mustWork = TRUE);
+    fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
+    pervertexdata_file = system.file("extdata", "fsaverage_lh_thickness", package = "haze", mustWork = TRUE);
 
     thickness = freesurferformats::read.fs.morph(pervertexdata_file);
     smooth_thickness = pervertexdata.smoothnn(fsmesh_file, thickness, 300L);
@@ -61,8 +61,8 @@ test_that("Smoothing of thickness data looks plausible.", {
     cm1 = fsbrain::vis.data.on.fsaverage(morph_data_lh = thickness, morph_data_rh = NA);
     cm2 = fsbrain::vis.data.on.fsaverage(morph_data_lh = smooth_thickness, morph_data_rh = NA);
 
-    #fsbrain::vis.export.from.coloredmeshes(cm1, output_img = "~/smoothr_thickness_before.png");
-    #fsbrain::vis.export.from.coloredmeshes(cm2, output_img = "~/smoothr_thickness_after.png");
+    #fsbrain::vis.export.from.coloredmeshes(cm1, output_img = "~/haze_thickness_before.png");
+    #fsbrain::vis.export.from.coloredmeshes(cm2, output_img = "~/haze_thickness_after.png");
 
   } else {
     testthat::skip("This test requires the optional 'fsbrain' package to be installed.");
@@ -74,9 +74,9 @@ test_that("Smoothing of thickness data looks plausible.", {
 test_that("Ignoring NA values in the data works as expected.", {
   # This test produces 2 figures, look at them.
 
-  fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "smoothr", mustWork = TRUE);
-  pervertexdata_file = system.file("extdata", "fsaverage_lh_thickness", package = "smoothr", mustWork = TRUE);
-  label_file = system.file("extdata", "fsaverage_lh_cortex_label", package = "smoothr", mustWork = TRUE);
+  fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
+  pervertexdata_file = system.file("extdata", "fsaverage_lh_thickness", package = "haze", mustWork = TRUE);
+  label_file = system.file("extdata", "fsaverage_lh_cortex_label", package = "haze", mustWork = TRUE);
 
   thickness = freesurferformats::read.fs.morph(pervertexdata_file);
 
@@ -96,8 +96,8 @@ test_that("Ignoring NA values in the data works as expected.", {
     cm1 = fsbrain::vis.data.on.fsaverage(morph_data_lh = thickness, morph_data_rh = NA);
     cm2 = fsbrain::vis.data.on.fsaverage(morph_data_lh = smooth_thickness, morph_data_rh = NA);
 
-    #fsbrain::vis.export.from.coloredmeshes(cm1, output_img = "~/smoothr_thickness_masked_before.png");
-    #fsbrain::vis.export.from.coloredmeshes(cm2, output_img = "~/smoothr_thickness_masked_after.png");
+    #fsbrain::vis.export.from.coloredmeshes(cm1, output_img = "~/haze_thickness_masked_before.png");
+    #fsbrain::vis.export.from.coloredmeshes(cm2, output_img = "~/haze_thickness_masked_after.png");
   }
 
 })

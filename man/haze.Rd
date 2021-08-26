@@ -3,7 +3,7 @@
 \docType{package}
 \name{haze}
 \alias{haze}
-\title{smoothr: Smoothing of per-vertex data on triangular meshes}
+\title{haze: Smoothing of per-vertex data on triangular meshes}
 \description{
 Smoothing of per-vertex data on triangular meshes
 }
