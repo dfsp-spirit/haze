@@ -42,7 +42,7 @@ devtools::install_github("dfsp-spirit/haze");
 ```
 
 
-## Usage
+## Documentation and Usage
 
 * The most important function in the package is `pervertexdata.smoothnn()`. 
   - If you would like to pre-compute the mesh neighborhood once and re-use it for smoothing many datasets on the same mesh, use `mesh.adj` in combination with `pervertexdata.smoothnn.adj` instead.
