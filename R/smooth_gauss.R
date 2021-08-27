@@ -10,8 +10,6 @@ fwhm.to.gstd <- function(fwhm) { fwhm / sqrt(log(256.0)); }
 
 #' @title Perform Gaussian smoothing of per-vertex data on a mesh given geodesic distance data.
 #'
-#' @inheritParams surf.sphere.gaussianweights
-#'
 #' @param data numerical vector of per-vertex data for the surface
 #'
 #' @param fwhm positive double, the full width at half maximum for the Gaussian kernel
@@ -22,6 +20,9 @@ fwhm.to.gstd <- function(fwhm) { fwhm / sqrt(log(256.0)); }
 #'
 #' @export
 pervertexdata.smoothgaussian <- function(surface, fwhm, geodesic_neigh = NULL, truncfactor = 3.5) {
+
+  message("This function is not ready yet, do not use it.");
+
   if(is.null(geodesic_neigh)) {
     geodesic_neigh = geodesic.neighborhoods(surface, fwhm, truncfactor);
   }
@@ -37,6 +38,9 @@ pervertexdata.smoothgaussian <- function(surface, fwhm, geodesic_neigh = NULL, t
 #'
 #' @export
 geodesic.neighborhoods <- function(surface, fwhm, truncfactor = 3.5) {
+
+  message("This function is not ready yet, do not use it.");
+
   max_distance = truncfactor * fwhm.to.gstd(fwhm);
   res = list("neigh_idx"=list(), "neigh_dist"=list());
   num_verts = ...; # FIX THIS
