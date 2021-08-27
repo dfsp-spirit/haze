@@ -59,8 +59,8 @@ test_that("Smoothing of thickness data looks plausible.", {
     thickness = freesurferformats::read.fs.morph(pervertexdata_file);
     smooth_thickness = pervertexdata.smoothnn(fsmesh_file, thickness, 300L);
 
-    cm1 = fsbrain::vis.data.on.fsaverage(morph_data_lh = thickness, morph_data_rh = NA);
-    cm2 = fsbrain::vis.data.on.fsaverage(morph_data_lh = smooth_thickness, morph_data_rh = NA);
+    #cm1 = fsbrain::vis.data.on.fsaverage(morph_data_lh = thickness, morph_data_rh = NA);
+    #cm2 = fsbrain::vis.data.on.fsaverage(morph_data_lh = smooth_thickness, morph_data_rh = NA);
 
     #fsbrain::vis.export.from.coloredmeshes(cm1, output_img = "~/haze_thickness_before.png");
     #fsbrain::vis.export.from.coloredmeshes(cm2, output_img = "~/haze_thickness_after.png");
@@ -95,8 +95,8 @@ test_that("Ignoring NA values in the data works as expected.", {
   testthat::expect_equal(length(which(is.na(smooth_thickness))), 13887L);
 
   if(requireNamespace("fsbrain", quietly = TRUE)) {
-    cm1 = fsbrain::vis.data.on.fsaverage(morph_data_lh = thickness, morph_data_rh = NA);
-    cm2 = fsbrain::vis.data.on.fsaverage(morph_data_lh = smooth_thickness, morph_data_rh = NA);
+    #cm1 = fsbrain::vis.data.on.fsaverage(morph_data_lh = thickness, morph_data_rh = NA);
+    #cm2 = fsbrain::vis.data.on.fsaverage(morph_data_lh = smooth_thickness, morph_data_rh = NA);
 
     #fsbrain::vis.export.from.coloredmeshes(cm1, output_img = "~/haze_thickness_masked_before.png");
     #fsbrain::vis.export.from.coloredmeshes(cm2, output_img = "~/haze_thickness_masked_after.png");
