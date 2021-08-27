@@ -52,12 +52,13 @@ test_that("Smoothing of thickness data looks plausible.", {
   # This test produces 2 figures, look at them.
   testthat::skip_on_cran();
 
-  if(requireNamespace("fsbrain", quietly = TRUE)) {
-    fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
-    pervertexdata_file = system.file("extdata", "fsaverage_lh_thickness", package = "haze", mustWork = TRUE);
+  fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
+  pervertexdata_file = system.file("extdata", "fsaverage_lh_thickness", package = "haze", mustWork = TRUE);
 
-    thickness = freesurferformats::read.fs.morph(pervertexdata_file);
-    smooth_thickness = pervertexdata.smoothnn(fsmesh_file, thickness, 300L);
+  thickness = freesurferformats::read.fs.morph(pervertexdata_file);
+  smooth_thickness = pervertexdata.smoothnn(fsmesh_file, thickness, 300L);
+
+  if(requireNamespace("fsbrain", quietly = TRUE)) {
 
     #cm1 = fsbrain::vis.data.on.fsaverage(morph_data_lh = thickness, morph_data_rh = NA);
     #cm2 = fsbrain::vis.data.on.fsaverage(morph_data_lh = smooth_thickness, morph_data_rh = NA);
