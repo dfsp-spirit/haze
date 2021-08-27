@@ -1,8 +1,12 @@
 
 
 #' @title Compute gstd from FWHM.
+#'
+#' @param fwhm double, the full width at half maximum for the kernel
+#'
 #' @keywords internal
 fwhm.to.gstd <- function(fwhm) { fwhm / sqrt(log(256.0)); }
+
 
 #' @title Perform Gaussian smoothing of per-vertex data on a mesh given geodesic distance data.
 #'
@@ -26,23 +30,25 @@ pervertexdata.smoothgaussian <- function(surface, fwhm, geodesic_neigh = NULL, t
   return(smoothed_data);
 }
 
+
 #' @title Compute geodesic neighborhoods for all mesh vertices.
 #'
 #' @note This can get quite large, and may fill RAM, but allows re-use of the neighborhoods. The alternative would be to compute on the fly, but then one has to re-compute this very expensive operation each time.
 #'
 #' @export
 geodesic.neighborhoods <- function(surface, fwhm, truncfactor = 3.5) {
-  maxdist = truncfactor * fwhm.to.gstd(fwhm);
+  max_distance = truncfactor * fwhm.to.gstd(fwhm);
   res = list("neigh_idx"=list(), "neigh_dist"=list());
   num_verts = ...; # FIX THIS
   for(vidx in seq.int(num_verts)) {
-    single_vert_neigh = geod.vert.neighborhood(surface, vertex, max_distance=maxdist);
+    single_vert_neigh = geod.vert.neighborhood(surface, vertex, max_distance);
     message("FIX THIS: the following var names are incorrect");
     res$neigh_idx[[length(res$neigh_idx)+1L]] = single_vert_neigh$neig_idx;
     res$neigh_dist[[length(res$neigh_dist)+1L]] = single_vert_neigh$neig_dist;
   }
   return(res);
 }
+
 
 #' @title Compute all vertices within given geodesic distance on the mesh.
 #'
@@ -68,7 +74,7 @@ geodesic.neighborhoods <- function(surface, fwhm, truncfactor = 3.5) {
 #'   res$vertices;
 #' }
 #'
-#' @export
+#' @keywords internal
 geod.vert.neighborhood <- function(mesh, vertex, max_distance=5.0, include_max = TRUE, return_distances = TRUE) {
   mesh = ensure.tmesh3d(mesh);
   if(requireNamespace("Rvcg", quietly = TRUE)) {
@@ -184,3 +190,4 @@ mesh.gaussianweights <- function(sphere_dists, gstd) {
   }
   return(weights);
 }
+
