@@ -9,13 +9,10 @@ using namespace Rcpp;
 #include <cassert>
 //#include <iostream>
 
-/// Perform nearest-neighbor smoothing of the given data, based on mesh adjacency list representation.
-/// @param _mesh the input mesh
-/// @param _data an R numerical vector with one value per mesh vertex
-/// @param _fwhm the FWHM for the Gaussian kernel
-/// @param _truncfactor the cutoff factor after which to end the Gaussian neighborhood, in Gaussian standard deviations
-RcppExport SEXP smooth_data_gaussian(SEXP _mesh, SEXP _data, SEXP _fwhm, SEXP _truncfactor) {
-  return wrap(1);
+
+/// Used in C++ code only, not exported.
+inline float fhwm_to_gstd(const float fwhm) {
+  return(fwhm / sqrt(log(256.0)));
 }
 
 
@@ -64,7 +61,20 @@ std::vector<float> spatial_filter(const std::vector<float> data, const std::vect
 }
 
 
-/// Used in C++ code only, not exported.
-inline float fhwm_to_gstd(const float fwhm) {
-  return(fwhm / sqrt(log(256.0)));
+/// Perform nearest-neighbor smoothing of the given data, based on mesh adjacency list representation.
+/// @param _mesh the input mesh
+/// @param _data an R numerical vector with one value per mesh vertex
+/// @param _fwhm the FWHM for the Gaussian kernel
+/// @param _truncfactor the cutoff factor after which to end the Gaussian neighborhood, in Gaussian standard deviations
+RcppExport SEXP smooth_data_gaussian(SEXP _mesh, SEXP _data, SEXP _fwhm, SEXP _truncfactor) {
+  float fwhm = Rcpp::as<float>(_fwhm);
+  float gstd = fhwm_to_gstd(fwhm);
+  std::vector<float> data(_data);
+
+  std::vector<int> geod_indices = ...;
+  std::vector<float> geod_distances = ...;
+
+  std::vector<std::vector<float>> gaussian_weights = gauss_weights(geod_indices, geod_distances, gstd);
+  std::vector<float> smoothed_data = spatial_filter(data, geod_indices, gaussian_weights);
+  return wrap(1);
 }
