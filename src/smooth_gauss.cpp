@@ -69,12 +69,12 @@ std::vector<float> spatial_filter(const std::vector<float> data, const std::vect
 RcppExport SEXP smooth_data_gaussian(SEXP _mesh, SEXP _data, SEXP _fwhm, SEXP _truncfactor) {
   float fwhm = Rcpp::as<float>(_fwhm);
   float gstd = fhwm_to_gstd(fwhm);
-  std::vector<float> data(_data);
+  std::vector<float> data = Rcpp::as<std::vector<float>>(_data);
 
   std::vector<int> geod_indices = ...;
   std::vector<float> geod_distances = ...;
 
   std::vector<std::vector<float>> gaussian_weights = gauss_weights(geod_indices, geod_distances, gstd);
   std::vector<float> smoothed_data = spatial_filter(data, geod_indices, gaussian_weights);
-  return wrap(1);
+  return wrap(smoothed_data);
 }
