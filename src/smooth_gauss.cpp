@@ -18,16 +18,37 @@ RcppExport SEXP smooth_data_gaussian(SEXP _mesh, SEXP _data, SEXP _fwhm, SEXP _t
   return wrap(1);
 }
 
+
+/// Compute Gaussian weights for the neighborhoods of all vertices, based on geodesic distances.
 /// Used in C++ code only, not exported.
 std::vector<std::vector<float>> gauss_weights(const std::vector<std::vector<int>> geod_neigh_indices, const std::vector<std::vector<float>> geod_neigh_dists, const float gstd) {
-  std::vector<std::vector<float>> weights;
+  std::vector<std::vector<float>> weights(geod_neigh_indices.size());
+
+  assert(geod_neigh_indices.size() == geod_neigh_dists.size());
 
   float gvar2 = 2 * (gstd * gstd);
   float f = 1.0 / (sqrt(2 * M_PI) * gstd);
-
+  float gsum;
+  for(size_t i=0; i<geod_neigh_indices.size(); i++) { // iterate over vertex count in mesh
+    gsum = 0.0;
+    std::vector<float> vertex_weights(geod_neigh_indices[i].size());
+    size_t local_idx = 0L;
+    for(size_t j=0; j<geod_neigh_indices[i].size(); j++) {
+      float d = geod_neigh_dists[i][j];
+      float g = f * exp(-(d * d) / (gvar2));
+      vertex_weights[j] = g;
+      gsum += g;
+    }
+    for(size_t j=0; j<geod_neigh_indices[i].size(); j++) {
+      vertex_weights[j] /= gsum;
+    }
+    weights[i] = vertex_weights;
+  }
   return(weights);
 }
 
+
+// Apply Gaussian weights to neighborhood data values to smooth data.
 /// Used in C++ code only, not exported.
 std::vector<float> spatial_filter(const std::vector<float> data, const std::vector<std::vector<int>> geod_neigh_indices, const std::vector<std::vector<float>> geod_neigh_gauss_weights) {
   std::vector<float> smoothed_data(data.size());
@@ -41,6 +62,7 @@ std::vector<float> spatial_filter(const std::vector<float> data, const std::vect
   }
   return(smoothed_data);
 }
+
 
 /// Used in C++ code only, not exported.
 inline float fhwm_to_gstd(const float fwhm) {
