@@ -13,7 +13,7 @@ pervertexdata.smoothgauss(surface, data, fwhm, trunc_factor = 3.5)
 
 \item{fwhm}{scalar double, smoothing kernel full width at half max}
 
-\item{trunc_factor}{scalar double, truncation factor for Gaussian neighborhood, in Gaussian standard deviations.}
+\item{trunc_factor}{scalar double, truncation factor for Gaussian neighborhood, in Gaussian standard deviations. Must be greater than 1.0 to make any sense, leave as is if in doubt. Larger values mean that a larger geodesic neighborhood needs to be computed on the mesh, which is slower.}
 }
 \value{
 numerical vector, the smoothed data.

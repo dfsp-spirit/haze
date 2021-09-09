@@ -30,3 +30,31 @@ test_that("One can Gaussian smooth data that includes NA values.", {
   testthat::expect_true(! (any(is.na(smoothed_data[0:99]))));
   testthat::expect_true(! (any(is.na(smoothed_data[200:length(smoothed_data)]))));
 })
+
+
+test_that("Gaussian smoothing of thickness data looks plausible with NA values.", {
+  # This test produces 2 figures, look at them.
+  testthat::skip_on_cran();
+
+
+  if(requireNamespace("fsbrain", quietly = TRUE)) {
+
+    fsbrain::download_fsaverage3(TRUE);
+    sjd = fsbrain::fsaverage.path(TRUE);
+    sj = "fsaverage3";
+    mesh = fsbrain::subject.surface(sjd, sj, "white", hemi="lh");
+    pvd = fsbrain::subject.morph.native(sjd, sj, "thickness", hemi="lh", cortex_only = TRUE); # mask non-cortex to get NAs
+    smoothed_pvd = pervertexdata.smoothgauss(mesh, pvd, fwhm = 5.0);
+
+    #cm1 =  fsbrain::vis.fs.surface(mesh, per_vertex_data = pvd);
+    #cm2 =  fsbrain::vis.fs.surface(mesh, per_vertex_data = smoothed_pvd);
+
+    #fsbrain::vis.export.from.coloredmeshes(cm1, output_img = "~/haze_thickness_before_gauss.png");
+    #fsbrain::vis.export.from.coloredmeshes(cm2, output_img = "~/haze_thickness_after_gauss.png");
+
+  } else {
+    testthat::skip("This test requires the optional 'fsbrain' package to be installed.");
+  }
+  testthat::expect_equal(1L, 1L); # Tests without checks would be skipped by testthat.
+})
+
