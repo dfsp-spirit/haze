@@ -7,7 +7,7 @@
 #' @return list of vectors, the connectivity data as an adjacency list. The outer list has length n, where n is the number of vertices in the graph. The inner lists represent, for each vertex, all of its neighbors.
 #'
 #' @export
-mesh_neigh_pre <- function(meshname) {
+mesh.neigh.pre <- function(meshname) {
   vvfile = NULL;
   if(meshname == "lh_fsaverage") {
     vvfile = system.file("extdata", "fsaverage_lh_white_meshdist_edge_1.vv", package = "haze", mustWork = TRUE);

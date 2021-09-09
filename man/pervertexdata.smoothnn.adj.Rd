@@ -7,7 +7,7 @@
 pervertexdata.smoothnn.adj(mesh_adj, data, num_iter, method = "C++")
 }
 \arguments{
-\item{mesh_adj}{list of vectors of integers, the adjacency list representation of the mesh. One can use the pre-computed adjacency for some special meshes, see \code{\link{mesh_neigh_pre}}. Data for vertices should include the vertex itself.}
+\item{mesh_adj}{list of vectors of integers, the adjacency list representation of the mesh. One can use the pre-computed adjacency for some special meshes, see \code{\link{mesh.neigh.pre}}. Data for vertices should include the vertex itself.}
 
 \item{data}{numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.}
 

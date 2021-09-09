@@ -68,7 +68,7 @@ mesh.adj <- function(surface, k = 1L) {
 
 #' @title Smooth per-vertex data using nearest-neighbor smoothing based on mesh adjacency information.
 #'
-#' @param mesh_adj list of vectors of integers, the adjacency list representation of the mesh. One can use the pre-computed adjacency for some special meshes, see \code{\link{mesh_neigh_pre}}. Data for vertices should include the vertex itself.
+#' @param mesh_adj list of vectors of integers, the adjacency list representation of the mesh. One can use the pre-computed adjacency for some special meshes, see \code{\link{mesh.neigh.pre}}. Data for vertices should include the vertex itself.
 #'
 #' @param data numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.
 #'
