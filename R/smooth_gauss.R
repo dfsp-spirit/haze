@@ -5,9 +5,7 @@
 #'
 #' @description This function performs Gaussian smoothing of vertices in the geodesic neighborhood of all vertices. This is computationally quite expensive and requires large amounts of memory for large meshes.
 #'
-#' @param surface a mesh, represented as an \code{fs.surface} instance from the \code{freesurferformats} package or a \code{tmesh3d} instance from \code{rgl}, or a character string representing the path of a mesh to load with \code{freesurferformats::read.fs.surface}.
-#'
-#' @param data numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} are not supported yet, use \code{\link{pervertexdata.smoothnn}} if you need that.
+#' @inheritParams pervertexdata.smoothnn
 #'
 #' @param fwhm scalar double, smoothing kernel full width at half max
 #'
@@ -26,10 +24,6 @@
 #'
 #' @export
 pervertexdata.smoothgauss <- function(surface, data, fwhm, trunc_factor=3.5) {
-
-  if(any(is.na(data))) {
-    stop("NA values in 'data' not supported.");
-  }
 
   if(requireNamespace("Rvcg", quietly = TRUE)) {
     return(Rvcg::vcgSmoothPVD(ensure.tmesh3d(surface), data, fwhm = fwhm, trunc_factor = trunc_factor));
