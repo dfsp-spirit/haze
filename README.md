@@ -67,8 +67,8 @@ mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh
 mesh_adj = mesh.adj(mesh, k = 1L); # compute 1-ring neighborhood
 data1 = rnorm(length(mesh_adj), 5.0, 1.0); # generate random data
 data2 = rnorm(length(mesh_adj), 5.5, 2.0); # generate more random data
-smoothed_data1 = pervertexdata.smoothnn.adj(mesh_adj, data1, 15L);
-smoothed_data2 = pervertexdata.smoothnn.adj(mesh_adj, data2, 15L);
+smoothed_data1 = pervertexdata.smoothnn.adj(mesh_adj, data1, num_iter = 15L);
+smoothed_data2 = pervertexdata.smoothnn.adj(mesh_adj, data2, num_iter = 15L);
 ```
 
 ## Credits
