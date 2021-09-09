@@ -64,7 +64,7 @@ pvd_smoothed = pervertexdata.smoothnn(mesh2, pvd, num_iter = 30L);
 
 # Example 3: Like 1, but re-use the adjacency list representation of the mesh to smooth several per-vertex data overlays on the same mesh:
 mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE));
-mesh_adj = mesh.adj(fsmesh_file, k = 1L); # compute 1-ring neighborhood
+mesh_adj = mesh.adj(mesh, k = 1L); # compute 1-ring neighborhood
 data1 = rnorm(length(mesh_adj), 5.0, 1.0); # generate random data
 data2 = rnorm(length(mesh_adj), 5.5, 2.0); # generate more random data
 smoothed_data1 = pervertexdata.smoothnn.adj(mesh_adj, data1, 15L);
