@@ -62,3 +62,7 @@ mesh2 = rgl::tetrahedron3d();
 pvd = rnorm(nrow(mesh2$vb), mean = 5.0, sd = 1.0);
 pvd_smoothed = pervertexdata.smoothnn(mesh2, pvd, num_iter = 30L);
 ```
+
+## Credits
+
+The fast mesh operations used in this package are implemented in the [Rvcg package](https://github.com/zarquon42b/Rvcg) by Stefan Schlager, which uses [VCGLIB](http://vcg.isti.cnr.it/vcglib/).
