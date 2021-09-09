@@ -61,4 +61,24 @@ smoothed_data = pervertexdata.smoothnn(mesh, per_vertex_data, num_iter = 300L, k
 mesh2 = rgl::tetrahedron3d();
 pvd = rnorm(nrow(mesh2$vb), mean = 5.0, sd = 1.0);
 pvd_smoothed = pervertexdata.smoothnn(mesh2, pvd, num_iter = 30L);
+
+# Example 3: Like 1, but re-use the adjacency list representation of the mesh to smooth several per-vertex data overlays on the same mesh:
+mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE));
+mesh_adj = mesh.adj(mesh, k = 1L); # compute 1-ring neighborhood
+data1 = rnorm(length(mesh_adj), 5.0, 1.0); # generate random data
+data2 = rnorm(length(mesh_adj), 5.5, 2.0); # generate more random data
+smoothed_data1 = pervertexdata.smoothnn.adj(mesh_adj, data1, num_iter = 15L);
+smoothed_data2 = pervertexdata.smoothnn.adj(mesh_adj, data2, num_iter = 15L);
 ```
+
+## Credits
+
+The fast mesh operations used in this package are implemented in the [Rvcg package](https://github.com/zarquon42b/Rvcg) by Stefan Schlager, which uses [VCGLIB](http://vcg.isti.cnr.it/vcglib/).
+
+
+## Author and Getting help
+
+The `haze` R package was written by [Tim Schäfer](http://rcmd.org/ts).
+
+Please [open an issue](https://github.com/dfsp-spirit/haze/issues) here on GitHub if you have found a bug or need help.
+
