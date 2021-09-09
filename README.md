@@ -34,24 +34,11 @@ To avoid any confusion: haze does not smooth the mesh itself, use [Rvcg](https:/
 
 ## Installation
 
-To install the stable version:
-
-```r
-install.packages("devtools");
-devtools::install_github("zarquon42b/Rvcg");
-devtools::install_github("dfsp-spirit/haze");
-```
-
-To install the development version including Gaussian smoothing:
-
 ```r
 install.packages("devtools");
 devtools::install_github("dfsp-spirit/Rvcg", ref="smooth_pervertex_data");
 devtools::install_github("dfsp-spirit/haze");
 ```
-
-Installing the latter gives you the new function `pervertexdata.smoothgauss()`.
-
 
 ## Documentation and Usage
 
