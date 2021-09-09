@@ -66,3 +66,11 @@ pvd_smoothed = pervertexdata.smoothnn(mesh2, pvd, num_iter = 30L);
 ## Credits
 
 The fast mesh operations used in this package are implemented in the [Rvcg package](https://github.com/zarquon42b/Rvcg) by Stefan Schlager, which uses [VCGLIB](http://vcg.isti.cnr.it/vcglib/).
+
+
+## Author and Getting help
+
+The `haze` library was written by [Tim Schäfer](http://rcmd.org/ts).
+
+Please [open an issue](https://github.com/dfsp-spirit/libfs/issues) here on GitHub if you have found a bug or need help.
+
