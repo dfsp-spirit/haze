@@ -12,12 +12,12 @@ BugReports: https://github.com/dfsp-spirit/haze/issues
 SystemRequirements: C++11
 Imports:
     freesurferformats (>= 0.1.14),
-    Rcpp
+    Rcpp,
+    Rvcg
 Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    Rvcg,
     rgl,
     fsbrain
 VignetteBuilder: knitr
