@@ -16,11 +16,11 @@ mesh_adj = haze::mesh.adj(mesh, k = 1L); # compute 1-ring neighborhood
 
 nv = nrow(mesh$vertices); # number of mesh vertices
 
-data1 = rnorm(nv, 5.0, 1.0); # Generate some random data.
-data2 = rnorm(nv, 5.5, 2.0); # More!
-data3 = rnorm(nv, 6.0, 2.0); # ...
-data4 = rnorm(nv, 6.5, 2.0); # ...
-data5 = rnorm(nv, 7.0, 2.0); # ...
+data1 = rnorm(nv, mean=1.0, sd=0.01); # Generate some random data.
+data2 = rnorm(nv, mean=3.0, sd=0.01); # More!
+data3 = rnorm(nv, mean=5.0, sd=0.01); # ...
+data4 = rnorm(nv, mean=7.0, sd=0.01); # ...
+data5 = rnorm(nv, mean=9.0, sd=0.01); # ...
 
 data_matrix = rbind(data1, data2, data3, data4, data5); # your data as a matrix.
 num_rows = nrow(data_matrix);
@@ -30,11 +30,9 @@ cat(sprintf("Smoothing %d overlays for %d vertices using %d cores in parallel.\n
 cluster = parallel::makeCluster(num_cores_to_use);
 doParallel::registerDoParallel(cluster);
 
-smoothed_data_matrix <- foreach::foreach(mr=iter(data_matrix, by='row'), .combine=rbind, .packages="haze") %dopar% {
-  #class(mr)
-  #mr
+smoothed_data_matrix <- foreach::foreach(mr=iter(data_matrix, by='row'), .combine=rbind, .packages="haze") %do% {
   smoothed_row = haze::pervertexdata.smoothnn.adj(mesh_adj, mr, num_iter = 15L);
-  smoothed_row #Equivalent to smoothed_data_matrix = cbind(smoothed_data_matrix, smoothed_row)
+  smoothed_row
 }
 
 cat(sprintf("Smoothed data matrix with dimensions (%d subjects, %d mesh vertices).\n", dim(smoothed_data_matrix)[1], dim(smoothed_data_matrix)[2]));
