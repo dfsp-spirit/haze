@@ -32,7 +32,7 @@ registerDoParallel(cluster);
 
 smoothed_data_matrix = foreach::foreach(vec_idx=1:num_rows, .combine=cbind) %dopar% {
   library("haze");
-  smoothed_row = haze::pervertexdata.smoothnn.adj(mesh_adj, data_matrix[vec_idx,], num_iter = 15L, k=1L);
+  smoothed_row = haze::pervertexdata.smoothnn.adj(mesh_adj, data_matrix[vec_idx,], num_iter = 15L);
   smoothed_row #Equivalent to smoothed_data_matrix = cbind(smoothed_data_matrix, smoothed_row)
 }
 
