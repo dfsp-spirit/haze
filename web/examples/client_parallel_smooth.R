@@ -3,6 +3,7 @@
 # This script illustrates how to quickly smooth many vectors of per-vertex data
 # on the same mesh.
 #
+#
 
 
 library("haze");
@@ -29,7 +30,8 @@ num_cores = parallel::detectCores();
 cluster = parallel::makeCluster(num_cores - 1L);
 registerDoParallel(cluster);
 
-smoothed_data_matrix = foreach(vec_idx=1:num_rows, .combine=cbind) %dopar% {
+smoothed_data_matrix = foreach::foreach(vec_idx=1:num_rows, .combine=cbind) %dopar% {
+  library("haze");
   smoothed_row = haze::pervertexdata.smoothnn.adj(mesh_adj, full_data_matrix[vec_idx,], num_iter = 15L);
   smoothed_row #Equivalent to smoothed_data_matrix = cbind(smoothed_data_matrix, smoothed_row)
 }
