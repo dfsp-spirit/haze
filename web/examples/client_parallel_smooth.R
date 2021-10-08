@@ -30,6 +30,8 @@ cat(sprintf("Smoothing %d overlays for %d vertices using %d cores in parallel.\n
 cluster = parallel::makeCluster(num_cores_to_use);
 doParallel::registerDoParallel(cluster);
 
+# IMPORTANT: The loop below is NOT run in parallel, because we currently use %do% instead of %dopar%.
+# The reason is that it does not seem to work on my laptop with %dopar%.
 smoothed_data_matrix <- foreach::foreach(mr=iter(data_matrix, by='row'), .combine=rbind, .packages="haze") %do% {
   smoothed_row = haze::pervertexdata.smoothnn.adj(mesh_adj, mr, num_iter = 15L);
   smoothed_row
