@@ -129,6 +129,9 @@ pervertexdata.smoothnn.adj.cpp <- function(mesh_adj, data, num_iter) {
   if(! is.list(mesh_adj)) {
     stop("Parameter 'mesh_adj' must be a list of integer vectors.");
   }
+  if(is.matrix(data)) {
+    data = as.vector(data);
+  }
   if(! is.vector(data)) {
     stop("Parameter 'data' must be a numeric vector.");
   }

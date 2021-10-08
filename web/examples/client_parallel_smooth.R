@@ -30,9 +30,10 @@ cat(sprintf("Smoothing %d overlays for %d vertices using %d cores in parallel.\n
 cluster = parallel::makeCluster(num_cores_to_use);
 doParallel::registerDoParallel(cluster);
 
-smoothed_data_matrix <- foreach::foreach(vec_idx=1L:num_rows, .combine=cbind) %dopar% {
-  library("haze");
-  smoothed_row = haze::pervertexdata.smoothnn.adj(mesh_adj, data_matrix[vec_idx,], num_iter = 15L);
+smoothed_data_matrix <- foreach::foreach(mr=iter(data_matrix, by='row'), .combine=rbind, .packages="haze") %dopar% {
+  #class(mr)
+  #mr
+  smoothed_row = haze::pervertexdata.smoothnn.adj(mesh_adj, mr, num_iter = 15L);
   smoothed_row #Equivalent to smoothed_data_matrix = cbind(smoothed_data_matrix, smoothed_row)
 }
 
