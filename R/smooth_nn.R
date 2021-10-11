@@ -172,6 +172,7 @@ pervertexdata.smoothnn.adj.cpp <- function(mesh_adj, pvdata, num_iter) {
 #' pvd2 = rnorm(nrow(mesh$vb), mean = 4.0, sd = 1.0);
 #' pvd3 = rnorm(nrow(mesh$vb), mean = 7.0, sd = 1.0);
 #' pvd_matrix = rbind(pvd1, pvd2, pvd3);
+#' # or: pvd_matrix = matrix(data=rnorm(nrow(mesh$vb)*5, mean=5.0, sd=1.0), nrow=5);
 #' pvd_smoothed = haze:::pervertexdata.smoothnn.adj.mat(mesh_adj, pvd_matrix, num_iter = 30L);
 #' }
 #'
@@ -181,6 +182,7 @@ pervertexdata.smoothnn.adj.cpp <- function(mesh_adj, pvdata, num_iter) {
 pervertexdata.smoothnn.adj.mat <- function(mesh_adj, pvdata, num_iter, method = "C++") {
   cat(sprintf("Parallel matrix version called"));
 
-  res = parallel::mclapply( 1L:nrow(pvdata), mc.cores=1L, function(row_idx){ pervertexdata.smoothnn.adj(mesh_adj, pvdata[row_idx, ], num_iter=num_iter, method = method) } );
+  res_list = parallel::mclapply( 1L:nrow(pvdata), mc.cores=1L, function(row_idx){ pervertexdata.smoothnn.adj(mesh_adj, pvdata[row_idx, ], num_iter=num_iter, method = method) } );
+  return(t(as.matrix(data.frame(res_list))));
 }
 
