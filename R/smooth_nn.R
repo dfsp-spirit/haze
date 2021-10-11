@@ -84,12 +84,23 @@ mesh.adj <- function(surface, k = 1L) {
 #' \dontrun{
 #' mesh = rgl::tetrahedron3d();
 #' mesh_adj = mesh.adj(mesh, k = 1L);
-#' pvd = rnorm(nrow(mes2$vb), mean = 5.0, sd = 1.0);
+#' pvd = rnorm(nrow(mesh$vb), mean = 5.0, sd = 1.0);
 #' pvd_smoothed = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 30L);
 #' }
 #'
 #' @export
 pervertexdata.smoothnn.adj <- function(mesh_adj, pvdata, num_iter, method="C++") {
+
+  if(is.matrix(pvdata)) {
+    if(nrow(pvdata) == 1L | ncol(pvdata) == 1L) {
+      pvdata = as.vector(pvdata);
+    } else {
+      #return(.Call("smooth_data_mat", mesh_adj, pvdata, num_iter));
+      return(pervertexdata.smoothnn.adj.mat(mesh_adj, pvdata, num_iter, method=method));
+    }
+  }
+
+
   if(method == "C++") {
     return(pervertexdata.smoothnn.adj.cpp(mesh_adj, pvdata, num_iter));
   }
@@ -128,20 +139,48 @@ pervertexdata.smoothnn.adj.cpp <- function(mesh_adj, pvdata, num_iter) {
   if(! is.list(mesh_adj)) {
     stop("Parameter 'mesh_adj' must be a list of integer vectors.");
   }
-  if(is.matrix(pvdata)) {
-    if(nrow(pvdata) == 1L) {
-      pvdata = as.vector(pvdata);
-    }
-  }
-  if(! is.vector(pvdata)) {
-    stop("Parameter 'pvdata' must be a numeric vector.");
-  }
   if(length(num_iter) != 1L) {
     stop("Parameter 'num_iter' must be a scalar, positive integer.");
   }
-
+  if(! is.numeric(num_iter)) {
+    stop("Parameter 'num_iter' must be a scalar, positive integer.");
+  }
+  if(num_iter < 1L) {
+    stop("Parameter 'num_iter' must be a scalar, positive integer.");
+  }
   # Adapt the vertex indices for C++ (from 1-based R indexing to 0-based C++ indexing).
   mesh_adj = lapply(mesh_adj, function(x){x-1L});
 
+  if(! is.vector(pvdata)) {
+    stop("Parameter 'pvdata' must be a numeric vector.");
+  }
   return(.Call("smooth_data", mesh_adj, pvdata, num_iter));
 }
+
+
+#' @title Smooth matrix in parallel
+#'
+#' @inheritParams pervertexdata.smoothnn.adj
+#'
+#' @param pvdata numerical matrix of per-vertex-data for the mesh. Each row is an overlay with one value per vertex. Rows are independent and smoothed in parallel. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.
+#'
+#' @examples
+#' \dontrun{
+#' mesh = rgl::tetrahedron3d();
+#' mesh_adj = mesh.adj(mesh, k = 1L);
+#' pvd1 = rnorm(nrow(mesh$vb), mean = 1.0, sd = 1.0);
+#' pvd2 = rnorm(nrow(mesh$vb), mean = 4.0, sd = 1.0);
+#' pvd3 = rnorm(nrow(mesh$vb), mean = 7.0, sd = 1.0);
+#' pvd_matrix = rbind(pvd1, pvd2, pvd3);
+#' pvd_smoothed = haze:::pervertexdata.smoothnn.adj.mat(mesh_adj, pvd_matrix, num_iter = 30L);
+#' }
+#'
+#' @note There is no need to call this manually, it will be called by \code{pervertexdata.smooth.adj} when its input is a matrix.
+#'
+#' @keywords internal
+pervertexdata.smoothnn.adj.mat <- function(mesh_adj, pvdata, num_iter, method = "C++") {
+  cat(sprintf("Parallel matrix version called"));
+
+  res = parallel::mclapply( 1L:nrow(pvdata), mc.cores=1L, function(row_idx){ pervertexdata.smoothnn.adj(mesh_adj, pvdata[row_idx, ], num_iter=num_iter, method = method) } );
+}
+

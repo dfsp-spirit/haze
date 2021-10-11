@@ -4,12 +4,12 @@
 \alias{pervertexdata.smoothnn.adj}
 \title{Smooth per-vertex data using nearest-neighbor smoothing based on mesh adjacency information.}
 \usage{
-pervertexdata.smoothnn.adj(mesh_adj, data, num_iter, method = "C++")
+pervertexdata.smoothnn.adj(mesh_adj, pvdata, num_iter, method = "C++")
 }
 \arguments{
 \item{mesh_adj}{list of vectors of integers, the adjacency list representation of the mesh. One can use the pre-computed adjacency for some special meshes, see \code{\link{mesh.neigh.pre}}. Data for vertices should include the vertex itself.}
 
-\item{data}{numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.}
+\item{pvdata}{numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.}
 
 \item{num_iter}{positive integer, number of smoothing iterations.}
 
@@ -25,7 +25,7 @@ Smooth per-vertex data using nearest-neighbor smoothing based on mesh adjacency 
 \dontrun{
 mesh = rgl::tetrahedron3d();
 mesh_adj = mesh.adj(mesh, k = 1L);
-pvd = rnorm(nrow(mes2$vb), mean = 5.0, sd = 1.0);
+pvd = rnorm(nrow(mesh$vb), mean = 5.0, sd = 1.0);
 pvd_smoothed = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 30L);
 }
 

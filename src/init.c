@@ -13,9 +13,11 @@
 
 /* .Call calls */
 extern SEXP smooth_data(SEXP, SEXP, SEXP);
+//extern SEXP smooth_data_mat(SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
   {"smooth_data", (DL_FUNC) &smooth_data, 3},
+  //{"smooth_data_mat", (DL_FUNC) &smooth_data_mat, 3},
   {NULL, NULL, 0}
 };
 

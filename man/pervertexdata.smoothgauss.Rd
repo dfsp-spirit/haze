@@ -9,8 +9,6 @@ pervertexdata.smoothgauss(surface, data, fwhm, trunc_factor = 3.5)
 \arguments{
 \item{surface}{a mesh, represented as an \code{fs.surface} instance from the \code{freesurferformats} package or a \code{tmesh3d} instance from \code{rgl}, or a character string representing the path of a mesh to load with \code{freesurferformats::read.fs.surface}.}
 
-\item{data}{numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.}
-
 \item{fwhm}{scalar double, smoothing kernel full width at half max}
 
 \item{trunc_factor}{scalar double, truncation factor for Gaussian neighborhood, in Gaussian standard deviations. Must be greater than 1.0 to make any sense, leave as is if in doubt. Larger values mean that a larger geodesic neighborhood needs to be computed on the mesh, which is slower.}
