@@ -83,7 +83,7 @@ smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L); # Comp
 
 ### Benchmarks
 
-This requires the `microbenchmark` package.
+This requires the `microbenchmark` package. The mesh I use for the benchmark has 160,000 vertices. The results will obviously differ for meshes of different size and your hardware, so run these benchmarks yourself for your data.
 
 #### Measuring C++ versus R performance
 
