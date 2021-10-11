@@ -78,7 +78,7 @@ data1 = rnorm(length(mesh_adj), mean=1.0, sd=0.1); # generate random data
 data2 = rnorm(length(mesh_adj), mean=5.0, sd=0.1); # generate more random data
 pvd = rbind(data1, data2); # Turn your data into a matrix, one overlay per row.
 options("mc.cores" = 2L);   # Request to run on 2 cores in parallel.
-smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L); # Compute the smoothed matrix.
+smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L); # Compute the smoothed matrix. When a matrix is passed, the rows are automatically handled in parallel, there is nothing more to do.
 ```
 
 ## Measuring multi-core performance
@@ -93,7 +93,7 @@ num_overlays = 25;
 pvd = matrix(data=rnorm(length(mesh_adj)*num_overlays, mean=1.0, sd=0.1), nrow=num_overlays); # generate random data
 
 # Compare with 1 versus 5 cores:
-microbenchmark::microbenchmark({options("mc.cores" = 1L); smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, {options("mc.cores" = 5L); smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, times=5L)
+microbenchmark::microbenchmark({options("mc.cores" = 1L); smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, {options("mc.cores" = 5L); smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, times=5L);
 ```
 
 
