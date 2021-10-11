@@ -191,7 +191,7 @@ pervertexdata.smoothnn.adj.mat <- function(mesh_adj, pvdata, num_iter, method = 
   num_cores = getOption("mc.cores", default = 2L);
 
   if(! silent) {
-    cat(sprintf("Parallel version called, handling %d vertex overlays with %d CPU cores. Use 'options(\"mc.cores\"=12)' to request 12 cores.\n", nrow(pvdata), num_cores));
+    cat(sprintf("Parallel version called, handling %d vertex overlays with %d CPU cores. Use 'options(\"mc.cores\"=N)' to request N cores.\n", nrow(pvdata), num_cores));
   }
 
   res_list = parallel::mclapply( 1L:nrow(pvdata), mc.cores = num_cores, function(row_idx){ pervertexdata.smoothnn.adj(mesh_adj, pvdata[row_idx, ], num_iter=num_iter, method = method) } );

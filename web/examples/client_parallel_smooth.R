@@ -7,9 +7,7 @@
 
 
 library("haze");
-library("foreach");
-library("parallel");
-library("doParallel");
+
 
 mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage6_mesh_lh_white", package = "haze", mustWork = TRUE));
 mesh_adj = haze::mesh.adj(mesh, k = 1L); # compute 1-ring neighborhood
@@ -23,26 +21,9 @@ data4 = rnorm(nv, mean=7.0, sd=0.01); # ...
 data5 = rnorm(nv, mean=9.0, sd=0.01); # ...
 data_matrix = rbind(data1, data2, data3, data4, data5); # your data as a matrix.
 
-smooth_parallel <- function(data_matrix) {
-  num_rows = nrow(data_matrix);
+options("mc.cores" = 5L);   # Request 5 CPU cores.
 
-  num_cores_to_use = parallel::detectCores() - 1L;
-  cat(sprintf("Smoothing %d overlays for %d vertices using %d cores in parallel.\n", nrow(data_matrix), ncol(data_matrix), num_cores_to_use));
-  cluster = parallel::makeCluster(num_cores_to_use);
-  doParallel::registerDoParallel(cluster);
-
-  # IMPORTANT: The loop below is NOT run in parallel, because we currently use %do% instead of %dopar%.
-  # The reason is that it does not seem to work on my laptop with %dopar%.
-  smoothed_data_matrix <- foreach::foreach(mr=iter(data_matrix, by='row'), .combine=rbind, .packages="haze") %do% {
-    smoothed_row = haze::pervertexdata.smoothnn.adj(mesh_adj, mr, num_iter = 15L);
-    smoothed_row
-  }
-
-  cat(sprintf("Smoothed data matrix with dimensions (%d subjects, %d mesh vertices).\n", dim(smoothed_data_matrix)[1], dim(smoothed_data_matrix)[2]));
-  parallel::stopCluster(cluster);
-  return(smoothed_data_matrix);
-}
-
-smoothed = smooth_parallel(data_matrix);
+# Get the smoothed matrix:
+smoothed = haze::pervertexdata.smoothnn.adj(mesh_adj, data_matrix, num_iter = 15L);
 
 

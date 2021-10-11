@@ -25,9 +25,10 @@ To avoid any confusion: haze does not smooth the mesh itself, use [Rvcg](https:/
 ### Properties
 
 * fast: the smoothing is done in C++
+* supports re-use of neighborhood data for faster smoothing of several datasets on the same mesh
+* even faster for several overlays: several overlays can be smoothed in parallel on multi-core CPUs.
 * works with various standard mesh file formats like PLY, OBJ, OFF as well as FreeSurfer brain meshes
 * the internal mesh representation is `tmesh3d` from the `rgl` package, which allows for easy visualization
-* supports re-use of neighborhood data for faster smoothing of several datasets on the same mesh
 * ignores values set to `NA` during smoothing, which can be used to mask certain mesh areas (like the medial wall in neuroimaging)
 * comes with pre-computed neighborhood data for meshes commonly used in surface-based neuroimaging (FreeSurfer's fsaverage and fsaverage6)
 
@@ -65,10 +66,18 @@ pvd_smoothed = pervertexdata.smoothnn(mesh2, pvd, num_iter = 30L);
 # Example 3: Like 1, but re-use the adjacency list representation of the mesh to smooth several per-vertex data overlays on the same mesh:
 mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE));
 mesh_adj = mesh.adj(mesh, k = 1L); # compute 1-ring neighborhood
-data1 = rnorm(length(mesh_adj), 5.0, 1.0); # generate random data
-data2 = rnorm(length(mesh_adj), 5.5, 2.0); # generate more random data
+data1 = rnorm(length(mesh_adj), mean=1.0, sd=0.1); # generate random data
+data2 = rnorm(length(mesh_adj), mean=5.0, sd=0.1); # generate more random data
 smoothed_data1 = pervertexdata.smoothnn.adj(mesh_adj, data1, num_iter = 15L);
 smoothed_data2 = pervertexdata.smoothnn.adj(mesh_adj, data2, num_iter = 15L);
+
+# Example 4: Like 3, but smooth the overlays in parallel on several CPU cores:
+mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE));
+mesh_adj = mesh.adj(mesh, k = 1L); # compute 1-ring neighborhood
+data1 = rnorm(length(mesh_adj), mean=1.0, sd=0.1); # generate random data
+data2 = rnorm(length(mesh_adj), mean=5.0, sd=0.1); # generate more random data
+pvd = matrix(rbind(data1, data2)); # Turn your data into a matrix, one overlay per row.
+smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L); # get a smoothed matrix.
 ```
 
 ## Credits
