@@ -126,6 +126,7 @@ So with 5 cores and the C++ version (Example 4 above), the smoothing runs about 
 One could also measure this using from 1 up to 10 cores and plot the resulting execution time.
 
 ```R
+# Continued from the 'Measuring multi-core performance' example.
 # The next 2 lines just save us some typing in the microbenchmark line.
 rf <- function(nc, details) { options("mc.cores" = nc); pervertexdata.smoothnn.adj(details$mesh_adj, details$pvd, details$num_iter); }
 d = list("mesh_adj"=mesh_adj, "pvd"=pvd, "num_iter"=15L);
