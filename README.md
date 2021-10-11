@@ -136,6 +136,8 @@ axis(1, at = seq(10));
 
 ![Vis](./web/haze_multicore.png?raw=true "Haze multi-core performance.")
 
+For this data set and my machine, using more than 5 cores does not seem to help much.
+
 ## Credits
 
 The fast mesh operations used in this package are implemented in the [Rvcg package](https://github.com/zarquon42b/Rvcg) by Stefan Schlager, which uses [VCGLIB](http://vcg.isti.cnr.it/vcglib/).
