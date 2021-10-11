@@ -24,8 +24,8 @@ pervertexdata.smoothnn <- function(surface, pvdata, num_iter, k=1L, method="C++"
   if(! freesurferformats::is.fs.surface(surface)) {
     stop("Parameter 'surface' must be an fs.surface instance.");
   }
-  if(nrow(surface$vertices) != length(data)) {
-    stop("Number of surface vertices must match data length.");
+  if(nrow(surface$vertices) != length(pvdata)) {
+    stop("Number of surface vertices must match pvdata length.");
   }
 
   tmesh = ensure.tmesh3d(surface);
