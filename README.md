@@ -86,7 +86,7 @@ smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L); # Comp
 
 ### Measuring C++ versus R performance
 
-The smoothing is done in C++ by default, but it is possible to manually select a pure R version instead. This compares the performance between the C++ and the R version of the same algorithm.
+The smoothing is done in C++ by default, but it is possible to manually select a pure R version instead. The following benchmark compares the performance between the C++ and the R versions of the same algorithm.
 
 ```R
 mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE));
