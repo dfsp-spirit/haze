@@ -4,10 +4,12 @@
 \alias{pervertexdata.smoothgauss}
 \title{Smooth per-vertex data based on a mesh using true Gaussian smoothing.}
 \usage{
-pervertexdata.smoothgauss(surface, data, fwhm, trunc_factor = 3.5)
+pervertexdata.smoothgauss(surface, pvdata, fwhm, trunc_factor = 3.5)
 }
 \arguments{
 \item{surface}{a mesh, represented as an \code{fs.surface} instance from the \code{freesurferformats} package or a \code{tmesh3d} instance from \code{rgl}, or a character string representing the path of a mesh to load with \code{freesurferformats::read.fs.surface}.}
+
+\item{pvdata}{numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.}
 
 \item{fwhm}{scalar double, smoothing kernel full width at half max}
 

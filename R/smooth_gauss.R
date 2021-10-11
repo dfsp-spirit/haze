@@ -23,10 +23,10 @@
 #' }
 #'
 #' @export
-pervertexdata.smoothgauss <- function(surface, data, fwhm, trunc_factor=3.5) {
+pervertexdata.smoothgauss <- function(surface, pvdata, fwhm, trunc_factor=3.5) {
 
   if(requireNamespace("Rvcg", quietly = TRUE)) {
-    return(Rvcg::vcgSmoothPVD(ensure.tmesh3d(surface), data, fwhm = fwhm, trunc_factor = trunc_factor));
+    return(Rvcg::vcgSmoothPVD(ensure.tmesh3d(surface), pvdata, fwhm = fwhm, trunc_factor = trunc_factor));
   } else {
     stop("The 'Rvcg' package is required to use this functionality. Use 'remotes::install_github('dfsp-spirit/Rvcg', ref='smooth_pervertex_data')' to obtain the correct package version.");
   }
