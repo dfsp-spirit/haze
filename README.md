@@ -113,6 +113,7 @@ num_overlays = 25;
 pvd = matrix(data=rnorm(length(mesh_adj)*num_overlays, mean=1.0, sd=0.1), nrow=num_overlays); # generate random data
 
 # Compare with 1 versus 5 cores:
+
 microbenchmark::microbenchmark({options("mc.cores" = 1L); pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, {options("mc.cores" = 5L); pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, times=5L);
 ```
 
@@ -120,6 +121,20 @@ On my machine, this shows that code is about 4 times faster when using 5 CPU cor
 
 So with 5 cores and the C++ version (Example 4 above), the smoothing runs about 120 times faster compared to the single-core, pure R version for the data above on my machine.
 
+##### Number of cores versus execution time
+
+One could also measure this using from 1 up to 10 cores and plot the resulting execution time.
+
+```R
+# The next 2 lines just save us some typing in the microbenchmark line.
+rf <- function(nc, details) { options("mc.cores" = nc); pervertexdata.smoothnn.adj(details$mesh_adj, details$pvd, details$num_iter); }
+d = list("mesh_adj"=mesh_adj, "pvd"=pvd, "num_iter"=15L);
+mb = microbenchmark::microbenchmark(rf(1,d), rf(2,d), rf(3,d), rf(4,d), rf(5,d), rf(6,d), rf(7,d), rf(8,d), rf(9,d), rf(10,d), times=3L);
+plot(mb, xaxt='n', xlab="Number of cores", ylab = "Execution time");
+axis(1, at = seq(10));
+```
+
+![Vis](./web/haze_multicore.png?raw=true "Haze multi-core performance.")
 
 ## Credits
 
