@@ -77,7 +77,8 @@ mesh_adj = mesh.adj(mesh, k = 1L); # compute 1-ring neighborhood
 data1 = rnorm(length(mesh_adj), mean=1.0, sd=0.1); # generate random data
 data2 = rnorm(length(mesh_adj), mean=5.0, sd=0.1); # generate more random data
 pvd = matrix(rbind(data1, data2)); # Turn your data into a matrix, one overlay per row.
-smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L); # get a smoothed matrix.
+options("mc.cores" = 2L);   # Request to run on 2 cores in parallel.
+smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L); # Compute the smoothed matrix.
 ```
 
 ## Credits
