@@ -182,7 +182,7 @@ pervertexdata.smoothnn.adj.cpp <- function(mesh_adj, pvdata, num_iter) {
 pervertexdata.smoothnn.adj.mat <- function(mesh_adj, pvdata, num_iter, method = "C++") {
   cat(sprintf("Parallel matrix version called"));
 
-  res_list = parallel::mclapply( 1L:nrow(pvdata), mc.cores=1L, function(row_idx){ pervertexdata.smoothnn.adj(mesh_adj, pvdata[row_idx, ], num_iter=num_iter, method = method) } );
+  res_list = parallel::mclapply( 1L:nrow(pvdata), function(row_idx){ pervertexdata.smoothnn.adj(mesh_adj, pvdata[row_idx, ], num_iter=num_iter, method = method) } );
   return(t(as.matrix(data.frame(res_list))));
 }
 

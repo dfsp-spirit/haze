@@ -120,12 +120,14 @@ test_that("One can smooth several overlays in parallel on several CPU cores.", {
 
   smoothed_data = pervertexdata.smoothnn.adj(mesh_adj, pvd, 15L);
 
+  # Check for correct number of values and correct dims.
   testthat::expect_equal(length(smoothed_data), num_verts * num_overlays);
+  testthat::expect_equal(dim(pvd)[1], dim(smoothed_data)[1]);
+  testthat::expect_equal(dim(pvd)[2], dim(smoothed_data)[2]);
+  testthat::expect_equal(length(dim(pvd)), length(dim(smoothed_data)));
 
-
-  ## Compare performance with pre-computed mesh vs having to compute mesh (only makes sense if you smooth several data sets).
-  ## Obviously, the pervertexdata.smoothnn.adj version should be faster, but the difference is most noticeable for small iteration counts:
-  #mesh = freesurferformats::read.fs.surface(fsmesh_file);
-  #microbenchmark::microbenchmark(pervertexdata.smoothnn.adj(mesh_adj, data, 100L), pervertexdata.smoothnn(mesh, data, 100L), times=5L);
-  #microbenchmark::microbenchmark(pervertexdata.smoothnn.adj(mesh_adj, data, 10L), pervertexdata.smoothnn(mesh, data, 10L), times=5L);
+  # Check that the order of vectors in the output is correct.
+  testthat::expect_true(abs(mean(data1) - mean(smoothed_data[1,])) < 0.5)
+  testthat::expect_true(abs(mean(data2) - mean(smoothed_data[2,])) < 0.5)
+  testthat::expect_true(abs(mean(data3) - mean(smoothed_data[3,])) < 0.5)
 })
