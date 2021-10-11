@@ -19,7 +19,7 @@
 #' }
 #'
 #' @export
-pervertexdata.smoothnn <- function(surface, data, num_iter, k=1L, method="C++") {
+pervertexdata.smoothnn <- function(surface, pvdata, num_iter, k=1L, method="C++") {
   surface = ensure.fs.surface(surface);
   if(! freesurferformats::is.fs.surface(surface)) {
     stop("Parameter 'surface' must be an fs.surface instance.");
@@ -32,10 +32,10 @@ pervertexdata.smoothnn <- function(surface, data, num_iter, k=1L, method="C++") 
   adj = mesh.adj(tmesh, k = k);
 
   nv = nrow(surface$vertices);
-  if(length(data) != nv) {
+  if(length(pvdata) != nv) {
     stop("Data and vertex count mismatch");
   }
-  return(pervertexdata.smoothnn.adj(adj, data, num_iter, method=method));
+  return(pervertexdata.smoothnn.adj(adj, pvdata, num_iter, method=method));
 }
 
 
@@ -70,7 +70,7 @@ mesh.adj <- function(surface, k = 1L) {
 #'
 #' @param mesh_adj list of vectors of integers, the adjacency list representation of the mesh. One can use the pre-computed adjacency for some special meshes, see \code{\link{mesh.neigh.pre}}. Data for vertices should include the vertex itself.
 #'
-#' @param data numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.
+#' @param pvdata numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.
 #'
 #' @param num_iter positive integer, number of smoothing iterations.
 #'
@@ -89,32 +89,31 @@ mesh.adj <- function(surface, k = 1L) {
 #' }
 #'
 #' @export
-pervertexdata.smoothnn.adj <- function(mesh_adj, data, num_iter, method="C++") {
+pervertexdata.smoothnn.adj <- function(mesh_adj, pvdata, num_iter, method="C++") {
   if(method == "C++") {
-    return(pervertexdata.smoothnn.adj.cpp(mesh_adj, data, num_iter));
+    return(pervertexdata.smoothnn.adj.cpp(mesh_adj, pvdata, num_iter));
   }
   if(method != "R") {
     stop("Parameter 'method' must be one of 'C++' or 'R'.");
   }
 
-  nv = length(data);
-  cat(sprintf("Smoothing %d iterations over the %d data values in R.\n", num_iter, nv));
-  data_smoothed = rep(NA, nv);
+  nv = length(pvdata);
+  #cat(sprintf("Smoothing %d iterations over the %d pvdata values in R.\n", num_iter, nv));
+  pvdata_smoothed = rep(NA, nv);
 
   for(iteration in seq.int(num_iter)) {
     if(iteration == 1L) {
-      source_data = data;
+      source_data = pvdata;
     } else {
-      source_data = data_smoothed;
+      source_data = pvdata_smoothed;
     }
     for(vidx in seq.int(nv)) {
-      if(is.na(data[vidx])) { next; }
-      #neigh = c(mesh_adj[[vidx]], vidx);
+      if(is.na(pvdata[vidx])) { next; }
       neigh = mesh_adj[[vidx]];
-      data_smoothed[vidx] = mean(source_data[neigh], na.rm = TRUE);
+      pvdata_smoothed[vidx] = mean(source_data[neigh], na.rm = TRUE);
     }
   }
-  return(data_smoothed);
+  return(pvdata_smoothed);
 }
 
 
@@ -125,22 +124,24 @@ pervertexdata.smoothnn.adj <- function(mesh_adj, data, num_iter, method="C++") {
 #' @return numerical vector, the smoothed data.
 #'
 #' @keywords internal
-pervertexdata.smoothnn.adj.cpp <- function(mesh_adj, data, num_iter) {
+pervertexdata.smoothnn.adj.cpp <- function(mesh_adj, pvdata, num_iter) {
   if(! is.list(mesh_adj)) {
     stop("Parameter 'mesh_adj' must be a list of integer vectors.");
   }
-  if(is.matrix(data)) {
-    data = as.vector(data);
+  if(is.matrix(pvdata)) {
+    if(nrow(pvdata) == 1L) {
+      pvdata = as.vector(pvdata);
+    }
   }
-  if(! is.vector(data)) {
-    stop("Parameter 'data' must be a numeric vector.");
+  if(! is.vector(pvdata)) {
+    stop("Parameter 'pvdata' must be a numeric vector.");
   }
   if(length(num_iter) != 1L) {
     stop("Parameter 'num_iter' must be a scalar, positive integer.");
   }
 
-  # Adapt the vertex indices for C++
+  # Adapt the vertex indices for C++ (from 1-based R indexing to 0-based C++ indexing).
   mesh_adj = lapply(mesh_adj, function(x){x-1L});
 
-  return(.Call("smooth_data", mesh_adj, data, num_iter));
+  return(.Call("smooth_data", mesh_adj, pvdata, num_iter));
 }
