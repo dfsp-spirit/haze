@@ -20,6 +20,8 @@ pervertexdata.smoothnn.adj.mat(
 \item{num_iter}{positive integer, number of smoothing iterations.}
 
 \item{method}{character string, one of 'C++' or 'R'. The C++ version is much faster (about 50 times faster on our test machine), and there is little reason to ever use the R version in production code, so just ignore this.}
+
+\item{silent}{logical, whether to suppress output messages.}
 }
 \description{
 Smooth matrix in parallel

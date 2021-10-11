@@ -76,6 +76,8 @@ mesh.adj <- function(surface, k = 1L) {
 #'
 #' @param method character string, one of 'C++' or 'R'. The C++ version is much faster (about 50 times faster on our test machine), and there is little reason to ever use the R version in production code, so just ignore this.
 #'
+#' @param silent logical, whether to suppress output messages.
+#'
 #' @return numerical vector, the smoothed data.
 #'
 #' @seealso \code{\link{pervertexdata.smoothnn}} if you have a mesh and still need the connectivity to be computed.

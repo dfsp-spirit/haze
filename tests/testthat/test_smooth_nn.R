@@ -118,6 +118,7 @@ test_that("One can smooth several overlays in parallel on several CPU cores.", {
   pvd = rbind(data1, data2, data3);
   num_overlays = nrow(pvd);
 
+  options("mc.cores" = 2L); # Cannot set more in a code that should run on CRAN.
   smoothed_data = pervertexdata.smoothnn.adj(mesh_adj, pvd, 15L);
 
   # Check for correct number of values and correct dims.
