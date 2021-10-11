@@ -113,7 +113,7 @@ num_overlays = 25;
 pvd = matrix(data=rnorm(length(mesh_adj)*num_overlays, mean=1.0, sd=0.1), nrow=num_overlays); # generate random data
 
 # Compare with 1 versus 5 cores:
-microbenchmark::microbenchmark({options("mc.cores" = 1L); smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, {options("mc.cores" = 5L); smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, times=5L);
+microbenchmark::microbenchmark({options("mc.cores" = 1L); pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, {options("mc.cores" = 5L); pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, times=5L);
 ```
 
 On my machine, this shows that code is about 4 times faster when using 5 CPU cores instead of a single one.
