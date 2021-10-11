@@ -81,11 +81,11 @@ options("mc.cores" = 2L);   # Request to run on 2 cores in parallel.
 smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L); # Compute the smoothed matrix. When a matrix is passed, the rows are automatically handled in parallel, there is nothing more to do.
 ```
 
-## Benchmarks
+### Benchmarks
 
 This requires the `microbenchmark` package.
 
-### Measuring C++ versus R performance
+#### Measuring C++ versus R performance
 
 The smoothing is done in C++ by default, but it is possible to manually select a pure R version instead. The following benchmark compares the performance between the C++ and the R versions of the same algorithm.
 
@@ -101,7 +101,7 @@ microbenchmark::microbenchmark(pervertexdata.smoothnn.adj(mesh_adj, pvd, num_ite
 On my machine, this shows that the C++ version is about 29 times faster for the given data.
 
 
-### Measuring multi-core performance
+#### Measuring multi-core performance
 
 To get a rough idea on how much faster the C++ smoothing runs with several cores, benchmark it for your data. E.g.:
 
