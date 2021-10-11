@@ -81,9 +81,28 @@ options("mc.cores" = 2L);   # Request to run on 2 cores in parallel.
 smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L); # Compute the smoothed matrix. When a matrix is passed, the rows are automatically handled in parallel, there is nothing more to do.
 ```
 
-## Measuring multi-core performance
+## Benchmarks
 
-To get a rough idea on how much faster the smoothing runs with several cores, benchmark it for your data. E.g.:
+
+### Measuring C++ versus R performance
+
+The smoothing is done in C++ by default, but it is possible to manually select a pure R version instead. This compares the performance between the C++ and the R version of the same algorithm.
+
+```R
+mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE));
+mesh_adj = mesh.adj(mesh, k = 1L); # compute 1-ring neighborhood
+
+pvd = rnorm(length(mesh_adj), mean=1.0, sd=0.1);
+
+microbenchmark::microbenchmark(pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L, method="R"), pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L, method="C++"), times=5L);
+```
+
+This shows a speed-up of about 29 times for the C++ version on my machine.
+
+
+### Measuring multi-core performance
+
+To get a rough idea on how much faster the C++ smoothing runs with several cores, benchmark it for your data. E.g.:
 
 ```R
 mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE));
@@ -95,6 +114,10 @@ pvd = matrix(data=rnorm(length(mesh_adj)*num_overlays, mean=1.0, sd=0.1), nrow=n
 # Compare with 1 versus 5 cores:
 microbenchmark::microbenchmark({options("mc.cores" = 1L); smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, {options("mc.cores" = 5L); smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, times=5L);
 ```
+
+This shows a speed-up of about 4 times when using 5 cores instead of 1.
+
+So with 5 cores and the C++ version (Example 4 above) I got a speed-up of about 120 fold compared to the pure R version for the data above on my machine.
 
 
 ## Credits
