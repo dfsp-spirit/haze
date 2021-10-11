@@ -9,7 +9,7 @@ pervertexdata.smoothnn(surface, pvdata, num_iter, k = 1L, method = "C++")
 \arguments{
 \item{surface}{a mesh, represented as an \code{fs.surface} instance from the \code{freesurferformats} package or a \code{tmesh3d} instance from \code{rgl}, or a character string representing the path of a mesh to load with \code{freesurferformats::read.fs.surface}.}
 
-\item{pvdata}{numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.}
+\item{pvdata}{numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data. If you pass an nxm matrix, the n rows will be treated as (independent) overlays that should be smoothed in parallel. To set the number of cores to use for parallel processing, set the 'mc_cores' option like this: \code{options("mc.cores"=22L);} before calling this function.}
 
 \item{num_iter}{positive integer, number of smoothing iterations.}
 

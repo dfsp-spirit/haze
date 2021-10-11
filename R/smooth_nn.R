@@ -70,7 +70,7 @@ mesh.adj <- function(surface, k = 1L) {
 #'
 #' @param mesh_adj list of vectors of integers, the adjacency list representation of the mesh. One can use the pre-computed adjacency for some special meshes, see \code{\link{mesh.neigh.pre}}. Data for vertices should include the vertex itself.
 #'
-#' @param pvdata numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.
+#' @param pvdata numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data. If you pass an nxm matrix, the n rows will be treated as (independent) overlays that should be smoothed in parallel. To set the number of cores to use for parallel processing, set the 'mc_cores' option like this: \code{options("mc.cores"=22L);} before calling this function.
 #'
 #' @param num_iter positive integer, number of smoothing iterations.
 #'
@@ -89,13 +89,12 @@ mesh.adj <- function(surface, k = 1L) {
 #' }
 #'
 #' @export
-pervertexdata.smoothnn.adj <- function(mesh_adj, pvdata, num_iter, method="C++") {
+pervertexdata.smoothnn.adj <- function(mesh_adj, pvdata, num_iter, method="C++", silent = getOption("haze.silent", default = TRUE)) {
 
   if(is.matrix(pvdata)) {
     if(nrow(pvdata) == 1L | ncol(pvdata) == 1L) {
       pvdata = as.vector(pvdata);
     } else {
-      #return(.Call("smooth_data_mat", mesh_adj, pvdata, num_iter));
       return(pervertexdata.smoothnn.adj.mat(mesh_adj, pvdata, num_iter, method=method));
     }
   }
@@ -109,7 +108,9 @@ pervertexdata.smoothnn.adj <- function(mesh_adj, pvdata, num_iter, method="C++")
   }
 
   nv = length(pvdata);
-  #cat(sprintf("Smoothing %d iterations over the %d pvdata values in R.\n", num_iter, nv));
+  if(! silent) {
+    cat(sprintf("Smoothing %d iterations over the %d pvdata values in R.\n", num_iter, nv));
+  }
   pvdata_smoothed = rep(NA, nv);
 
   for(iteration in seq.int(num_iter)) {
@@ -178,11 +179,20 @@ pervertexdata.smoothnn.adj.cpp <- function(mesh_adj, pvdata, num_iter) {
 #'
 #' @note There is no need to call this manually, it will be called by \code{pervertexdata.smooth.adj} when its input is a matrix.
 #'
+#' @note To set the number of cores to use, set the 'mc_cores' option like this: \code{options("mc.cores"=22L);} before calling this function.
+#'
 #' @keywords internal
-pervertexdata.smoothnn.adj.mat <- function(mesh_adj, pvdata, num_iter, method = "C++") {
-  cat(sprintf("Parallel matrix version called"));
+pervertexdata.smoothnn.adj.mat <- function(mesh_adj, pvdata, num_iter, method = "C++", silent = getOption("haze.silent", default = FALSE)) {
+  if(! is.matrix(pvdata)) {
+    stop("Parameter 'pvdata' must be a matrix.");
+  }
+  num_cores = getOption("mc.cores", default = 2L);
 
-  res_list = parallel::mclapply( 1L:nrow(pvdata), function(row_idx){ pervertexdata.smoothnn.adj(mesh_adj, pvdata[row_idx, ], num_iter=num_iter, method = method) } );
+  if(! silent) {
+    cat(sprintf("Parallel version called, handling %d vertex overlays with %d CPU cores. Use 'options(\"mc.cores\"=12)' to request 12 cores.\n", nrow(pvdata), num_cores));
+  }
+
+  res_list = parallel::mclapply( 1L:nrow(pvdata), mc.cores = num_cores, function(row_idx){ pervertexdata.smoothnn.adj(mesh_adj, pvdata[row_idx, ], num_iter=num_iter, method = method) } );
   return(t(as.matrix(data.frame(res_list))));
 }
 

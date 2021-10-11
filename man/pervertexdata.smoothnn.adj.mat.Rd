@@ -4,7 +4,13 @@
 \alias{pervertexdata.smoothnn.adj.mat}
 \title{Smooth matrix in parallel}
 \usage{
-pervertexdata.smoothnn.adj.mat(mesh_adj, pvdata, num_iter, method = "C++")
+pervertexdata.smoothnn.adj.mat(
+  mesh_adj,
+  pvdata,
+  num_iter,
+  method = "C++",
+  silent = getOption("haze.silent", default = FALSE)
+)
 }
 \arguments{
 \item{mesh_adj}{list of vectors of integers, the adjacency list representation of the mesh. One can use the pre-computed adjacency for some special meshes, see \code{\link{mesh.neigh.pre}}. Data for vertices should include the vertex itself.}
@@ -20,6 +26,8 @@ Smooth matrix in parallel
 }
 \note{
 There is no need to call this manually, it will be called by \code{pervertexdata.smooth.adj} when its input is a matrix.
+
+To set the number of cores to use, set the 'mc_cores' option like this: \code{options("mc.cores"=22L);} before calling this function.
 }
 \examples{
 \dontrun{
