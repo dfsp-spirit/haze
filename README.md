@@ -83,6 +83,7 @@ smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L); # Comp
 
 ## Benchmarks
 
+This requires the `microbenchmark` package.
 
 ### Measuring C++ versus R performance
 
@@ -97,7 +98,7 @@ pvd = rnorm(length(mesh_adj), mean=1.0, sd=0.1);
 microbenchmark::microbenchmark(pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L, method="R"), pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L, method="C++"), times=5L);
 ```
 
-This shows a speed-up of about 29 times for the C++ version on my machine.
+On my machine, this shows that the C++ version is about 29 times faster for the given data.
 
 
 ### Measuring multi-core performance
@@ -115,9 +116,9 @@ pvd = matrix(data=rnorm(length(mesh_adj)*num_overlays, mean=1.0, sd=0.1), nrow=n
 microbenchmark::microbenchmark({options("mc.cores" = 1L); smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, {options("mc.cores" = 5L); smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, times=5L);
 ```
 
-This shows a speed-up of about 4 times when using 5 cores instead of 1.
+On my machine, this shows that code is about 4 times faster when using 5 CPU cores instead of a single one.
 
-So with 5 cores and the C++ version (Example 4 above) I got a speed-up of about 120 fold compared to the pure R version for the data above on my machine.
+So with 5 cores and the C++ version (Example 4 above), the smoothing runs about 120 times faster compared to the pure R version for the data above on my machine.
 
 
 ## Credits
