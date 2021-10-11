@@ -118,7 +118,7 @@ microbenchmark::microbenchmark({options("mc.cores" = 1L); smoothed_pvd = pervert
 
 On my machine, this shows that code is about 4 times faster when using 5 CPU cores instead of a single one.
 
-So with 5 cores and the C++ version (Example 4 above), the smoothing runs about 120 times faster compared to the pure R version for the data above on my machine.
+So with 5 cores and the C++ version (Example 4 above), the smoothing runs about 120 times faster compared to the single-core, pure R version for the data above on my machine.
 
 
 ## Credits
