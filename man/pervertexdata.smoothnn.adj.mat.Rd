@@ -29,6 +29,7 @@ pvd1 = rnorm(nrow(mesh$vb), mean = 1.0, sd = 1.0);
 pvd2 = rnorm(nrow(mesh$vb), mean = 4.0, sd = 1.0);
 pvd3 = rnorm(nrow(mesh$vb), mean = 7.0, sd = 1.0);
 pvd_matrix = rbind(pvd1, pvd2, pvd3);
+# or: pvd_matrix = matrix(data=rnorm(nrow(mesh$vb)*5, mean=5.0, sd=1.0), nrow=5);
 pvd_smoothed = haze:::pervertexdata.smoothnn.adj.mat(mesh_adj, pvd_matrix, num_iter = 30L);
 }
 
