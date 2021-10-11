@@ -130,8 +130,8 @@ One could also measure this using from 1 up to 10 cores and plot the resulting e
 # The next 2 lines just save us some typing in the microbenchmark line.
 rf <- function(nc, details) { options("mc.cores" = nc); pervertexdata.smoothnn.adj(details$mesh_adj, details$pvd, details$num_iter); }
 d = list("mesh_adj"=mesh_adj, "pvd"=pvd, "num_iter"=15L);
-mb = microbenchmark::microbenchmark(rf(1,d), rf(2,d), rf(3,d), rf(4,d), rf(5,d), rf(6,d), rf(7,d), rf(8,d), rf(9,d), rf(10,d), times=3L);
-plot(mb, xaxt='n', xlab="Number of cores", ylab = "Execution time [ns]");
+mb = microbenchmark::microbenchmark(rf(1,d), rf(2,d), rf(3,d), rf(4,d), rf(5,d), rf(6,d), rf(7,d), rf(8,d), rf(9,d), rf(10,d), times=10L);
+plot(mb, xaxt='n', xlab="Number of CPU cores", ylab = "Execution time [ns]");
 axis(1, at = seq(10));
 ```
 
