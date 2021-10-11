@@ -81,6 +81,22 @@ options("mc.cores" = 2L);   # Request to run on 2 cores in parallel.
 smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L); # Compute the smoothed matrix.
 ```
 
+## Measuring multi-core performance
+
+To get a rough idea on how much faster the smoothing runs with several cores, benchmark it for your data. E.g.:
+
+```R
+mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE));
+mesh_adj = mesh.adj(mesh, k = 1L); # compute 1-ring neighborhood
+
+num_overlays = 25;
+pvd = matrix(data=rnorm(length(mesh_adj)*num_overlays, mean=1.0, sd=0.1), nrow=num_overlays); # generate random data
+
+# Compare with 1 versus 5 cores:
+microbenchmark::microbenchmark({options("mc.cores" = 1L); smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, {options("mc.cores" = 5L); smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L);}, times=5L)
+```
+
+
 ## Credits
 
 The fast mesh operations used in this package are implemented in the [Rvcg package](https://github.com/zarquon42b/Rvcg) by Stefan Schlager, which uses [VCGLIB](http://vcg.isti.cnr.it/vcglib/).
