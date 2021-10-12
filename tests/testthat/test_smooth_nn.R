@@ -106,7 +106,7 @@ test_that("Ignoring NA values in the data works as expected with NN smoothing.",
 })
 
 
-test_that("One can smooth several overlays in parallel on several CPU cores.", {
+test_that("One can smooth several overlays in parallel on several CPU cores with matrix input.", {
   fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
 
   mesh_adj = mesh.adj(fsmesh_file, k = 1L);
@@ -116,16 +116,50 @@ test_that("One can smooth several overlays in parallel on several CPU cores.", {
   data2 = rnorm(num_verts, 10.0, 1.0);
   data3 = rnorm(num_verts, 15.0, 1.0);
   pvd = rbind(data1, data2, data3);
+  testthat::expect_true(is.matrix(pvd));
   num_overlays = nrow(pvd);
 
-  options("mc.cores" = 2L); # Cannot set more in a code that should run on CRAN.
+  options("mc.cores" = 2L); # Cannot set more in code that should run on CRAN.
   smoothed_data = pervertexdata.smoothnn.adj(mesh_adj, pvd, 15L);
 
   # Check for correct number of values and correct dims.
+  testthat::expect_true(is.matrix(smoothed_data));
   testthat::expect_equal(length(smoothed_data), num_verts * num_overlays);
   testthat::expect_equal(dim(pvd)[1], dim(smoothed_data)[1]);
   testthat::expect_equal(dim(pvd)[2], dim(smoothed_data)[2]);
   testthat::expect_equal(length(dim(pvd)), length(dim(smoothed_data)));
+
+  # Check that the order of vectors in the output is correct.
+  testthat::expect_true(abs(mean(data1) - mean(smoothed_data[1,])) < 0.5)
+  testthat::expect_true(abs(mean(data2) - mean(smoothed_data[2,])) < 0.5)
+  testthat::expect_true(abs(mean(data3) - mean(smoothed_data[3,])) < 0.5)
+})
+
+
+test_that("One can smooth several overlays in parallel on several CPU cores with data.frame input.", {
+  fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
+
+  mesh_adj = mesh.adj(fsmesh_file, k = 1L);
+
+  num_verts = length(mesh_adj);
+  data1 = rnorm(num_verts, 5.0, 1.0);
+  data2 = rnorm(num_verts, 10.0, 1.0);
+  data3 = rnorm(num_verts, 15.0, 1.0);
+  pvd = rbind(data1, data2, data3);
+  pvd_df = data.frame(pvd);
+  testthat::expect_true(is.matrix(pvd));
+  testthat::expect_true(is.data.frame(pvd_df));
+  num_overlays = nrow(pvd);
+
+  options("mc.cores" = 2L); # Cannot set more in code that should run on CRAN.
+  smoothed_data = pervertexdata.smoothnn.adj(mesh_adj, pvd_df, 15L);
+
+  # Check for correct number of values and correct dims.
+  testthat::expect_true(is.data.frame(smoothed_data));
+  testthat::expect_equal(prod(dim(smoothed_data)), num_verts * num_overlays);
+  testthat::expect_equal(dim(pvd)[1], dim(smoothed_data)[1]);
+  testthat::expect_equal(dim(pvd)[2], dim(smoothed_data)[2]);
+  testthat::expect_equal(length(dim(pvd_df)), length(dim(smoothed_data)));
 
   # Check that the order of vectors in the output is correct.
   testthat::expect_true(abs(mean(data1) - mean(smoothed_data[1,])) < 0.5)

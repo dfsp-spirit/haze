@@ -24,17 +24,15 @@ pervertexdata.smoothnn <- function(surface, pvdata, num_iter, k=1L, method="C++"
   if(! freesurferformats::is.fs.surface(surface)) {
     stop("Parameter 'surface' must be an fs.surface instance.");
   }
-  if(nrow(surface$vertices) != length(pvdata)) {
-    stop("Number of surface vertices must match pvdata length.");
+  if(is.vector(pvdata)) {
+    if(nrow(surface$vertices) != length(pvdata)) {
+      stop("Number of surface vertices must match pvdata length.");
+    }
   }
 
   tmesh = ensure.tmesh3d(surface);
   adj = mesh.adj(tmesh, k = k);
 
-  nv = nrow(surface$vertices);
-  if(length(pvdata) != nv) {
-    stop("Data and vertex count mismatch");
-  }
   return(pervertexdata.smoothnn.adj(adj, pvdata, num_iter, method=method));
 }
 
@@ -93,7 +91,7 @@ mesh.adj <- function(surface, k = 1L) {
 #' @export
 pervertexdata.smoothnn.adj <- function(mesh_adj, pvdata, num_iter, method="C++", silent = getOption("haze.silent", default = TRUE)) {
 
-  if(is.matrix(pvdata)) {
+  if(is.matrix(pvdata) | is.data.frame(pvdata)) {
     if(nrow(pvdata) == 1L | ncol(pvdata) == 1L) {
       pvdata = as.vector(pvdata);
     } else {
@@ -165,7 +163,7 @@ pervertexdata.smoothnn.adj.cpp <- function(mesh_adj, pvdata, num_iter) {
 #'
 #' @inheritParams pervertexdata.smoothnn.adj
 #'
-#' @param pvdata numerical matrix of per-vertex-data for the mesh. Each row is an overlay with one value per vertex. Rows are independent and smoothed in parallel. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.
+#' @param pvdata numerical matrix or data.frame of per-vertex-data for the mesh. Each row must be an overlay with one value per vertex. Rows are independent and smoothed in parallel. Data values of \code{NA} will be ignored, allowing you to mask parts of the data.
 #'
 #' @examples
 #' \dontrun{
@@ -185,8 +183,13 @@ pervertexdata.smoothnn.adj.cpp <- function(mesh_adj, pvdata, num_iter) {
 #'
 #' @keywords internal
 pervertexdata.smoothnn.adj.mat <- function(mesh_adj, pvdata, num_iter, method = "C++", silent = getOption("haze.silent", default = FALSE)) {
-  if(! is.matrix(pvdata)) {
-    stop("Parameter 'pvdata' must be a matrix.");
+  was_df = FALSE;
+  if(! (is.matrix(pvdata) | is.data.frame(pvdata))) {
+    stop("Parameter 'pvdata' must be a matrix or a data.frame.");
+  }
+  if(is.data.frame(pvdata)) {
+    was_df = TRUE;
+    pvdata = data.matrix(pvdata);
   }
   num_cores = getOption("mc.cores", default = 2L);
 
@@ -195,6 +198,11 @@ pervertexdata.smoothnn.adj.mat <- function(mesh_adj, pvdata, num_iter, method = 
   }
 
   res_list = parallel::mclapply( 1L:nrow(pvdata), mc.cores = num_cores, function(row_idx){ pervertexdata.smoothnn.adj(mesh_adj, pvdata[row_idx, ], num_iter=num_iter, method = method) } );
-  return(t(as.matrix(data.frame(res_list))));
+  browser()
+  if(was_df) {
+    return(data.frame(t(data.frame(res_list))));
+  } else {
+    return(t(as.matrix(data.frame(res_list))));
+  }
 }
 
