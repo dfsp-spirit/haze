@@ -198,7 +198,6 @@ pervertexdata.smoothnn.adj.mat <- function(mesh_adj, pvdata, num_iter, method = 
   }
 
   res_list = parallel::mclapply( 1L:nrow(pvdata), mc.cores = num_cores, function(row_idx){ pervertexdata.smoothnn.adj(mesh_adj, pvdata[row_idx, ], num_iter=num_iter, method = method) } );
-  browser()
   if(was_df) {
     return(data.frame(t(data.frame(res_list))));
   } else {
