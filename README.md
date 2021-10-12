@@ -8,7 +8,7 @@ This package package performs smoothing of per-vertex data on triangular meshes,
 
 ![Vis](./web/haze.jpg?raw=true "Per-vertex data on a brain mesh before (left) and after (right) smoothing.")
 
-**Fig.1**: *Per-vertex data on a brain mesh before (left) and after (right) smoothing. White represents NA values.*
+**Fig.1**: *Per-vertex data on a brain mesh before (left) and after (right) smoothing. White represents NA values. In this example, the smoothing has been exaggerated to better show the effect. See the discussion about how much smoothing to apply below.*
 
 Such smoothing is typically used to reduce high-frequency noise and improve SNR.
 
@@ -81,6 +81,13 @@ options("mc.cores" = 2L);   # Request to run on 2 cores in parallel.
 smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L); # Compute the smoothed matrix. When a matrix is passed, the rows are automatically handled in parallel, there is nothing more to do.
 ```
 
+## Finding the right amount of smoothing
+
+![Vis2](./web/haze_proper_smoothing.png?raw=true "Effects of nearest neighbor-smoothing (k=1) for different number of iterations.")
+
+**Fig.2**: *Effects of nearest neighbor-smoothing (k=1) for different number of iterations.*
+
+
 ### Benchmarks
 
 This requires the `microbenchmark` package. The mesh I use for the benchmark has 160,000 vertices. The results will obviously differ for meshes of different size and your hardware, so run these benchmarks yourself for your data.
@@ -135,7 +142,10 @@ plot(mb, xaxt='n', xlab="Number of CPU cores", ylab = "Execution time [ns]");
 axis(1, at = seq(10));
 ```
 
-![Vis](./web/haze_multicore.png?raw=true "Haze multi-core performance.")
+![Vis3](./web/haze_multicore.png?raw=true "Haze multi-core performance.")
+
+**Fig.3**: *Execution time versus number of cores for 15 iteration of nearest nighbor-smoothing (k=1) on a sample mesh with 160,000 vertices.*
+
 
 For this data set and my machine, using more than 5 cores does not seem to help much.
 
