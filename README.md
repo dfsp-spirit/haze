@@ -89,7 +89,7 @@ If you cannot find anything, I would recommend to look at the raw version of you
 
 ![Vis2](./web/haze_proper_smoothing.png?raw=true "Effects of nearest neighbor-smoothing (k=1) for different number of iterations.")
 
-**Fig.2**: *Effects of nearest neighbor-smoothing (k=1) for different number of iterations. Left: the raw data. Center: after 5 iterations of NN smoothing. Right: after 150 iterations of NN smoothing.*
+**Fig.2**: *Effects of nearest neighbor-smoothing (k=1) for different number of iterations. Left: the raw data. Center: after 5 iterations of NN smoothing. Right: after 155 iterations of NN smoothing.*
 
 In this case, we want to measure the curvature of gyri and sulci. The raw version looks quite noisy, 5 iterations look fine, and 150 are clearly way over the top, as the curvature does not follow the structure of the gyri and sulci of the brain anymore.
 
