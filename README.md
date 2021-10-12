@@ -97,14 +97,14 @@ In this case, we want to measure the curvature of gyri and sulci. The raw versio
 
 Nearest neighbor smoothing is a lot faster than (true) Gaussian smoothing because it does not need to compute geodesic distances along the mesh, so it is common to use several iterations of NN smoothing to emulate Gaussian smoothing. The following table shows the settings that FreeSurfer uses for the fsaverage meshes.
 
-| Gaussian Smoothing FWHM | Neareast neighbor k | Neareast neighbor num iterations |
-| ----------------------- | ------------------- | -------------------------------- |
-| 2                       | 1                   | 3                                |
-| 5                       | 1                   | 18                               |
-| 10                      | 1                   | 74                               |
-| 15                      | 1                   | 166                              |
-| 20                      | 1                   | 294                              |
-| 25                      | 1                   | 460                              |
+| Gaussian Smoothing FWHM / gstd | Neareast neighbor k | Neareast neighbor num iterations |
+| ------------------------------ | ------------------- | -------------------------------- |
+| 2  / 0.849322                  | 1                   | 3                                |
+| 5  / 2.123305                  | 1                   | 18                               |
+| 10 / 4.246609                  | 1                   | 74                               |
+| 15 / 6.369914                  | 1                   | 166                              |
+| 20 / 8.493218                  | 1                   | 294                              |
+| 25 / 10.616523                 | 1                   | 460                              |
 
 The table above was obtained by running `mris_surf2surf`, FreeSurfer v6.
 
