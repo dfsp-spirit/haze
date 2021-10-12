@@ -85,7 +85,7 @@ smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L); # Comp
 
 The amount of smoothing to apply (i.e., the FWHM setting in the case of Gaussian smoothing, or the neighorbood size and the number of iterations for nearest neighbor smoothing), depend on the noisyness of your data and the size of the signal you want to measure. Most likely there are established standards in your field, which should be reported in the methods section of relevant publications.
 
-If you cannot find anything, I would recommend to look at the raw version of your data and at the same data after some smoothing runs with different settings, e.g., with 5, 10, and 20 NN iterations. Here is an example for the mean curvature *H* of a human brain mesh:
+If you cannot find anything, I would recommend to look at the raw version of your data and at the same data after some smoothing runs with different settings, e.g., with 5, 10, 20, 50, 100 and 150 NN iterations. Here is an example for the mean curvature *H* of a human brain mesh:
 
 ![Vis2](./web/haze_proper_smoothing.png?raw=true "Effects of nearest neighbor-smoothing (k=1) for different number of iterations.")
 
