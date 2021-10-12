@@ -109,7 +109,8 @@ Nearest neighbor smoothing is a lot faster than (true) Gaussian smoothing becaus
 | 20 / 8.493218                  | 1                   | 294                              |
 | 25 / 10.616523                 | 1                   | 460                              |
 
-The table above was obtained by running `mris_surf2surf`, FreeSurfer v6.
+The table above was obtained by running `mris_surf2surf`, FreeSurfer v6. These values are specific to the mesh resolution and are only valid for this specific use case in computation neuroimaging.
+
 
 ## Performance benchmarks
 
