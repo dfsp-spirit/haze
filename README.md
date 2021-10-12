@@ -93,7 +93,7 @@ If you cannot find anything, I would recommend to look at the raw version of you
 
 In this case, we want to measure the curvature of gyri and sulci. The raw version looks quite noisy, 5 iterations look fine, and 150 are clearly way over the top, as the curvature does not follow the structure of the gyri and sulci of the brain anymore.
 
-So now if you want to use the per-vertex data to predict something with an AI model and your goal is to find the best model, you could do a grid search and use different smoothing versions as input, with various values around 5 (I would maybe try 0, 5, 10, 15, 20) and compare the model performance to find the best setting. For hypothesis testing, you will want to pre-define the smoothing factor instead of trying various settings, of course, have a look at the literature.
+So now if you want to use the per-vertex data to predict something with an AI model and your goal is to find the best model, you could do a grid search and use different smoothing versions as input, with various values around 5 (I would maybe try 0, 5, 10, 15, 20) and compare the model performance to find the best setting. For hypothesis testing, you will want to pre-define the smoothing factor instead of trying various settings, of course. If you do this, you will know suitable values from the literature.
 
 
 ### Mapping between true Gaussian smoothing and nearest neighbor smoothing
