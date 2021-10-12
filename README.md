@@ -93,6 +93,20 @@ If you cannot find anything, I would recommend to look at the raw version of you
 
 In this case, we want to measure the curvature of gyri and sulci. The raw version looks quite noisy, 5 iterations look fine, and 150 are clearly way over the top, as the curvature does not follow the structure of the gyri and sulci of the brain anymore.
 
+### Mapping between true Gaussian smoothing and nearest neighbor smoothing
+
+Nearest neighbor smoothing is a lot faster than (true) Gaussian smoothing because it does not need to compute geodesic distances along the mesh, so it is common to use several iterations of NN smoothing to emulate Gaussian smoothing. The following table shows the settings that FreeSurfer uses for the fsaverage meshes.
+
+| Gaussian Smoothing FWHM | Neareast neighbor k | Neareast neighbor num iterations |
+| ----------------------- | ------------------- | -------------------------------- |
+| 2                       | 1                   | 3                                |
+| 5                       | 1                   | 18                               |
+| 10                      | 1                   | 74                               |
+| 15                      | 1                   | 166                              |
+| 20                      | 1                   | 294                              |
+| 25                      | 1                   | 460                              |
+
+The table above was obtained by running `mris_surf2surf`, FreeSurfer v6.
 
 ## Performance benchmarks
 
