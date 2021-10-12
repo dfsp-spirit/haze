@@ -83,16 +83,22 @@ smoothed_pvd = pervertexdata.smoothnn.adj(mesh_adj, pvd, num_iter = 15L); # Comp
 
 ## Finding the right amount of smoothing
 
+The amount of smoothing to apply (i.e., the FWHM setting in the case of Gaussian smoothing, or the neighorbood size and the number of iterations for nearest neighbor smoothing), depend on the noisyness of your data and the size of the signal you want to measure. Most likely there are established standards in your field, which should be reported in the methods section of relevant publications.
+
+If you cannot find anything, I would recommend to look at the raw version of your data, and at the same data after some smoothing runs with different settings. Here is an example for the mean curvature *H* of a human brain mesh:
+
 ![Vis2](./web/haze_proper_smoothing.png?raw=true "Effects of nearest neighbor-smoothing (k=1) for different number of iterations.")
 
-**Fig.2**: *Effects of nearest neighbor-smoothing (k=1) for different number of iterations.*
+**Fig.2**: *Effects of nearest neighbor-smoothing (k=1) for different number of iterations. Left: the raw data. Center: after 5 iterations of NN smoothing. Right: after 150 iterations of NN smoothing.*
+
+In this case, we want to measure the curvature of gyri and sulci. The raw version looks quite noisy, 5 iterations look fine, and 150 are clearly way over the top, as the curvature does not follow the structure of the gyri and sulci of the brain anymore.
 
 
-### Benchmarks
+## Performance benchmarks
 
 This requires the `microbenchmark` package. The mesh I use for the benchmark has 160,000 vertices. The results will obviously differ for meshes of different size and your hardware, so run these benchmarks yourself for your data.
 
-#### Measuring C++ versus R performance
+### Measuring C++ versus R performance
 
 The smoothing is done in C++ by default, but it is possible to manually select a pure R version instead. The following benchmark compares the performance between the C++ and the R versions of the same algorithm.
 
@@ -108,7 +114,7 @@ microbenchmark::microbenchmark(pervertexdata.smoothnn.adj(mesh_adj, pvd, num_ite
 On my machine, this shows that the C++ version is about 29 times faster for the given data.
 
 
-#### Measuring multi-core performance
+### Measuring multi-core performance
 
 To get a rough idea on how much faster the C++ smoothing runs with several cores, benchmark it for your data. E.g.:
 
@@ -128,7 +134,7 @@ On my machine, this shows that code is about 4 times faster when using 5 CPU cor
 
 So with 5 cores and the C++ version (Example 4 above), the smoothing runs about 120 times faster compared to the single-core, pure R version for the data above on my machine.
 
-##### Number of cores versus execution time
+#### Number of cores versus execution time
 
 One could also measure this using from 1 up to 10 cores and plot the resulting execution time.
 
