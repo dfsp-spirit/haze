@@ -175,7 +175,7 @@ axis(1, at = seq(10));
 **Fig.3**: *Execution time versus number of cores for 15 iteration of nearest nighbor-smoothing (k=1) on a sample mesh with 160,000 vertices.*
 
 
-For this data set and my machine, using more than 5 cores does not seem to help much.
+For this data set and my machine, using more than 5 cores does not seem to help much. For larger meshes, it may very well pay off.
 
 ## Credits
 
