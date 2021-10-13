@@ -96,11 +96,13 @@ In this case, we want to measure the curvature of gyri and sulci. The raw versio
 So now if you want to use the per-vertex data to predict something with an AI model and your goal is to find the best model, you could do a grid search and use different smoothing versions as input, with various values around 5 (I would maybe try 0, 5, 10, 15, 20) and compare the model performance to find the best setting. For hypothesis testing, you will want to pre-define the smoothing factor instead of trying various settings, of course. If you do this, you will know suitable values from the literature.
 
 
-### Mapping between true Gaussian smoothing and nearest neighbor smoothing
+### FreeSurfer: Mapping between true Gaussian smoothing and nearest neighbor smoothing
+
+Note: The haze package can be used with arbitrary meshes, but this section is specific to computational neuroimaging (which is what we use haze for). Ignore it unless you are working with the [FreeSurfer](https://freesurfer.net) neuroimaging software suite.
 
 Nearest neighbor smoothing is a lot faster than (true) Gaussian smoothing because it does not need to compute geodesic distances along the mesh, so it is common to use several iterations of NN smoothing to emulate Gaussian smoothing. The following table shows the settings that FreeSurfer uses for the fsaverage meshes.
 
-| Gaussian Smoothing FWHM / gstd | Neareast neighbor k | Neareast neighbor num iterations |
+| Gaussian Smoothing FWHM / gstd | Nearest neighbor k  | Nearest neighbor num iterations  |
 | ------------------------------ | ------------------- | -------------------------------- |
 | 2  / 0.849322                  | 1                   | 3                                |
 | 5  / 2.123305                  | 1                   | 18                               |
@@ -109,7 +111,9 @@ Nearest neighbor smoothing is a lot faster than (true) Gaussian smoothing becaus
 | 20 / 8.493218                  | 1                   | 294                              |
 | 25 / 10.616523                 | 1                   | 460                              |
 
-The table above was obtained by running `mris_surf2surf`, FreeSurfer v6. These values are specific to the mesh resolution and are only valid for this specific use case in computation neuroimaging.
+**Tbl.1**: *Mapping between true Gaussian smoothing and nearest neighbor smoothing in FreeSurfer full resolution (fsaverage) meshes. FWHM, full width at half maximum; gstd, Gaussian standard deviations; k, neighborhood size on the mesh (edge distance).*
+
+The table above was obtained by running `mris_surf2surf`, FreeSurfer v6. Once more: these values are specific to the mesh resolution and are only valid for this specific use case in computational neuroimaging.
 
 
 ## Performance benchmarks
