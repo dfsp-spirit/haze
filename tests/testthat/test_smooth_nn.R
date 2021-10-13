@@ -130,9 +130,9 @@ test_that("One can smooth several overlays in parallel on several CPU cores with
   testthat::expect_equal(length(dim(pvd)), length(dim(smoothed_data)));
 
   # Check that the order of vectors in the output is correct.
-  testthat::expect_true(abs(mean(data1) - mean(smoothed_data[1,])) < 0.5)
-  testthat::expect_true(abs(mean(data2) - mean(smoothed_data[2,])) < 0.5)
-  testthat::expect_true(abs(mean(data3) - mean(smoothed_data[3,])) < 0.5)
+  testthat::expect_true(abs(mean(data1) - mean(smoothed_data[1,])) < 0.5);
+  testthat::expect_true(abs(mean(data2) - mean(smoothed_data[2,])) < 0.5);
+  testthat::expect_true(abs(mean(data3) - mean(smoothed_data[3,])) < 0.5);
 })
 
 
@@ -162,7 +162,8 @@ test_that("One can smooth several overlays in parallel on several CPU cores with
   testthat::expect_equal(length(dim(pvd_df)), length(dim(smoothed_data)));
 
   # Check that the order of vectors in the output is correct.
-  testthat::expect_true(abs(mean(data1) - mean(smoothed_data[1,])) < 0.5)
-  testthat::expect_true(abs(mean(data2) - mean(smoothed_data[2,])) < 0.5)
-  testthat::expect_true(abs(mean(data3) - mean(smoothed_data[3,])) < 0.5)
+  rmeans = rowMeans(smoothed_data);
+  testthat::expect_true(abs(mean(data1) - rmeans[1]) < 0.5);
+  testthat::expect_true(abs(mean(data2) - rmeans[2]) < 0.5);
+  testthat::expect_true(abs(mean(data3) - rmeans[3]) < 0.5);
 })

@@ -68,15 +68,15 @@ mesh.adj <- function(surface, k = 1L) {
 #'
 #' @param mesh_adj list of vectors of integers, the adjacency list representation of the mesh. One can use the pre-computed adjacency for some special meshes, see \code{\link{mesh.neigh.pre}}. Data for vertices should include the vertex itself.
 #'
-#' @param pvdata numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data. If you pass an nxm matrix, the n rows will be treated as (independent) overlays that should be smoothed in parallel. To set the number of cores to use for parallel processing, set the 'mc_cores' option like this: \code{options("mc.cores"=22L);} before calling this function.
+#' @param pvdata numerical vector of per-vertex-data for the mesh, one value per vertex. Data values of \code{NA} will be ignored, allowing you to mask parts of the data. If you pass an \code{n x m} matrix or data.frame, the \code{n} rows will be treated as (independent) overlays that should be smoothed in parallel. To set the number of cores to use for parallel processing, set the 'mc_cores' option like this: \code{options("mc.cores"=22L);} before calling this function. Data.frames and matrices with a single row will be converted to vectors, and the return value will be a vector in that case.
 #'
 #' @param num_iter positive integer, number of smoothing iterations.
 #'
-#' @param method character string, one of 'C++' or 'R'. The C++ version is much faster (about 50 times faster on our test machine), and there is little reason to ever use the R version in production code, so just ignore this.
+#' @param method character string, one of 'C++' or 'R'. The C++ version is much faster (about 30 times faster on our test machine), and there is little reason to ever use the R version in production code, so just ignore this.
 #'
 #' @param silent logical, whether to suppress output messages.
 #'
-#' @return numerical vector, the smoothed data.
+#' @return numerical vector, the smoothed data (for vector input). If \code{pvdata} is a matrix or a data.frame (with more than a single column), the result is also a matrix or data.frame.
 #'
 #' @seealso \code{\link{pervertexdata.smoothnn}} if you have a mesh and still need the connectivity to be computed.
 #'
@@ -92,7 +92,7 @@ mesh.adj <- function(surface, k = 1L) {
 pervertexdata.smoothnn.adj <- function(mesh_adj, pvdata, num_iter, method="C++", silent = getOption("haze.silent", default = TRUE)) {
 
   if(is.matrix(pvdata) | is.data.frame(pvdata)) {
-    if(nrow(pvdata) == 1L | ncol(pvdata) == 1L) {
+    if(nrow(pvdata) == 1L) {
       pvdata = as.vector(pvdata);
     } else {
       return(pervertexdata.smoothnn.adj.mat(mesh_adj, pvdata, num_iter, method=method));
@@ -199,7 +199,7 @@ pervertexdata.smoothnn.adj.mat <- function(mesh_adj, pvdata, num_iter, method = 
 
   res_list = parallel::mclapply( 1L:nrow(pvdata), mc.cores = num_cores, function(row_idx){ pervertexdata.smoothnn.adj(mesh_adj, pvdata[row_idx, ], num_iter=num_iter, method = method) } );
   if(was_df) {
-    return(data.frame(t(data.frame(res_list))));
+    return(as.data.frame(t(unname(data.frame(res_list)))));
   } else {
     return(t(as.matrix(data.frame(res_list))));
   }
