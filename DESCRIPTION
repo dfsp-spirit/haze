@@ -1,9 +1,9 @@
 Package: haze
 Type: Package
-Title: Smoothing of per-vertex data on triangular meshes
+Title: Smoothing of per-Vertex Data on Triangular Meshes
 Version: 0.0.1
 Authors@R: person("Tim", "Schäfer", role = c("aut", "cre"), email = "ts+code@rcmd.org", comment = c(ORCID = "0000-0002-3683-8070"))
-Maintainer: Tim Schäfer <ts+code@rcmd.org>
+Maintainer: Tim Schaefer <ts+code@rcmd.org>
 Description: Smoothing of per-vertex data on triangular meshes. Supports nearest-neighbor smoothing and Gaussian smoothing based on geodesic distances.
 License: MIT + file LICENSE
 Encoding: UTF-8
