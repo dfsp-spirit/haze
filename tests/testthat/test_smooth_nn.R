@@ -108,6 +108,7 @@ test_that("Ignoring NA values in the data works as expected with NN smoothing.",
 
 test_that("One can smooth several overlays in parallel on several CPU cores with matrix input.", {
   fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
+  testthat::skip_on_os("windows"); # mclapply under Windows only supports 1 core
 
   mesh_adj = mesh.adj(fsmesh_file, k = 1L);
 
@@ -138,7 +139,7 @@ test_that("One can smooth several overlays in parallel on several CPU cores with
 
 test_that("One can smooth several overlays in parallel on several CPU cores with data.frame input.", {
   fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
-
+  testthat::skip_on_os("windows"); # mclapply under Windows only supports 1 core
   mesh_adj = mesh.adj(fsmesh_file, k = 1L);
 
   num_verts = length(mesh_adj);
