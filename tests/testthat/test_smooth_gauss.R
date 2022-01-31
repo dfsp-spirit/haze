@@ -1,6 +1,11 @@
 
 
 test_that("One can Gaussian smooth data on fsaverage3 using the raw mesh.", {
+
+  if(! exists('vcgSmoothPVD', where=asNamespace('Rvcg'), mode='function')) {
+    testthat::skip("The installed Rvcg version does not provide the 'vcgSmoothPVD' function. Please see the haze package installation instructions on the website on how to get the required Rvcg version.");
+  }
+
   fsmesh_file = system.file("extdata", "fsaverage3_mesh_lh_white", package = "haze", mustWork = TRUE);
   mesh = freesurferformats::read.fs.surface(fsmesh_file);
 
@@ -14,6 +19,11 @@ test_that("One can Gaussian smooth data on fsaverage3 using the raw mesh.", {
 
 
 test_that("One can Gaussian smooth data that includes NA values.", {
+
+  if(! exists('vcgSmoothPVD', where=asNamespace('Rvcg'), mode='function')) {
+    testthat::skip("The installed Rvcg version does not provide the 'vcgSmoothPVD' function. Please see the haze package installation instructions on the website on how to get the required Rvcg version.");
+  }
+
   fsmesh_file = system.file("extdata", "fsaverage3_mesh_lh_white", package = "haze", mustWork = TRUE);
   mesh = freesurferformats::read.fs.surface(fsmesh_file);
 
@@ -34,7 +44,11 @@ test_that("One can Gaussian smooth data that includes NA values.", {
 
 test_that("Gaussian smoothing of thickness data looks plausible with NA values.", {
   # This test produces 2 figures, look at them.
-  testthat::skip_on_cran();
+  testthat::skip_on_cran()
+
+  if(! exists('vcgSmoothPVD', where=asNamespace('Rvcg'), mode='function')) {
+    testthat::skip("The installed Rvcg version does not provide the 'vcgSmoothPVD' function. Please see the haze package installation instructions on the website on how to get the required Rvcg version.");
+  }
 
 
   if(requireNamespace("fsbrain", quietly = TRUE)) {
