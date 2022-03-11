@@ -15,7 +15,8 @@
 #'
 #' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_NNInterpolate_kdTree.m}
 #'
-#' @export
+#' @keywords internal
+# @export
 nn_interpolate_kdtree <- function(input_coordinates, mesh, input_values) {
 
 }
@@ -27,7 +28,8 @@ nn_interpolate_kdtree <- function(input_coordinates, mesh, input_values) {
 #'
 #' @seealso  \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolate_kdTree.m}
 #'
-#' @export
+#' @keywords internal
+# @export
 linear_interpolate_kdtree <- function(input_coordinates, mesh, input_values) {
 
 }
@@ -41,7 +43,8 @@ linear_interpolate_kdtree <- function(input_coordinates, mesh, input_values) {
 #'
 #' @seealso  \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_findNV_kdTree.m}
 #'
-#' @export
+#' @keywords internal
+# export
 find_nv_kdtree <- function(input_coordinates, mesh) {
 
 }
