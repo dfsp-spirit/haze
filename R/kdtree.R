@@ -18,7 +18,8 @@
 #' @keywords internal
 # @export
 nn_interpolate_kdtree <- function(input_coordinates, mesh, input_values) {
-
+  warning("nn_interpolate_kdtree: NOT IMPLEMENTED YET, returning fake data.");
+  return(rnorm(nrow(mesh$vertices), 5.0, 1.0));
 }
 
 
@@ -31,7 +32,8 @@ nn_interpolate_kdtree <- function(input_coordinates, mesh, input_values) {
 #' @keywords internal
 # @export
 linear_interpolate_kdtree <- function(input_coordinates, mesh, input_values) {
-
+  warning("linear_interpolate_kdtree: NOT IMPLEMENTED YET, returning fake data.");
+  return(rnorm(nrow(mesh$vertices), 5.0, 1.0));
 }
 
 
@@ -46,7 +48,8 @@ linear_interpolate_kdtree <- function(input_coordinates, mesh, input_values) {
 #' @keywords internal
 # export
 find_nv_kdtree <- function(input_coordinates, mesh) {
-
+  warning("find_nv_kdtree: NOT IMPLEMENTED YET, returning fake data.");
+  return(seq.int(nrow(input_coordinates)));
 }
 
 
