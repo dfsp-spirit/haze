@@ -4,14 +4,14 @@
 \alias{linear_interpolate_kdtree}
 \title{Map input values at points in 3D space onto mesh vertices.}
 \usage{
-linear_interpolate_kdtree(input_coordinates, mesh, input_values)
+linear_interpolate_kdtree(query_coordinates, mesh, input_values)
 }
 \arguments{
-\item{input_coordinates}{nx3 numerical matrix of x,y,z coordinates.}
+\item{query_coordinates}{nx3 numerical matrix of x,y,z coordinates.}
 
 \item{mesh}{an fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.}
 
-\item{input_values}{numerical vector, the continuous per-vertex data for the point at the input_coordinates.}
+\item{input_values}{numerical vector, the continuous per-vertex data for the point at the query_coordinates.}
 }
 \description{
 Map input values at points in 3D space onto mesh vertices.

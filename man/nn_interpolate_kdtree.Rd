@@ -4,14 +4,14 @@
 \alias{nn_interpolate_kdtree}
 \title{Return interpolated values of the mesh data at the given query points.}
 \usage{
-nn_interpolate_kdtree(input_coordinates, mesh, input_values)
+nn_interpolate_kdtree(query_coordinates, mesh, input_values)
 }
 \arguments{
-\item{input_coordinates}{nx3 numerical matrix of x,y,z coordinates.}
+\item{query_coordinates}{nx3 numerical matrix of x,y,z coordinates.}
 
 \item{mesh}{an fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.}
 
-\item{input_values}{numerical vector, the continuous per-vertex data for the point at the input_coordinates.}
+\item{input_values}{numerical vector, the continuous per-vertex data for the point at the query_coordinates.}
 }
 \value{
 the interpolated per-vertex data for the mesh given in the \code{mesh} parameter.

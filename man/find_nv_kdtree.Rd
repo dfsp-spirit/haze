@@ -2,20 +2,22 @@
 % Please edit documentation in R/kdtree.R
 \name{find_nv_kdtree}
 \alias{find_nv_kdtree}
-\title{Find nearest mesh vertex for a coordinate using kdtree.}
+\title{Find nearest mesh vertex for query coordinates using kdtree.}
 \usage{
-find_nv_kdtree(input_coordinates, mesh)
+find_nv_kdtree(query_coordinates, mesh, threads = parallel::detectCores())
 }
 \arguments{
-\item{input_coordinates}{nx3 numerical matrix of x,y,z coordinates.}
+\item{query_coordinates}{nx3 numerical matrix of x,y,z coordinates.}
 
 \item{mesh}{an fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.}
+
+\item{threads}{integer, the number of threads to run in parallel.}
 }
 \value{
-integer vector, the \code{n} vertex indices which are closest to the \code{nx3} matrix of input_coordinates.
+named list with keys 'index' and 'distance'. 'index': integer vector, the \code{n} vertex indices which are closest to the \code{nx3} matrix of query_coordinates. 1-based indices for R are returned. 'distance': double vector, the distances to the respective vertices in the 'index' key.
 }
 \description{
-Find nearest mesh vertex for a coordinate using kdtree.
+Find nearest mesh vertex for query coordinates using kdtree.
 }
 \seealso{
 \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_findNV_kdTree.m}
