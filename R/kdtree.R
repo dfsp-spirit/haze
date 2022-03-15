@@ -22,8 +22,8 @@ nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
   if(length(pervertex_data) != nrow(mesh$vertices)) {
     warning(sprintf("The 'pervertex_data' is for %d vertices, but the mesh has %d. Expected identical values.\n",length(pervertex_data), nrow(mesh$vertices)));
   }
-  query_vertices = find_nv_kdtree(query_coordinates, mesh);
-  return(pervertex_data[query_vertices]);
+  res = find_nv_kdtree(query_coordinates, mesh);
+  return(pervertex_data[res$index]);
 }
 
 
@@ -32,11 +32,17 @@ nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #' @inheritParams nn_interpolate_kdtree
 #'
 #' @seealso  \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolate_kdTree.m}
+#' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolateAux.c}
 #'
 #' @keywords internal
 # @export
 linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
-  # TODO: implement
+  mesh = ensure.fs.surface(mesh);
+  if(length(pervertex_data) != nrow(mesh$vertices)) {
+    warning(sprintf("The 'pervertex_data' is for %d vertices, but the mesh has %d. Expected identical values.\n",length(pervertex_data), nrow(mesh$vertices)));
+  }
+  res = find_nv_kdtree(query_coordinates, mesh);
+
 }
 
 
