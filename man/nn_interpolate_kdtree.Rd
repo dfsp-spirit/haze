@@ -2,19 +2,19 @@
 % Please edit documentation in R/kdtree.R
 \name{nn_interpolate_kdtree}
 \alias{nn_interpolate_kdtree}
-\title{Return interpolated values of the mesh data at the given query points.}
+\title{Get per-vertex data at vertices closest to the given query coordinates on the mesh.}
 \usage{
-nn_interpolate_kdtree(query_coordinates, mesh, input_values)
+nn_interpolate_kdtree(query_coordinates, mesh, pervertex_data)
 }
 \arguments{
 \item{query_coordinates}{nx3 numerical matrix of x,y,z coordinates.}
 
 \item{mesh}{an fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.}
 
-\item{input_values}{numerical vector, the continuous per-vertex data for the point at the query_coordinates.}
+\item{pervertex_data}{numerical vector, the continuous per-vertex data for the vertices of the mesh.}
 }
 \value{
-the interpolated per-vertex data for the mesh given in the \code{mesh} parameter.
+the per-vertex data for the vertices closest to the query coordinates.
 }
 \description{
 Return interpolated values of the mesh data at the given query points. For this to make any sense, the meshes must be spherical with identical radius, and only the vertex positions on the sphere differ.

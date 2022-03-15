@@ -19,7 +19,4 @@ named list with keys 'coord' and 'distance'. 'coord': numeric nx3 kartesian coor
 \description{
 Find nearest point on the mesh for query coordinates using kdtree.
 }
-\seealso{
-\code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_findNV_kdTree.m}
-}
 \keyword{internal}

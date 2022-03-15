@@ -1,7 +1,7 @@
 
 
 
-#' @title Return interpolated values of the mesh data at the given query points.
+#' @title Get per-vertex data at vertices closest to the given query coordinates on the mesh.
 #'
 #' @description Return interpolated values of the mesh data at the given query points. For this to make any sense, the meshes must be spherical with identical radius, and only the vertex positions on the sphere differ.
 #'
@@ -9,17 +9,21 @@
 #'
 #' @param mesh an fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.
 #'
-#' @param input_values numerical vector, the continuous per-vertex data for the point at the query_coordinates.
+#' @param pervertex_data numerical vector, the continuous per-vertex data for the vertices of the mesh.
 #'
-#' @return the interpolated per-vertex data for the mesh given in the \code{mesh} parameter.
+#' @return the per-vertex data for the vertices closest to the query coordinates.
 #'
 #' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_NNInterpolate_kdTree.m}
 #'
 #' @keywords internal
 # @export
-nn_interpolate_kdtree <- function(query_coordinates, mesh, input_values) {
-  warning("nn_interpolate_kdtree: NOT IMPLEMENTED YET, returning fake data.");
-  return(rnorm(nrow(mesh$vertices), 5.0, 1.0));
+nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
+  mesh = ensure.fs.surface(mesh);
+  if(length(pervertex_data) != nrow(mesh$vertices)) {
+    warning(sprintf("The 'pervertex_data' is for %d vertices, but the mesh has %d. Expected identical values.\n",length(pervertex_data), nrow(mesh$vertices)));
+  }
+  query_vertices = find_nv_kdtree(query_coordinates, mesh);
+  return(pervertex_data[query_vertices]);
 }
 
 
@@ -31,9 +35,8 @@ nn_interpolate_kdtree <- function(query_coordinates, mesh, input_values) {
 #'
 #' @keywords internal
 # @export
-linear_interpolate_kdtree <- function(query_coordinates, mesh, input_values) {
-  warning("linear_interpolate_kdtree: NOT IMPLEMENTED YET, returning fake data.");
-  return(rnorm(nrow(mesh$vertices), 5.0, 1.0));
+linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
+  # TODO: implement
 }
 
 
@@ -101,8 +104,6 @@ homogenous_to_kartesian <- function(homog) {
 #' @inheritParams find_nv_kdtree
 #'
 #' @return named list with keys 'coord' and 'distance'. 'coord': numeric nx3 kartesian coordinate matrix, the coordinates on the mesh which are closest to the \code{nx3} matrix of query_coordinates. 'distance': double vector, the distances to the respective coordinates in the 'coord' key.
-#'
-#' @seealso  \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_findNV_kdTree.m}
 #'
 #' @keywords internal
 #'
