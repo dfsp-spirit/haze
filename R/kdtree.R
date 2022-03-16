@@ -111,14 +111,19 @@ linear_interpolate_aux <- function(query_coordinates, mesh_vertices, mesh_faces,
   # now, for each query coordinate:
   # -find the face that the coordinate falls into.
   #  * for this, see https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_findFaces.h
-  # - find the vertex of the face that is closest to the query coordinate
+  # - find the vertex of the face that is closest to the query coordinate (passed in as parameter 'query_coords_closest_vertex')
   # -then we retrieve the 3 vertices of the face and their pervertex_data values.
   # -then we interpolate the value at the query_coordinate between the 3 known values/coordinates.
   mesh_fs_surface = list("vertices"=mesh_vertices, "faces"=mesh_faces);
   class(mesh_fs_surface) = c(class(mesh_fs_surface), "fs.surface");
   tmesh = ensure.tmesh3d(mesh_fs_surface);
-  clost = Rvcg::vcgClost(query_coordinates, tmesh);
+  clost = Rvcg::vcgClost(query_coordinates, tmesh); # or use Rvcg::vcgClostKD(), need to benchmark which is faster.
   nearest_face = clost$faceptr;
+
+  # one could project the query coordinate onto the triangle plane, then interpolate within a 2D plane.
+  # See https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterp.h for that approach.
+
+
 
   interp_values = 1;
   nearest_vertex_in_face = 1;
