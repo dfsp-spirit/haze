@@ -99,6 +99,14 @@ linear_interpolate_aux <- function(query_coordinates, mesh_vertices, mesh_faces,
   cat(sprintf("Maximal number of vertex neighbors per vertex (vertex degree) is %d. Maximal number of faces a vertex is part of is %d.\n", max_num_neighbors, max_num_vertex_faces));
 
   stop("TODO: implement me");
+
+
+  # now, for each query coordinate:
+  # -find the face that the coordinate falls into.
+  #  * for this, see https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_findFaces.h
+  # -then we retrieve the 3 vertices of the face and their pervertex_data values.
+  # -then we interpolate the value at the query_coordinate between the 3 known values/coordinates.
+
   interp_values = 1;
   nearest_vertex_in_face = 1;
   nearest_face = 1;
