@@ -104,8 +104,14 @@ linear_interpolate_aux <- function(query_coordinates, mesh_vertices, mesh_faces,
   # now, for each query coordinate:
   # -find the face that the coordinate falls into.
   #  * for this, see https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_findFaces.h
+  # - find the vertex of the face that is closest to the query coordinate
   # -then we retrieve the 3 vertices of the face and their pervertex_data values.
   # -then we interpolate the value at the query_coordinate between the 3 known values/coordinates.
+  mesh_fs_surface = list("vertices"=mesh_vertices, "faces"=mesh_faces);
+  class(mesh_fs_surface) = c(class(mesh_fs_surface), "fs.surface");
+  tmesh = ensure.tmesh3d(mesh_fs_surface);
+  clost = Rvcg::vcgClost(query_coordinates, tmesh);
+  nearest_face = clost$faceptr;
 
   interp_values = 1;
   nearest_vertex_in_face = 1;
