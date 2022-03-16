@@ -122,6 +122,7 @@ linear_interpolate_aux <- function(query_coordinates, mesh_vertices, mesh_faces,
 
   # one could project the query coordinate onto the triangle plane, then interpolate within a 2D plane.
   # See https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterp.h for that approach.
+  # The akima package could be interesting for R: https://cran.r-project.org/web/packages/akima/akima.pdf
 
 
 
