@@ -79,8 +79,15 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #' @keywords internal
 linear_interpolate_aux <- function(query_coordinates, mesh_vertices, mesh_faces, vertex_neighbors, vertex_faces, query_coords_closest_vertex, pervertex_data) {
 
+  if(ncol(mesh_vertices) != 3L) {
+    stop("Parameter 'mesh_vertices' must be an nx3 matrix of Cartesian 3d coordinates: the vertex positions.");
+  }
+  if(ncol(mesh_faces) != 3L) {
+    stop("Parameter 'mesh_faces' must be an nx3 matrix of vertex indices defining triangular faces.");
+  }
+
   if(ncol(query_coordinates) != 3L) {
-    stop("Parameter query_coordinates must be nx3 matrix.");
+    stop("Parameter query_coordinates must be nx3 matrix of Cartesian 3d coordinates.");
   }
   if(length(pervertex_data) != nrow(mesh_vertices)) {
     warning(sprintf("The 'pervertex_data' is for %d vertices, but the mesh has %d. Expected identical values.\n", length(pervertex_data), nrow(mesh_vertices)));
