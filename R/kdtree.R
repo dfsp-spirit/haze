@@ -83,14 +83,14 @@ find_nv_kdtree <- function(query_coordinates, mesh, threads = parallel::detectCo
 }
 
 
-#' @title Convert homogenous coordinates to kartesian coordinates.
+#' @title Convert homogeneous coordinates to Cartesian coordinates.
 #'
 #' @param homog nx4 numeric matrix of input coordinates
 #'
-#' @return nx3 matrix of kartesian coordinates
+#' @return nx3 matrix of Cartesian coordinates
 #'
 #' @keywords internal
-homogenous_to_kartesian <- function(homog) {
+homogeneous_to_cartesian <- function(homog) {
   if(! is.matrix(homog)) {
     stop("Parameter 'homog' must be a matrix.");
   }
@@ -105,16 +105,16 @@ homogenous_to_kartesian <- function(homog) {
 #'
 #' @inheritParams find_nv_kdtree
 #'
-#' @return named list with keys 'coord' and 'distance'. 'coord': numeric nx3 kartesian coordinate matrix, the coordinates on the mesh which are closest to the \code{nx3} matrix of query_coordinates. 'distance': double vector, the distances to the respective coordinates in the 'coord' key.
+#' @return named list with keys 'coord' and 'distance'. 'coord': numeric nx3 Cartesian coordinate matrix, the coordinates on the mesh which are closest to the \code{nx3} matrix of query_coordinates. 'distance': double vector, the distances to the respective coordinates in the 'coord' key.
 #'
 #' @keywords internal
 #'
 #' @importFrom parallel detectCores
 #' @importFrom Rvcg vcgCreateKDtreeFromBarycenters vcgClostOnKDtreeFromBarycenters
-# export
+#' @export
 find_np_kdtree <- function(query_coordinates, mesh, threads = parallel::detectCores()) {
-  warning("find_nv_kdtree: NOT IMPLEMENTED YET, returning fake data.");
-  return(seq.int(nrow(query_coordinates)));
+
+  stop("not implemented yet");
 
   mesh = ensure.fs.surface(mesh);
   if(! freesurferformats::is.fs.surface(mesh)) {
@@ -130,7 +130,7 @@ find_np_kdtree <- function(query_coordinates, mesh, threads = parallel::detectCo
     tmesh = ensure.tmesh3d(mesh);
     kdtreeBary = Rvcg::vcgCreateKDtreeFromBarycenters(tmesh);
     nv_mesh = Rvcg::vcgClostOnKDtreeFromBarycenters(kdtreeBary, query_coordinates, threads=threads)
-    res = list('coord' = homogenous_to_kartesian(t(nv_mesh$vb)), 'distances'=nv_mesh$quality);
+    res = list('coord' = homogeneous_to_cartesian(t(nv_mesh$vb)), 'distances'=nv_mesh$quality);
     return(res);
   } else {
     stop("Parameter 'query_coordinates' must be a matrix.");

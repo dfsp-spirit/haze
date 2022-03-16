@@ -14,7 +14,7 @@ find_np_kdtree(query_coordinates, mesh, threads = parallel::detectCores())
 \item{threads}{integer, the number of threads to run in parallel.}
 }
 \value{
-named list with keys 'coord' and 'distance'. 'coord': numeric nx3 kartesian coordinate matrix, the coordinates on the mesh which are closest to the \code{nx3} matrix of query_coordinates. 'distance': double vector, the distances to the respective coordinates in the 'coord' key.
+named list with keys 'coord' and 'distance'. 'coord': numeric nx3 Cartesian coordinate matrix, the coordinates on the mesh which are closest to the \code{nx3} matrix of query_coordinates. 'distance': double vector, the distances to the respective coordinates in the 'coord' key.
 }
 \description{
 Find nearest point on the mesh for query coordinates using kdtree.
