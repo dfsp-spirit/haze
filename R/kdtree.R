@@ -78,6 +78,26 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #'
 #' @keywords internal
 linear_interpolate_aux <- function(query_coordinates, mesh_vertices, mesh_faces, vertex_neighbors, vertex_faces, query_coords_closest_vertex, pervertex_data) {
+
+  if(ncol(query_coordinates) != 3L) {
+    stop("Parameter query_coordinates must be nx3 matrix.");
+  }
+  if(length(pervertex_data) != nrow(mesh_vertices)) {
+    warning(sprintf("The 'pervertex_data' is for %d vertices, but the mesh has %d. Expected identical values.\n", length(pervertex_data), nrow(mesh_vertices)));
+  }
+  if(length(query_coords_closest_vertex) != nrow(query_coordinates)) {
+    stop(sprintf("Number of query_coordinates (%d) must match number of closest vertices for the query coordinates (%d).\n", nrow(query_coordinates), length(query_coords_closest_vertex)));
+  }
+
+  # TODO: decide whether vertex_neighbors and vertex_faces should be list of vectors or a matrix (with NA entries), and enforce/check it here.
+
+  # Get the maximal neighbor count over all mesh vertices. typically 6 or 7 for triangular meshes.
+  max_num_neighbors = ncol(vertex_neighbors); # for matrix, vertices with less will have NA entries at the end of their row.
+  max_num_neighbors = max(unlist(lapply(vertex_neighbors, length))); # for list.
+  max_num_vertex_faces = ncol(vertex_faces); # for matrix, vertices which are part of less faces will have NA entries at the end of their row.
+  max_num_vertex_faces = max(unlist(lapply(vertex_faces, length))); # for list.
+  cat(sprintf("Maximal number of vertex neighbors per vertex (vertex degree) is %d. Maximal number of faces a vertex is part of is %d.\n", max_num_neighbors, max_num_vertex_faces));
+
   stop("TODO: implement me");
   interp_values = 1;
   nearest_vertex_in_face = 1;
