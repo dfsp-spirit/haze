@@ -89,12 +89,16 @@ find_nv_kdtree <- function(query_coordinates, mesh, threads = parallel::detectCo
 #'
 #' @return nx3 matrix of Cartesian coordinates
 #'
+#' @examples
+#' homog = matrix(c(1,2,3,1,1,2,3,2), ncol=4, byrow=TRUE);
+#' haze:::homogeneous_to_cartesian(homog);
+#'
 #' @keywords internal
 homogeneous_to_cartesian <- function(homog) {
   if(! is.matrix(homog)) {
     stop("Parameter 'homog' must be a matrix.");
   }
-  if(ncol(homog != 4L)) {
+  if(ncol(homog) != 4L) {
     stop("Parameter 'homog' must be a matrix with 4 columns.");
   }
   return(homog[,1:3] / homog[,4]);

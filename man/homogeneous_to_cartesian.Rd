@@ -15,4 +15,9 @@ nx3 matrix of Cartesian coordinates
 \description{
 Convert homogeneous coordinates to Cartesian coordinates.
 }
+\examples{
+homog = matrix(c(1,2,3,1,1,2,3,2), ncol=4, byrow=TRUE);
+haze:::homogeneous_to_cartesian(homog);
+
+}
 \keyword{internal}
