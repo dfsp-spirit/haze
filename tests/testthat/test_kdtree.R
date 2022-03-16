@@ -16,6 +16,7 @@ test_that("One can find the vertices closest to given query coordinates on a mes
   testthat::expect_true(is.matrix(res$distance));
   testthat::expect_true(is.double(res$distance));
   testthat::expect_equal(length(res$distance), 2L);
+  # See the next test for a prove that the reported vertices are really the closest ones.
 })
 
 
