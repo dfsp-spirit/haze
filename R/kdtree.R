@@ -32,6 +32,7 @@ nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #'
 #' @seealso  \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolate_kdTree.m}
 #' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolateAux.c}
+#' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_findFace.m}
 #'
 #' @export
 linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
@@ -39,8 +40,38 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
   if(length(pervertex_data) != nrow(mesh$vertices)) {
     warning(sprintf("The 'pervertex_data' is for %d vertices, but the mesh has %d. Expected identical values.\n",length(pervertex_data), nrow(mesh$vertices)));
   }
-  res = find_nv_kdtree(query_coordinates, mesh);
 
+  res = find_nv_kdtree(query_coordinates, mesh);
+  query_coords_closest_vertex = res$index;
+
+  tmesh = ensure.tmesh3d(mesh);
+  vertex_neighbors = Rvcg::vcgVertexNeighbors(tmesh); # Compute vertex neighborhood of vertices.
+  vertex_faces = Rvcg::vcgVFadj(tmesh);  # Compute all faces the vertices are part of.
+  res_interp = linear_interpolate_aux(query_coordinates, mesh$vertices, mesh$faces, vertex_neighbors, vertex_faces, query_coords_closest_vertex, pervertex_data);
+
+  return(list("interp_values"=res_interp$interp_values, "nearest_vertex_in_face"=res_interp$nearest_vertex_in_face, "nearest_face"=res_interp$nearest_face));
+}
+
+
+#' @title Interpolate mesh per-vertex data at given points.
+#'
+#' @inheritParams nn_interpolate_kdtree
+#'
+#' @param mesh_vertices the vertex coordinates of the mesh that holds the pervertex_data
+#'
+#' @param mesh_faces the faces (as indices into the vertex list) of the mesh that holds the pervertex_data
+#'
+#' @param vertex_neighbors the adjacency list representation of the mesh (for each vertex: the vertices in distance 1 hop along mesh edges)
+#'
+#' @param vertex_faces for each vertex, the list of face indices that the vertex is part of.
+#'
+#' @param query_coords_closest_vertex the closest mesh vertex to the query coords, as computed with \code{find_nv_kdtree}
+#'
+#' @return named list with entries: 'interp_values', the numerical vector of interpolated data at the query_coordinates. 'nearest_vertex_in_face' the nearest vertex in the face that the respective query coordinate falls into, 'nearest_face' the index of the nearest face that the respective query coordinate falls into.
+#'
+#' @keywords internal
+linear_interpolate_aux <- function(query_coordinates, mesh_vertices, mesh_faces, vertex_neighbors, vertex_faces, query_coords_closest_vertex, pervertex_data) {
+  stop("TODO: implement me");
 }
 
 
