@@ -38,4 +38,7 @@ Interpolate mesh per-vertex data at given points.
 \note{
 The query_coordinates must be on the mesh. The mesh must be spherical.
 }
+\seealso{
+\code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolateAux.c}
+}
 \keyword{internal}
