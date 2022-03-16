@@ -34,6 +34,10 @@ nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolateAux.c}
 #' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_findFace.m}
 #'
+#' @note The query_coordinates must be on the mesh. The mesh must be spherical.
+#'
+#' @return named list with entries: 'interp_values', the numerical vector of interpolated data at the query_coordinates. 'nearest_vertex_in_face' the nearest vertex in the face that the respective query coordinate falls into, 'nearest_face' the index of the nearest face that the respective query coordinate falls into.
+#'
 #' @export
 linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
   mesh = ensure.fs.surface(mesh);
@@ -65,7 +69,9 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #'
 #' @param vertex_faces for each vertex, the list of face indices that the vertex is part of.
 #'
-#' @param query_coords_closest_vertex the closest mesh vertex to the query coords, as computed with \code{find_nv_kdtree}
+#' @param query_coords_closest_vertex the closest mesh vertex to the query coords, as computed with \code{find_nv_kdtree}.
+#'
+#' @note The query_coordinates must be on the mesh. The mesh must be spherical.
 #'
 #' @return named list with entries: 'interp_values', the numerical vector of interpolated data at the query_coordinates. 'nearest_vertex_in_face' the nearest vertex in the face that the respective query coordinate falls into, 'nearest_face' the index of the nearest face that the respective query coordinate falls into.
 #'

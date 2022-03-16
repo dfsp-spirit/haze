@@ -25,7 +25,7 @@ linear_interpolate_aux(
 
 \item{vertex_faces}{for each vertex, the list of face indices that the vertex is part of.}
 
-\item{query_coords_closest_vertex}{the closest mesh vertex to the query coords, as computed with \code{find_nv_kdtree}}
+\item{query_coords_closest_vertex}{the closest mesh vertex to the query coords, as computed with \code{find_nv_kdtree}.}
 
 \item{pervertex_data}{numerical vector, the continuous per-vertex data for the vertices of the mesh.}
 }
@@ -34,5 +34,8 @@ named list with entries: 'interp_values', the numerical vector of interpolated d
 }
 \description{
 Interpolate mesh per-vertex data at given points.
+}
+\note{
+The query_coordinates must be on the mesh. The mesh must be spherical.
 }
 \keyword{internal}

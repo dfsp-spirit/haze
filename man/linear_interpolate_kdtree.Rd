@@ -13,8 +13,14 @@ linear_interpolate_kdtree(query_coordinates, mesh, pervertex_data)
 
 \item{pervertex_data}{numerical vector, the continuous per-vertex data for the vertices of the mesh.}
 }
+\value{
+named list with entries: 'interp_values', the numerical vector of interpolated data at the query_coordinates. 'nearest_vertex_in_face' the nearest vertex in the face that the respective query coordinate falls into, 'nearest_face' the index of the nearest face that the respective query coordinate falls into.
+}
 \description{
 Map input values at points in 3D space onto mesh vertices.
+}
+\note{
+The query_coordinates must be on the mesh. The mesh must be spherical.
 }
 \seealso{
 \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolate_kdTree.m}
