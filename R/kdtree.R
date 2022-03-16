@@ -15,8 +15,7 @@
 #'
 #' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_NNInterpolate_kdTree.m}
 #'
-#' @keywords internal
-# @export
+#' @export
 nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
   mesh = ensure.fs.surface(mesh);
   if(length(pervertex_data) != nrow(mesh$vertices)) {
@@ -34,8 +33,7 @@ nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #' @seealso  \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolate_kdTree.m}
 #' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolateAux.c}
 #'
-#' @keywords internal
-# @export
+#' @export
 linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
   mesh = ensure.fs.surface(mesh);
   if(length(pervertex_data) != nrow(mesh$vertices)) {
@@ -60,10 +58,8 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #'
 #' @importFrom parallel detectCores
 #' @importFrom Rvcg vcgCreateKDtreeFromBarycenters vcgSearchKDtree
-# export
+#' @export
 find_nv_kdtree <- function(query_coordinates, mesh, threads = parallel::detectCores()) {
-  warning("find_nv_kdtree: NOT IMPLEMENTED YET, returning fake data.");
-  return(seq.int(nrow(query_coordinates)));
 
   mesh = ensure.fs.surface(mesh);
   if(! freesurferformats::is.fs.surface(mesh)) {
@@ -76,10 +72,10 @@ find_nv_kdtree <- function(query_coordinates, mesh, threads = parallel::detectCo
     if(! is.numeric(query_coordinates)) {
       stop("The matrix 'query_coordinates' must be numeric.");
     }
-    tmesh = ensure.tmesh3d(mesh);
-    kdtreeBary = Rvcg::vcgCreateKDtreeFromBarycenters(tmesh);
-    vcg_res = Rvcg::vcgSearchKDtree(kdtreeBary, query_coordinates, k=1L, threads = threads);
-    res = list('index'=vcg_res$index + 1L, 'distance'=vcg_res$distances);
+    tmesh = haze:::ensure.tmesh3d(mesh);
+    kdtree = Rvcg::vcgCreateKDtree(tmesh);
+    vcg_res = Rvcg::vcgSearchKDtree(kdtree, query_coordinates, k=1L, threads = threads);
+    res = list('index'=vcg_res$index, 'distance'=vcg_res$distance);
     return(res);
   } else {
     stop("Parameter 'query_coordinates' must be a matrix.");

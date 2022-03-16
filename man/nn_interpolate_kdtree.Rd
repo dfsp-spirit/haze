@@ -22,4 +22,3 @@ Return interpolated values of the mesh data at the given query points. For this 
 \seealso{
 \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_NNInterpolate_kdTree.m}
 }
-\keyword{internal}

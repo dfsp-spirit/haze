@@ -18,5 +18,6 @@ Map input values at points in 3D space onto mesh vertices.
 }
 \seealso{
 \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolate_kdTree.m}
+
+\code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolateAux.c}
 }
-\keyword{internal}
