@@ -5,15 +5,17 @@
 #'
 #' @description Return interpolated values of the mesh data at the given query points. For this to make any sense, the meshes must be spherical with identical radius, and only the vertex positions on the sphere differ.
 #'
-#' @param query_coordinates nx3 numerical matrix of x,y,z coordinates.
+#' @param query_coordinates nx3 numerical matrix of x,y,z coordinates. These are typically the vertex positions of a second (spherical!) mesh for that you need per-vertex data (e.g., the \code{fsaverage6} mesh).
 #'
-#' @param mesh an fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.
+#' @param mesh a spherical fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.
 #'
 #' @param pervertex_data numerical vector, the continuous per-vertex data for the vertices of the mesh.
 #'
 #' @return the per-vertex data for the vertices closest to the query coordinates.
 #'
 #' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_NNInterpolate_kdTree.m}
+#'
+#' @note The mesh must be spherical, and the query_coordinates must be located on the mesh sphere.
 #'
 #' @export
 nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
@@ -34,7 +36,7 @@ nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolateAux.c}
 #' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_findFace.m}
 #'
-#' @note The query_coordinates must be on the mesh. The mesh must be spherical.
+#' @note The mesh must be spherical, and the query_coordinates must be located on the mesh sphere.
 #'
 #' @return named list with entries: 'interp_values', the numerical vector of interpolated data at the query_coordinates. 'nearest_vertex_in_face' the nearest vertex in the face that the respective query coordinate falls into, 'nearest_face' the index of the nearest face that the respective query coordinate falls into.
 #'
@@ -60,9 +62,7 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #'
 #' @inheritParams nn_interpolate_kdtree
 #'
-#' @param mesh_vertices the vertex coordinates of the mesh that holds the pervertex_data
-#'
-#' @param mesh_faces the faces (as indices into the vertex list) of the mesh that holds the pervertex_data
+#' @param mesh fs.surface instance, the mesh that holds the pervertex_data
 #'
 #' @param vertex_neighbors the adjacency list representation of the mesh (for each vertex: the vertices in distance 1 hop along mesh edges)
 #'
@@ -76,21 +76,27 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #'
 #' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolateAux.c}
 #'
+#' @note The interpolation is performed by projecting the query coordinate onto the face it falls into, and then interpolating for that location using the 3 values of the vertices of that face.
+#'
+#' @importFrom Rvcg vcgClost
+#'
 #' @keywords internal
-linear_interpolate_aux <- function(query_coordinates, mesh_vertices, mesh_faces, vertex_neighbors, vertex_faces, query_coords_closest_vertex, pervertex_data) {
+linear_interpolate_aux <- function(query_coordinates, mesh, vertex_neighbors, vertex_faces, query_coords_closest_vertex, pervertex_data) {
 
-  if(ncol(mesh_vertices) != 3L) {
-    stop("Parameter 'mesh_vertices' must be an nx3 matrix of Cartesian 3d coordinates: the vertex positions.");
+  mesh = ensure.fs.surface(mesh);
+
+  if(ncol(mesh$vertices) != 3L) {
+    stop("Parameter 'mesh$vertices' must be an nx3 matrix of Cartesian 3d coordinates: the vertex positions.");
   }
-  if(ncol(mesh_faces) != 3L) {
-    stop("Parameter 'mesh_faces' must be an nx3 matrix of vertex indices defining triangular faces.");
+  if(ncol(mesh$faces) != 3L) {
+    stop("Parameter 'mesh$faces' must be an nx3 matrix of vertex indices defining triangular faces.");
   }
 
   if(ncol(query_coordinates) != 3L) {
     stop("Parameter query_coordinates must be nx3 matrix of Cartesian 3d coordinates.");
   }
-  if(length(pervertex_data) != nrow(mesh_vertices)) {
-    warning(sprintf("The 'pervertex_data' is for %d vertices, but the mesh has %d. Expected identical values.\n", length(pervertex_data), nrow(mesh_vertices)));
+  if(length(pervertex_data) != nrow(mesh$vertices)) {
+    warning(sprintf("The 'pervertex_data' is for %d vertices, but the mesh has %d. Expected identical values.\n", length(pervertex_data), nrow(mesh$vertices)));
   }
   if(length(query_coords_closest_vertex) != nrow(query_coordinates)) {
     stop(sprintf("Number of query_coordinates (%d) must match number of closest vertices for the query coordinates (%d).\n", nrow(query_coordinates), length(query_coords_closest_vertex)));
@@ -114,9 +120,7 @@ linear_interpolate_aux <- function(query_coordinates, mesh_vertices, mesh_faces,
   # - find the vertex of the face that is closest to the query coordinate (passed in as parameter 'query_coords_closest_vertex')
   # -then we retrieve the 3 vertices of the face and their pervertex_data values.
   # -then we interpolate the value at the query_coordinate between the 3 known values/coordinates.
-  mesh_fs_surface = list("vertices"=mesh_vertices, "faces"=mesh_faces);
-  class(mesh_fs_surface) = c(class(mesh_fs_surface), "fs.surface");
-  tmesh = ensure.tmesh3d(mesh_fs_surface);
+  tmesh = ensure.tmesh3d(mesh);
   clost = Rvcg::vcgClost(query_coordinates, tmesh); # or use Rvcg::vcgClostKD(), need to benchmark which is faster.
   nearest_face = clost$faceptr;
 
@@ -125,6 +129,8 @@ linear_interpolate_aux <- function(query_coordinates, mesh_vertices, mesh_faces,
   # The akima package could be interesting for R: https://cran.r-project.org/web/packages/akima/akima.pdf
 
 
+  akima::interp
+  interp_values =
 
   interp_values = 1;
   nearest_vertex_in_face = 1;
@@ -145,8 +151,10 @@ linear_interpolate_aux <- function(query_coordinates, mesh_vertices, mesh_faces,
 #'
 #' @keywords internal
 #'
+#' @note @note The mesh must be spherical, and the query_coordinates must be located on the mesh sphere.
+#'
 #' @importFrom parallel detectCores
-#' @importFrom Rvcg vcgCreateKDtreeFromBarycenters vcgSearchKDtree
+#' @importFrom Rvcg vcgCreateKDtree vcgSearchKDtree
 #' @export
 find_nv_kdtree <- function(query_coordinates, mesh, threads = parallel::detectCores()) {
 
