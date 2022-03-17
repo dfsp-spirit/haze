@@ -111,9 +111,6 @@ linear_interpolate_aux <- function(query_coordinates, mesh, vertex_neighbors, ve
   max_num_vertex_faces = max(unlist(lapply(vertex_faces, length))); # for list.
   cat(sprintf("Maximal number of vertex neighbors per vertex (vertex degree) is %d. Maximal number of faces a vertex is part of is %d.\n", max_num_neighbors, max_num_vertex_faces));
 
-  stop("TODO: implement me");
-
-
   # now, for each query coordinate:
   # -find the face that the coordinate falls into.
   #  * for this, see https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_findFaces.h
@@ -129,12 +126,23 @@ linear_interpolate_aux <- function(query_coordinates, mesh, vertex_neighbors, ve
   # The akima package could be interesting for R: https://cran.r-project.org/web/packages/akima/akima.pdf
 
 
-  akima::interp
-  interp_values =
+  # TODO: project z exactly onto the xy-plane and rotate coord system to make triangle lie in the xy-plane.
+  nq = nrow(query_coordinates);
+  if(nq < 1L) {
+    stop("Parameter 'query_coordinates' must contain at least one x,y,z row.");
+  }
 
-  interp_values = 1;
-  nearest_vertex_in_face = 1;
-  nearest_face = 1;
+  interp_values = rep(0.0, nq); # gets filled below
+
+  for(row_idx in seq.int(nq)) {
+    qc = query_coordinates[row_idx, ];
+    akima_res = akima::interp(x=qc[1], y=qc[2], z=pervertex_data[row_idx])
+    cur_interp_value = akima_res$blah;
+
+  }
+
+
+  nearest_vertex_in_face = query_coords_closest_vertex; # this currently is the vertex index (global, in the mesh). Should we compute and return the index in the face (1,2, or 3L) instead?
   return(list("interp_values"=interp_values, "nearest_vertex_in_face"=nearest_vertex_in_face, "nearest_face"=nearest_face));
 }
 
