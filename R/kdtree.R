@@ -127,6 +127,7 @@ linear_interpolate_aux <- function(query_coordinates, mesh, vertex_neighbors, ve
 
 
   # TODO: project z exactly onto the xy-plane and rotate coord system to make triangle lie in the xy-plane.
+  # see https://math.stackexchange.com/questions/856666/how-can-i-transform-a-3d-triangle-to-xy-plane
   nq = nrow(query_coordinates);
   if(nq < 1L) {
     stop("Parameter 'query_coordinates' must contain at least one x,y,z row.");
@@ -136,9 +137,9 @@ linear_interpolate_aux <- function(query_coordinates, mesh, vertex_neighbors, ve
 
   for(row_idx in seq.int(nq)) {
     qc = query_coordinates[row_idx, ];
-    akima_res = akima::interp(x=qc[1], y=qc[2], z=pervertex_data[row_idx])
+    akima_res = akima::interp(x=qc[1], y=qc[2], z=pervertex_data[row_idx]); # rubbish
     cur_interp_value = akima_res$blah;
-
+    interp_values[row_idx] = cur_interp_value;
   }
 
 
