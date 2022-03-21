@@ -39,3 +39,5 @@ test_that("One can retrieve per-vertex data for mesh vertices closest to query c
   testthat::expect_equal(idata[2], pervertex_data[source_vertices[2]]);
   testthat::expect_equal(idata[3], pervertex_data[source_vertices[3]]);
 })
+
+
