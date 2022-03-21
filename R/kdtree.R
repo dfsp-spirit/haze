@@ -98,6 +98,7 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 
   interp_values = rep(0.0, nq); # Allocation, gets filled below.
 
+  # The current approach uses inverse distance weighted (IWD) interpolation.
   for(row_idx in seq.int(nq)) {
     qc = query_coordinates[row_idx, ];
     #closest_vertex_in_closest_face_local_idx = which(nearest_face_vertices[row_idx, ] == query_coords_closest_vertex[row_idx]); # 1,2 or 3
