@@ -7,9 +7,9 @@
 linear_interpolate_kdtree(query_coordinates, mesh, pervertex_data)
 }
 \arguments{
-\item{query_coordinates}{nx3 numerical matrix of x,y,z coordinates.}
+\item{query_coordinates}{nx3 numerical matrix of x,y,z coordinates. These are typically the vertex positions of a second (spherical!) mesh for that you need per-vertex data (e.g., the \code{fsaverage6} mesh).}
 
-\item{mesh}{an fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.}
+\item{mesh}{a spherical fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.}
 
 \item{pervertex_data}{numerical vector, the continuous per-vertex data for the vertices of the mesh.}
 }
@@ -20,7 +20,7 @@ named list with entries: 'interp_values', the numerical vector of interpolated d
 Map input values at points in 3D space onto mesh vertices.
 }
 \note{
-The query_coordinates must be on the mesh. The mesh must be spherical.
+The mesh must be spherical, and the query_coordinates must be located on the mesh sphere.
 }
 \seealso{
 \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolate_kdTree.m}

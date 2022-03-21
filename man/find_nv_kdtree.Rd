@@ -7,9 +7,9 @@
 find_nv_kdtree(query_coordinates, mesh, threads = parallel::detectCores())
 }
 \arguments{
-\item{query_coordinates}{nx3 numerical matrix of x,y,z coordinates.}
+\item{query_coordinates}{nx3 numerical matrix of x,y,z coordinates. These are typically the vertex positions of a second (spherical!) mesh for that you need per-vertex data (e.g., the \code{fsaverage6} mesh).}
 
-\item{mesh}{an fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.}
+\item{mesh}{a spherical fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.}
 
 \item{threads}{integer, the number of threads to run in parallel.}
 }
@@ -18,6 +18,9 @@ named list with keys 'index' and 'distance'. 'index': integer vector, the \code{
 }
 \description{
 Find nearest mesh vertex for query coordinates using kdtree.
+}
+\note{
+@note The mesh must be spherical, and the query_coordinates must be located on the mesh sphere.
 }
 \seealso{
 \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_findNV_kdTree.m}

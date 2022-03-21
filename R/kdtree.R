@@ -99,6 +99,7 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
   interp_values = rep(0.0, nq); # Allocation, gets filled below.
 
   # The current approach uses inverse distance weighted (IWD) interpolation.
+  iwd_beta = 2.0; # beta parameter for IWD
   for(row_idx in seq.int(nq)) {
     qc = query_coordinates[row_idx, ];
     #closest_vertex_in_closest_face_local_idx = which(nearest_face_vertices[row_idx, ] == query_coords_closest_vertex[row_idx]); # 1,2 or 3
@@ -110,7 +111,8 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
     rel_dist = c(dist_query_to_v1, dist_query_to_v2, dist_query_to_v3) / total_dist;
     # see https://rspatial.org/raster/analysis/4-interpolation.html and
     # https://www.geo.fu-berlin.de/en/v/soga/Geodata-analysis/geostatistics/Inverse-Distance-Weighting/index.html
-    interp_values[row_idx] = cur_interp_value;
+    weights = rel_dist ** - iwd_beta;
+    interp_values[row_idx] = sum(weights*pervertex_data[nearest_face_vertices[row_idx,]])/ sum(weights);
   }
 
 

@@ -7,9 +7,9 @@
 nn_interpolate_kdtree(query_coordinates, mesh, pervertex_data)
 }
 \arguments{
-\item{query_coordinates}{nx3 numerical matrix of x,y,z coordinates.}
+\item{query_coordinates}{nx3 numerical matrix of x,y,z coordinates. These are typically the vertex positions of a second (spherical!) mesh for that you need per-vertex data (e.g., the \code{fsaverage6} mesh).}
 
-\item{mesh}{an fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.}
+\item{mesh}{a spherical fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.}
 
 \item{pervertex_data}{numerical vector, the continuous per-vertex data for the vertices of the mesh.}
 }
@@ -18,6 +18,9 @@ the per-vertex data for the vertices closest to the query coordinates.
 }
 \description{
 Return interpolated values of the mesh data at the given query points. For this to make any sense, the meshes must be spherical with identical radius, and only the vertex positions on the sphere differ.
+}
+\note{
+The mesh must be spherical, and the query_coordinates must be located on the mesh sphere.
 }
 \seealso{
 \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_NNInterpolate_kdTree.m}
