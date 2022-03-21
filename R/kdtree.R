@@ -60,16 +60,16 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
     stop(sprintf("Number of query_coordinates (%d) must match number of closest vertices for the query coordinates (%d).\n", nrow(query_coordinates), length(query_coords_closest_vertex)));
   }
 
-  tmesh = ensure.tmesh3d(mesh);
+  tmesh = haze:::ensure.tmesh3d(mesh);
   vertex_neighbors = Rvcg::vcgVertexNeighbors(tmesh); # Compute vertex neighborhood of vertices.
   vertex_faces = Rvcg::vcgVFadj(tmesh);  # Compute all faces the vertices are part of.
 
   # TODO: decide whether vertex_neighbors and vertex_faces should be list of vectors or a matrix (with NA entries), and enforce/check it here.
 
   # Get the maximal neighbor count over all mesh vertices. typically 6 or 7 for triangular meshes.
-  max_num_neighbors = ncol(vertex_neighbors); # for matrix, vertices with less will have NA entries at the end of their row.
+  #max_num_neighbors = ncol(vertex_neighbors); # for matrix, vertices with less will have NA entries at the end of their row.
   max_num_neighbors = max(unlist(lapply(vertex_neighbors, length))); # for list.
-  max_num_vertex_faces = ncol(vertex_faces); # for matrix, vertices which are part of less faces will have NA entries at the end of their row.
+  #max_num_vertex_faces = ncol(vertex_faces); # for matrix, vertices which are part of less faces will have NA entries at the end of their row.
   max_num_vertex_faces = max(unlist(lapply(vertex_faces, length))); # for list.
   cat(sprintf("Maximal number of vertex neighbors per vertex (vertex degree) is %d. Maximal number of faces a vertex is part of is %d.\n", max_num_neighbors, max_num_vertex_faces));
 
@@ -79,9 +79,10 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
   # - find the vertex of the face that is closest to the query coordinate (passed in as parameter 'query_coords_closest_vertex')
   # -then we retrieve the 3 vertices of the face and their pervertex_data values.
   # -then we interpolate the value at the query_coordinate between the 3 known values/coordinates.
-  tmesh = ensure.tmesh3d(mesh);
+  tmesh = haze:::ensure.tmesh3d(mesh);
   clost = Rvcg::vcgClost(query_coordinates, tmesh); # or use Rvcg::vcgClostKD(), need to benchmark which is faster.
-  nearest_face = clost$faceptr;
+  nearest_face = clost$faceptr; # vector, for each query coordinate the (index of the) closest face.
+  nearest_face_vertices = mesh$faces[nearest_face, ]; # nx3 int matrix, the vertex indices (of verts forming the closest face).
 
   # one could project the query coordinate onto the triangle plane, then interpolate within a 2D plane.
   # See https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterp.h for that approach.
@@ -95,12 +96,18 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
     stop("Parameter 'query_coordinates' must contain at least one x,y,z row.");
   }
 
-  interp_values = rep(0.0, nq); # gets filled below
+  interp_values = rep(0.0, nq); # Allocation, gets filled below.
 
   for(row_idx in seq.int(nq)) {
     qc = query_coordinates[row_idx, ];
-    akima_res = akima::interp(x=qc[1], y=qc[2], z=pervertex_data[row_idx]); # rubbish
-    cur_interp_value = akima_res$blah;
+    #closest_vertex_in_closest_face_local_idx = which(nearest_face_vertices[row_idx, ] == query_coords_closest_vertex[row_idx]); # 1,2 or 3
+    dist_query_to_v1 = dist(rbind(qc, mesh$vertices[nearest_face_vertices[row_idx,],1]));
+    dist_query_to_v2 = dist(rbind(qc, mesh$vertices[nearest_face_vertices[row_idx,],2]));
+    dist_query_to_v3 = dist(rbind(qc, mesh$vertices[nearest_face_vertices[row_idx,],3]));
+
+    total_dist = sum(dist_query_to_v1, dist_query_to_v2, dist_query_to_v3);
+    rel_dist = c(dist_query_to_v1, dist_query_to_v2, dist_query_to_v3) / total_dist;
+    # see https://rspatial.org/raster/analysis/4-interpolation.html
     interp_values[row_idx] = cur_interp_value;
   }
 
