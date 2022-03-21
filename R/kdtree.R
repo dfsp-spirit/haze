@@ -107,7 +107,8 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 
     total_dist = sum(dist_query_to_v1, dist_query_to_v2, dist_query_to_v3);
     rel_dist = c(dist_query_to_v1, dist_query_to_v2, dist_query_to_v3) / total_dist;
-    # see https://rspatial.org/raster/analysis/4-interpolation.html
+    # see https://rspatial.org/raster/analysis/4-interpolation.html and
+    # https://www.geo.fu-berlin.de/en/v/soga/Geodata-analysis/geostatistics/Inverse-Distance-Weighting/index.html
     interp_values[row_idx] = cur_interp_value;
   }
 
