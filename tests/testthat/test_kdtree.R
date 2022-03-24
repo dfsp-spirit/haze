@@ -56,7 +56,7 @@ testthat::test_that("One can map per-vertex data between spherical meshes.", {
 
   testthat::expect_true(is.vector(dest_pervertex_data));
   testthat::expect_true(is.double(dest_pervertex_data));
-  testthat::expect_equal(length(dest_pervertex_data), length(source_pervertex_data));
+  testthat::expect_equal(length(dest_pervertex_data), nrow(dest_mesh$vertices));
 })
 
 
