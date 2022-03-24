@@ -40,6 +40,8 @@ nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #'
 #' @return named list with entries: 'interp_values', the numerical vector of interpolated data at the query_coordinates. 'nearest_vertex_in_face' the nearest vertex in the face that the respective query coordinate falls into, 'nearest_face' the index of the nearest face that the respective query coordinate falls into.
 #'
+#' @importFrom stats dist
+#'
 #' @export
 linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
   mesh = ensure.fs.surface(mesh);
@@ -103,9 +105,9 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
   for(row_idx in seq.int(nq)) {
     qc = query_coordinates[row_idx, ];
     #closest_vertex_in_closest_face_local_idx = which(nearest_face_vertices[row_idx, ] == query_coords_closest_vertex[row_idx]); # 1,2 or 3
-    dist_query_to_v1 = dist(rbind(qc, mesh$vertices[nearest_face_vertices[row_idx,],1]));
-    dist_query_to_v2 = dist(rbind(qc, mesh$vertices[nearest_face_vertices[row_idx,],2]));
-    dist_query_to_v3 = dist(rbind(qc, mesh$vertices[nearest_face_vertices[row_idx,],3]));
+    dist_query_to_v1 = stats::dist(rbind(qc, mesh$vertices[nearest_face_vertices[row_idx,],1]));
+    dist_query_to_v2 = stats::dist(rbind(qc, mesh$vertices[nearest_face_vertices[row_idx,],2]));
+    dist_query_to_v3 = stats::dist(rbind(qc, mesh$vertices[nearest_face_vertices[row_idx,],3]));
 
     total_dist = sum(dist_query_to_v1, dist_query_to_v2, dist_query_to_v3);
     rel_dist = c(dist_query_to_v1, dist_query_to_v2, dist_query_to_v3) / total_dist;

@@ -1,5 +1,5 @@
 
-test_that("One can find the vertices closest to given query coordinates on a mesh.", {
+testthat::test_that("One can find the vertices closest to given query coordinates on a mesh.", {
   fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
   mesh = freesurferformats::read.fs.surface(fsmesh_file);
 
@@ -20,7 +20,7 @@ test_that("One can find the vertices closest to given query coordinates on a mes
 })
 
 
-test_that("One can retrieve per-vertex data for mesh vertices closest to query coordinates.", {
+testthat::test_that("One can retrieve per-vertex data for mesh vertices closest to query coordinates.", {
   fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
   mesh = freesurferformats::read.fs.surface(fsmesh_file);
 
@@ -39,5 +39,25 @@ test_that("One can retrieve per-vertex data for mesh vertices closest to query c
   testthat::expect_equal(idata[2], pervertex_data[source_vertices[2]]);
   testthat::expect_equal(idata[3], pervertex_data[source_vertices[3]]);
 })
+
+
+testthat::test_that("One can map per-vertex data between spherical meshes.", {
+  source_mesh_file = system.file("extdata", "fsaverage_mesh_lh_sphere", package = "haze", mustWork = TRUE);
+  dest_mesh_file = system.file("extdata", "fsaverage6_mesh_lh_sphere", package = "haze", mustWork = TRUE);
+  source_data_file = system.file("extdata", "fsaverage_lh_thickness", package = "haze", mustWork = TRUE);
+
+  source_mesh = freesurferformats::read.fs.surface(source_mesh_file);
+  source_pervertex_data = freesurferformats::read.fs.morph(source_data_file); # for source mesh
+  dest_mesh = freesurferformats::read.fs.surface(dest_mesh_file);
+
+
+  interp_res = linear_interpolate_kdtree(dest_mesh$vertices, source_mesh, source_pervertex_data);
+  dest_pervertex_data = interp_res$interp_values;
+
+  testthat::expect_true(is.vector(dest_pervertex_data));
+  testthat::expect_true(is.double(dest_pervertex_data));
+  testthat::expect_equal(length(dest_pervertex_data), length(source_pervertex_data));
+})
+
 
 
