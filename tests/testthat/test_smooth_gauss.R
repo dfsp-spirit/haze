@@ -1,6 +1,6 @@
 
 
-test_that("One can Gaussian smooth data on fsaverage3 using the raw mesh.", {
+testthat::test_that("One can Gaussian smooth data on fsaverage3 using the raw mesh.", {
 
   if(! exists('vcgSmoothPVD', where=asNamespace('Rvcg'), mode='function')) {
     testthat::skip("The installed Rvcg version does not provide the 'vcgSmoothPVD' function. Please see the haze package installation instructions on the website on how to get the required Rvcg version.");
@@ -18,7 +18,7 @@ test_that("One can Gaussian smooth data on fsaverage3 using the raw mesh.", {
 })
 
 
-test_that("One can Gaussian smooth data that includes NA values.", {
+testthat::test_that("One can Gaussian smooth data that includes NA values.", {
 
   if(! exists('vcgSmoothPVD', where=asNamespace('Rvcg'), mode='function')) {
     testthat::skip("The installed Rvcg version does not provide the 'vcgSmoothPVD' function. Please see the haze package installation instructions on the website on how to get the required Rvcg version.");
@@ -42,7 +42,7 @@ test_that("One can Gaussian smooth data that includes NA values.", {
 })
 
 
-test_that("Gaussian smoothing of thickness data looks plausible with NA values.", {
+testthat::test_that("Gaussian smoothing of thickness data looks plausible with NA values.", {
   # This test produces 2 figures, look at them.
   testthat::skip_on_cran()
 

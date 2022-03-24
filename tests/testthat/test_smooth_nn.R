@@ -1,5 +1,5 @@
 
-test_that("One can NN-smooth data on fsaverage6 using pre-computed adjacency.", {
+testthat::test_that("One can NN-smooth data on fsaverage6 using pre-computed adjacency.", {
   vvfile = system.file("extdata", "fsaverage6_lh_white_meshdist_edge_1.vv", package = "haze", mustWork = TRUE);
   vv = read.vv(vvfile);
 
@@ -12,7 +12,7 @@ test_that("One can NN-smooth data on fsaverage6 using pre-computed adjacency.", 
 })
 
 
-test_that("One can NN-smooth data on fsaverage using the raw mesh.", {
+testthat::test_that("One can NN-smooth data on fsaverage using the raw mesh.", {
   fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
   mesh = freesurferformats::read.fs.surface(fsmesh_file);
 
@@ -28,7 +28,7 @@ test_that("One can NN-smooth data on fsaverage using the raw mesh.", {
 })
 
 
-test_that("One can compute mesh adjacency and re-use it for NN smoothing.", {
+testthat::test_that("One can compute mesh adjacency and re-use it for NN smoothing.", {
   fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
 
   mesh_adj = mesh.adj(fsmesh_file, k = 1L);
@@ -48,7 +48,7 @@ test_that("One can compute mesh adjacency and re-use it for NN smoothing.", {
 })
 
 
-test_that("NN Smoothing of thickness data looks plausible.", {
+testthat::test_that("NN Smoothing of thickness data looks plausible.", {
   # This test produces 2 figures, look at them.
   testthat::skip_on_cran();
 
@@ -73,7 +73,7 @@ test_that("NN Smoothing of thickness data looks plausible.", {
 })
 
 
-test_that("Ignoring NA values in the data works as expected with NN smoothing.", {
+testthat::test_that("Ignoring NA values in the data works as expected with NN smoothing.", {
   testthat::skip_on_cran();
   # This test produces 2 figures, look at them.
 
@@ -106,7 +106,7 @@ test_that("Ignoring NA values in the data works as expected with NN smoothing.",
 })
 
 
-test_that("One can smooth several overlays in parallel on several CPU cores with matrix input.", {
+testthat::test_that("One can smooth several overlays in parallel on several CPU cores with matrix input.", {
   fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
   testthat::skip_on_os("windows"); # mclapply under Windows only supports 1 core
 
@@ -137,7 +137,7 @@ test_that("One can smooth several overlays in parallel on several CPU cores with
 })
 
 
-test_that("One can smooth several overlays in parallel on several CPU cores with data.frame input.", {
+testthat::test_that("One can smooth several overlays in parallel on several CPU cores with data.frame input.", {
   fsmesh_file = system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE);
   testthat::skip_on_os("windows"); # mclapply under Windows only supports 1 core
   mesh_adj = mesh.adj(fsmesh_file, k = 1L);

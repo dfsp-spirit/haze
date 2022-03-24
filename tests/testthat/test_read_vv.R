@@ -1,5 +1,5 @@
 
-test_that("The demo integer vv file can be read.", {
+testthat::test_that("The demo integer vv file can be read.", {
   vvfile = system.file("extdata", "fsaverage6_lh_white_meshdist_edge_1.vv", package = "haze", mustWork = TRUE);
   vv = read.vv(vvfile);
 
