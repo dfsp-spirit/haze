@@ -41,6 +41,9 @@ testthat::test_that("One can retrieve per-vertex data for mesh vertices closest 
 })
 
 
+# This test shows how one could map data from one subject to another. The prerequisite is that
+# you have spherical, aligned meshes for both subjects. This is the case if you have run
+# FreeSurfer's reconall on the subjects: use the files <subject>/surf/lh.sphere and rh.sphere.
 testthat::test_that("One can map per-vertex data between spherical meshes.", {
   source_mesh_file = system.file("extdata", "fsaverage_mesh_lh_sphere", package = "haze", mustWork = TRUE);
   dest_mesh_file = system.file("extdata", "fsaverage6_mesh_lh_sphere", package = "haze", mustWork = TRUE);
@@ -57,6 +60,14 @@ testthat::test_that("One can map per-vertex data between spherical meshes.", {
   testthat::expect_true(is.vector(dest_pervertex_data));
   testthat::expect_true(is.double(dest_pervertex_data));
   testthat::expect_equal(length(dest_pervertex_data), nrow(dest_mesh$vertices));
+
+  # The tests above do not really show that the mapped data makes sense. It's hard to test that,
+  # but it is very easy to see it. Here is how you can check:
+  do_plot = FALSE;
+  if(do_plot) {
+    fsbrain::vis.fs.surface(source_mesh, per_vertex_data = source_pervertex_data);
+    fsbrain::vis.fs.surface(dest_mesh, per_vertex_data = dest_pervertex_data);
+  }
 })
 
 
