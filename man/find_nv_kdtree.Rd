@@ -9,7 +9,7 @@ find_nv_kdtree(query_coordinates, mesh, threads = parallel::detectCores())
 \arguments{
 \item{query_coordinates}{nx3 numerical matrix of x,y,z coordinates. These are typically the vertex positions of a second (spherical!) mesh for that you need per-vertex data (e.g., the \code{fsaverage6} mesh).}
 
-\item{mesh}{a spherical fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.}
+\item{mesh}{fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} or \code{\link[fsbrain]{subject.surface}} to get one, or turn an \code{rgl} \code{tmesh} into one with \code{\link[fsbrain]{tmesh3d.to.fs.surface}}.}
 
 \item{threads}{integer, the number of threads to run in parallel.}
 }

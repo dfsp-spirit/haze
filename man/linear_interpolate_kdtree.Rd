@@ -4,28 +4,28 @@
 \alias{linear_interpolate_kdtree}
 \title{Map input values at points in 3D space onto mesh vertices.}
 \usage{
-linear_interpolate_kdtree(query_coordinates, mesh, pervertex_data)
+linear_interpolate_kdtree(
+  query_coordinates,
+  mesh,
+  pervertex_data,
+  iwd_beta = 2
+)
 }
 \arguments{
 \item{query_coordinates}{nx3 numerical matrix of x,y,z coordinates. These are typically the vertex positions of a second (spherical!) mesh for that you need per-vertex data (e.g., the \code{fsaverage6} mesh).}
 
-\item{mesh}{a spherical fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.}
+\item{mesh}{fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} or \code{\link[fsbrain]{subject.surface}} to get one, or turn an \code{rgl} \code{tmesh} into one with \code{\link[fsbrain]{tmesh3d.to.fs.surface}}.}
 
 \item{pervertex_data}{numerical vector, the continuous per-vertex data for the vertices of the mesh.}
+
+\item{iwd_beta}{scalar double, the \code{beta} parameter for the inverse distance weight interpolation with the triangle. See details.}
 }
 \value{
 named list with entries: 'interp_values', the numerical vector of interpolated data at the query_coordinates. 'nearest_vertex_in_face' the nearest vertex in the face that the respective query coordinate falls into, 'nearest_face' the index of the nearest face that the respective query coordinate falls into.
 }
 \description{
-Map input values at points in 3D space onto mesh vertices.
+This method uses inverse distance weight interpolation within a triangle. First, the face of the \code{mesh} that the \code{query_coordinate} falls into is determined. Then results in 3 vertices with respective per-vertex data, and a query coordinate. We then compute the distance to all 3 vertices, and perform inverse distance weight interpolation with a beta setting defined by parameter \code{iwd_beta}.
 }
 \note{
-The mesh must be spherical, and the query_coordinates must be located on the mesh sphere.
-}
-\seealso{
-\code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolate_kdTree.m}
-
-\code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolateAux.c}
-
-\code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_findFace.m}
+The mesh must be spherical, and the \code{query_coordinates} must also be located on the mesh sphere.
 }

@@ -3,19 +3,15 @@
 
 #' @title Get per-vertex data at vertices closest to the given query coordinates on the mesh.
 #'
-#' @description Return interpolated values of the mesh data at the given query points. For this to make any sense, the meshes must be spherical with identical radius, and only the vertex positions on the sphere differ.
+#' @description Return per-vertex data at the vertices closest to the given query points.
 #'
 #' @param query_coordinates nx3 numerical matrix of x,y,z coordinates. These are typically the vertex positions of a second (spherical!) mesh for that you need per-vertex data (e.g., the \code{fsaverage6} mesh).
 #'
-#' @param mesh a spherical fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} to get one.
+#' @param mesh fs.surface instance, see \code{\link[freesurferformats]{read.fs.surface}} or \code{\link[fsbrain]{subject.surface}} to get one, or turn an \code{rgl} \code{tmesh} into one with \code{\link[fsbrain]{tmesh3d.to.fs.surface}}.
 #'
 #' @param pervertex_data numerical vector, the continuous per-vertex data for the vertices of the mesh.
 #'
 #' @return the per-vertex data for the vertices closest to the query coordinates.
-#'
-#' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_NNInterpolate_kdTree.m}
-#'
-#' @note The mesh must be spherical, and the query_coordinates must be located on the mesh sphere.
 #'
 #' @export
 nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
@@ -32,18 +28,18 @@ nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #'
 #' @inheritParams nn_interpolate_kdtree
 #'
-#' @seealso  \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolate_kdTree.m}
-#' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterpolateAux.c}
-#' @seealso \code{https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_findFace.m}
+#' @description This method uses inverse distance weight interpolation within a triangle. First, the face of the \code{mesh} that the \code{query_coordinate} falls into is determined. Then results in 3 vertices with respective per-vertex data, and a query coordinate. We then compute the distance to all 3 vertices, and perform inverse distance weight interpolation with a beta setting defined by parameter \code{iwd_beta}.
 #'
-#' @note The mesh must be spherical, and the query_coordinates must be located on the mesh sphere.
+#' @param iwd_beta scalar double, the \code{beta} parameter for the inverse distance weight interpolation with the triangle. See details.
+#'
+#' @note The mesh must be spherical, and the \code{query_coordinates} must also be located on the mesh sphere.
 #'
 #' @return named list with entries: 'interp_values', the numerical vector of interpolated data at the query_coordinates. 'nearest_vertex_in_face' the nearest vertex in the face that the respective query coordinate falls into, 'nearest_face' the index of the nearest face that the respective query coordinate falls into.
 #'
 #' @importFrom stats dist
 #'
 #' @export
-linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
+linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data, iwd_beta = 2.0) {
   mesh = ensure.fs.surface(mesh);
   if(length(pervertex_data) != nrow(mesh$vertices)) {
     warning(sprintf("The 'pervertex_data' is for %d vertices, but the mesh has %d. Expected identical values.\n",length(pervertex_data), nrow(mesh$vertices)));
@@ -62,18 +58,17 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
     stop(sprintf("Number of query_coordinates (%d) must match number of closest vertices for the query coordinates (%d).\n", nrow(query_coordinates), length(query_coords_closest_vertex)));
   }
 
-  tmesh = haze:::ensure.tmesh3d(mesh);
-  vertex_neighbors = Rvcg::vcgVertexNeighbors(tmesh); # Compute vertex neighborhood of vertices.
-  vertex_faces = Rvcg::vcgVFadj(tmesh);  # Compute all faces the vertices are part of.
+  #tmesh = haze:::ensure.tmesh3d(mesh);
+  #vertex_neighbors = Rvcg::vcgVertexNeighbors(tmesh); # Compute vertex neighborhood of vertices.
+  #vertex_faces = Rvcg::vcgVFadj(tmesh);  # Compute all faces the vertices are part of.
 
   # TODO: decide whether vertex_neighbors and vertex_faces should be list of vectors or a matrix (with NA entries), and enforce/check it here.
-
   # Get the maximal neighbor count over all mesh vertices. typically 6 or 7 for triangular meshes.
   #max_num_neighbors = ncol(vertex_neighbors); # for matrix, vertices with less will have NA entries at the end of their row.
-  max_num_neighbors = max(unlist(lapply(vertex_neighbors, length))); # for list.
+  #max_num_neighbors = max(unlist(lapply(vertex_neighbors, length))); # for list.
   #max_num_vertex_faces = ncol(vertex_faces); # for matrix, vertices which are part of less faces will have NA entries at the end of their row.
-  max_num_vertex_faces = max(unlist(lapply(vertex_faces, length))); # for list.
-  cat(sprintf("Maximal number of vertex neighbors per vertex (vertex degree) is %d. Maximal number of faces a vertex is part of is %d.\n", max_num_neighbors, max_num_vertex_faces));
+  #max_num_vertex_faces = max(unlist(lapply(vertex_faces, length))); # for list.
+  #cat(sprintf("Maximal number of vertex neighbors per vertex (vertex degree) is %d. Maximal number of faces a vertex is part of is %d.\n", max_num_neighbors, max_num_vertex_faces));
 
   # now, for each query coordinate:
   # -find the face that the coordinate falls into.
@@ -86,13 +81,11 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
   nearest_face = clost$faceptr; # vector, for each query coordinate the (index of the) closest face.
   nearest_face_vertices = mesh$faces[nearest_face, ]; # nx3 int matrix, the vertex indices (of verts forming the closest face).
 
-  # one could project the query coordinate onto the triangle plane, then interpolate within a 2D plane.
+  # One could project the query coordinate onto the triangle plane, then interpolate within a 2D plane.
+  # This may give better results if the query points are not exactly on the sphere, but in our case, that should not be needed.
   # See https://github.com/ThomasYeoLab/CBIG/blob/master/external_packages/SD/SDv1.5.1-svn593/BasicTools/MARS_linearInterp.h for that approach.
-  # The akima package could be interesting for R: https://cran.r-project.org/web/packages/akima/akima.pdf
+  # To project z exactly onto the xy-plane, see also https://math.stackexchange.com/questions/856666/how-can-i-transform-a-3d-triangle-to-xy-plane.
 
-
-  # TODO: project z exactly onto the xy-plane and rotate coord system to make triangle lie in the xy-plane.
-  # see https://math.stackexchange.com/questions/856666/how-can-i-transform-a-3d-triangle-to-xy-plane
   nq = nrow(query_coordinates);
   if(nq < 1L) {
     stop("Parameter 'query_coordinates' must contain at least one x,y,z row.");
@@ -101,7 +94,7 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
   interp_values = rep(0.0, nq); # Allocation, gets filled below.
 
   # The current approach uses inverse distance weighted (IWD) interpolation.
-  iwd_beta = 2.0; # beta parameter for IWD
+  # beta parameter for IWD
   for(row_idx in seq.int(nq)) {
     qc = query_coordinates[row_idx, ];
     #closest_vertex_in_closest_face_local_idx = which(nearest_face_vertices[row_idx, ] == query_coords_closest_vertex[row_idx]); # 1,2 or 3
