@@ -24,7 +24,7 @@ nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 }
 
 
-#' @title Map input values at points in 3D space onto mesh vertices.
+#' @title Interpolate per-vertex data at the query points. Or map per-vertex data between subjects.
 #'
 #' @inheritParams nn_interpolate_kdtree
 #'
@@ -58,7 +58,7 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data, i
     stop(sprintf("Number of query_coordinates (%d) must match number of closest vertices for the query coordinates (%d).\n", nrow(query_coordinates), length(query_coords_closest_vertex)));
   }
 
-  #tmesh = haze:::ensure.tmesh3d(mesh);
+  #tmesh = ensure.tmesh3d(mesh);
   #vertex_neighbors = Rvcg::vcgVertexNeighbors(tmesh); # Compute vertex neighborhood of vertices.
   #vertex_faces = Rvcg::vcgVFadj(tmesh);  # Compute all faces the vertices are part of.
 
@@ -76,7 +76,7 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data, i
   # - find the vertex of the face that is closest to the query coordinate (passed in as parameter 'query_coords_closest_vertex')
   # -then we retrieve the 3 vertices of the face and their pervertex_data values.
   # -then we interpolate the value at the query_coordinate between the 3 known values/coordinates.
-  tmesh = haze:::ensure.tmesh3d(mesh);
+  tmesh = ensure.tmesh3d(mesh);
   clost = Rvcg::vcgClost(query_coordinates, tmesh); # or use Rvcg::vcgClostKD(), need to benchmark which is faster.
   nearest_face = clost$faceptr; # vector, for each query coordinate the (index of the) closest face.
   nearest_face_vertices = mesh$faces[nearest_face, ]; # nx3 int matrix, the vertex indices (of verts forming the closest face).
@@ -146,7 +146,7 @@ find_nv_kdtree <- function(query_coordinates, mesh, threads = parallel::detectCo
     if(! is.numeric(query_coordinates)) {
       stop("The matrix 'query_coordinates' must be numeric.");
     }
-    tmesh = haze:::ensure.tmesh3d(mesh);
+    tmesh = ensure.tmesh3d(mesh);
     kdtree = Rvcg::vcgCreateKDtree(tmesh);
     vcg_res = Rvcg::vcgSearchKDtree(kdtree, query_coordinates, k=1L, threads = threads);
     res = list('index'=vcg_res$index, 'distance'=vcg_res$distance);
@@ -164,8 +164,10 @@ find_nv_kdtree <- function(query_coordinates, mesh, threads = parallel::detectCo
 #' @return nx3 matrix of Cartesian coordinates
 #'
 #' @examples
+#' \dontrun{
 #' homog = matrix(c(1,2,3,1,1,2,3,2), ncol=4, byrow=TRUE);
 #' haze:::homogeneous_to_cartesian(homog);
+#' }
 #'
 #' @keywords internal
 homogeneous_to_cartesian <- function(homog) {

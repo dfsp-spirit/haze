@@ -18,11 +18,19 @@ To avoid any confusion: haze does not smooth the mesh itself, use [Rvcg](https:/
 
 ## Features
 
-* nearest neighbor smoothing based on edge distance (e.g., `k`-ring neighborhood of each vertex, with arbitrary `k`)
-* Gaussian smoothing based on geodesic distances on the mesh (recommended for smaller meshes only)
+The main feature is:
+
+* `pervertexdata.smoothnn()` and related functions: nearest neighbor smoothing based on edge distance (e.g., `k`-ring neighborhood of each vertex, with arbitrary `k`).
+
+Other utility functions:
+
+* `submesh.vertex()`: Creation of a sub mesh based on vertex indices in the source mesh (known as a *patch* in FreeSurfer).
+* `find_nv_kdtree()`: Find nearest mesh vertex for query coordinates using a *k*-d tree.
+* `nn_interpolate_kdtree()`: Get per-vertex data at vertices closest to the given query coordinates on the mesh.
+* `linear_interpolate_kdtree()`: Interpolate per-vertex data at the query points. Can be used to map per-vertex data between subjects (for which you have spherical, aligned meshes).
 
 
-### Properties
+### Properties of the smoothing functions
 
 * fast: the smoothing is done in C++
 * supports re-use of neighborhood data for faster smoothing of several datasets on the same mesh
