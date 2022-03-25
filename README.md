@@ -43,11 +43,23 @@ Other utility functions:
 
 ## Installation
 
+via `remotes`:
+
 ```r
 install.packages("devtools");
 devtools::install_github("dfsp-spirit/Rvcg", ref="smooth_pervertex_data");
 devtools::install_github("dfsp-spirit/haze");
 ```
+or using [R universe](https://r-universe.dev/):
+
+```r
+options(repos = c(
+    dfspspirit = 'https://dfsp-spirit.r-universe.dev',
+    CRAN = 'https://cloud.r-project.org'))
+
+install.packages('brainloc')
+```
+I prefer R universe.
 
 ## Documentation and Usage
 
