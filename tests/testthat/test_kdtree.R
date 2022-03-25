@@ -65,8 +65,10 @@ testthat::test_that("One can map per-vertex data between spherical meshes.", {
   # but it is very easy to see it. Here is how you can check:
   do_plot = FALSE;
   if(do_plot) {
-    fsbrain::vis.fs.surface(source_mesh, per_vertex_data = source_pervertex_data);
-    fsbrain::vis.fs.surface(dest_mesh, per_vertex_data = dest_pervertex_data);
+    if(requireNamespace("fsbrain", quietly = TRUE)) {
+      fsbrain::vis.fs.surface(source_mesh, per_vertex_data = source_pervertex_data);
+      fsbrain::vis.fs.surface(dest_mesh, per_vertex_data = dest_pervertex_data);
+    }
   }
 })
 

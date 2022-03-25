@@ -2,7 +2,7 @@
 % Please edit documentation in R/kdtree.R
 \name{linear_interpolate_kdtree}
 \alias{linear_interpolate_kdtree}
-\title{Map input values at points in 3D space onto mesh vertices.}
+\title{Interpolate per-vertex data at the query points. Or map per-vertex data between subjects.}
 \usage{
 linear_interpolate_kdtree(
   query_coordinates,
