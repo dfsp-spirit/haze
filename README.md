@@ -57,7 +57,7 @@ options(repos = c(
     dfspspirit = 'https://dfsp-spirit.r-universe.dev',
     CRAN = 'https://cloud.r-project.org'))
 
-install.packages('brainloc')
+install.packages('haze')
 ```
 I prefer R universe.
 
