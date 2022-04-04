@@ -98,6 +98,14 @@ testthat::test_that("The R and CPP versions of the linear_interpolate_kdtree fun
   testthat::expect_true(is.double(dest_pervertex_data_CPP));
   testthat::expect_equal(length(dest_pervertex_data_CPP), nrow(dest_mesh$vertices));
 
+  # The min values should be zero for both.
+  testthat::expect_equal(min(dest_pervertex_data_R), 0.0);
+  testthat::expect_equal(min(dest_pervertex_data_CPP), 0.0);
+
+  # The max values are not identical for some reason (precision?), but should be in same range.
+  testthat::expect_true(max(dest_pervertex_data_R) > 4.6 & max(dest_pervertex_data_R) < 4.8);
+  testthat::expect_true(max(dest_pervertex_data_CPP) > 4.6 & max(dest_pervertex_data_CPP) < 4.8);
+
   # The real test for similar values:
   testthat::expect_equal(dest_pervertex_data_R, dest_pervertex_data_CPP, tolerance=1e-1);
 

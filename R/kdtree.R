@@ -160,7 +160,7 @@ interp_tris <- function(query_coordinates, mesh_vertices, nearest_face_vertices,
 interp_tris_cpp_wrapper <- function(query_coordinates, mesh_vertices, nearest_face_vertices, pervertex_data, iwd_beta = 2.0) {
 
   # adjust indexing for C++
-  nearest_face_vertices = nearest_face_vertices + 1L;
+  #nearest_face_vertices = nearest_face_vertices + 1L;
 
   return(.Call("interp_tris_c", query_coordinates, mesh_vertices, nearest_face_vertices, pervertex_data, iwd_beta));
 }
