@@ -17,7 +17,7 @@ extern SEXP interp_tris_c(SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
   {"smooth_data", (DL_FUNC) &smooth_data, 3},
-  {"interp_tris", (DL_FUNC) &interp_tris_c, 5},
+  {"interp_tris_c", (DL_FUNC) &interp_tris_c, 5},
   {NULL, NULL, 0}
 };
 
