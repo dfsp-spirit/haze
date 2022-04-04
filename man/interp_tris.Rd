@@ -22,7 +22,7 @@ interp_tris(
 
 \item{iwd_beta}{scalar double, the \code{beta} parameter for the inverse distance weight interpolation with the triangle. See details.}
 
-\item{cpp}{logical, whether to use the much faster \code{C++} version. Leave alone unless you know what you are doing and are a developer.}
+\item{cpp}{logical, whether to use the much faster \code{C++} version. Leave alone unless you know what you are doing. Changing this to \code{FALSE} will make this a lot slower.}
 }
 \value{
 vector with one entry per query coordinate (i.e., \code{nrow(query_coordinates)}).

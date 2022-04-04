@@ -8,7 +8,8 @@ linear_interpolate_kdtree(
   query_coordinates,
   mesh,
   pervertex_data,
-  iwd_beta = 2
+  iwd_beta = 2,
+  ...
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ linear_interpolate_kdtree(
 \item{pervertex_data}{numerical vector, the continuous per-vertex data for the vertices of the mesh.}
 
 \item{iwd_beta}{scalar double, the \code{beta} parameter for the inverse distance weight interpolation with the triangle. See details.}
+
+\item{...}{ignore, passed on to internal function \code{interp_tris}.}
 }
 \value{
 named list with entries: 'interp_values', the numerical vector of interpolated data at the query_coordinates. 'nearest_vertex_in_face' the nearest vertex in the face that the respective query coordinate falls into, 'nearest_face' the index of the nearest face that the respective query coordinate falls into.

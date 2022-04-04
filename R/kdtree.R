@@ -32,6 +32,8 @@ nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #'
 #' @param iwd_beta scalar double, the \code{beta} parameter for the inverse distance weight interpolation with the triangle. See details.
 #'
+#' @param ... ignore, passed on to internal function \code{interp_tris}.
+#'
 #' @note The mesh must be spherical, and the \code{query_coordinates} must also be located on the mesh sphere.
 #'
 #' @return named list with entries: 'interp_values', the numerical vector of interpolated data at the query_coordinates. 'nearest_vertex_in_face' the nearest vertex in the face that the respective query coordinate falls into, 'nearest_face' the index of the nearest face that the respective query coordinate falls into.
@@ -39,7 +41,7 @@ nn_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data) {
 #' @importFrom stats dist
 #'
 #' @export
-linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data, iwd_beta = 2.0) {
+linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data, iwd_beta = 2.0, ...) {
   mesh = ensure.fs.surface(mesh);
   if(length(pervertex_data) != nrow(mesh$vertices)) {
     warning(sprintf("The 'pervertex_data' is for %d vertices, but the mesh has %d. Expected identical values.\n",length(pervertex_data), nrow(mesh$vertices)));
@@ -91,7 +93,7 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data, i
     stop("Parameter 'query_coordinates' must contain at least one x,y,z row.");
   }
 
-  interp_values = interp_tris(query_coordinates, mesh$vertices, nearest_face_vertices, pervertex_data, iwd_beta = iwd_beta);
+  interp_values = interp_tris(query_coordinates, mesh$vertices, nearest_face_vertices, pervertex_data, iwd_beta = iwd_beta, ...);
 
   nearest_vertex_in_face = query_coords_closest_vertex; # this currently is the vertex index (global, in the mesh). Should we compute and return the index in the face (1,2, or 3L) instead?
   return(list("interp_values"=interp_values, "nearest_vertex_in_face"=nearest_vertex_in_face, "nearest_face"=nearest_face));

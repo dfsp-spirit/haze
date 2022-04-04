@@ -15,7 +15,7 @@ interp_tris_cpp_wrapper(
 \arguments{
 \item{query_coordinates}{nx3 numerical matrix of x,y,z coordinates. These are typically the vertex positions of a second (spherical!) mesh for that you need per-vertex data (e.g., the \code{fsaverage6} mesh).}
 
-\item{mesh_vertices}{\code{nx3} matrix of x,y,z cartesian coordinates for the n mesh vertices (of the mesh that has the 'pervertex_data').}
+\item{mesh_vertices}{\code{nx3} matrix of x,y,z Cartesian coordinates for the n mesh vertices (of the mesh that has the 'pervertex_data').}
 
 \item{pervertex_data}{numerical vector, the continuous per-vertex data for the vertices of the mesh.}
 
@@ -26,5 +26,8 @@ vector with one entry per query coordinate (i.e., \code{nrow(query_coordinates)}
 }
 \description{
 Interpolate values within mesh triangles in C++.
+}
+\note{
+No validation of input data is done, do this yourself before passing values to this function to avoid hard crashes (which happen when junk is passed to \code{C++}).
 }
 \keyword{internal}
