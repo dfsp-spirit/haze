@@ -91,16 +91,42 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data, i
     stop("Parameter 'query_coordinates' must contain at least one x,y,z row.");
   }
 
+  interp_values = interp_tris(query_coordinates, mesh$vertices, nearest_face_vertices, pervertex_data, iwd_beta = iwd_beta);
+
+  nearest_vertex_in_face = query_coords_closest_vertex; # this currently is the vertex index (global, in the mesh). Should we compute and return the index in the face (1,2, or 3L) instead?
+  return(list("interp_values"=interp_values, "nearest_vertex_in_face"=nearest_vertex_in_face, "nearest_face"=nearest_face));
+}
+
+
+#' @title Interpolate values within mesh triangles in R.
+#'
+#' @inheritParams linear_interpolate_kdtree
+#'
+#' @param mesh_vertices \code{nx3} matrix of x,y,z cartesian coordinates for the n mesh vertices (of the mesh that has the 'pervertex_data').
+#'
+#' @return vector with one entry per query coordinate (i.e., \code{nrow(query_coordinates)}).
+#'
+#' @keywords internal
+interp_tris <- function(query_coordinates, mesh_vertices, nearest_face_vertices, pervertex_data, iwd_beta = 2.0) {
+  nq = nrow(query_coordinates);
   interp_values = rep(0.0, nq); # Allocation, gets filled below.
+
+  if(length(pervertex_data) != nrow(mesh_vertices)) {
+    stop(sprintf("Mesh has %d vertices, but pervertex_data has %d entries, counts must match.\n", nrow(mesh_vertices), length(pervertex_data)));
+  }
+
+  if(ncol(query_coordinates) != 3L) {
+    stop("Parameter 'query_coordinates' must be an nx3 matrix.");
+  }
 
   # The current approach uses inverse distance weighted (IWD) interpolation.
   # beta parameter for IWD
   for(row_idx in seq.int(nq)) {
     qc = query_coordinates[row_idx, ];
     #closest_vertex_in_closest_face_local_idx = which(nearest_face_vertices[row_idx, ] == query_coords_closest_vertex[row_idx]); # 1,2 or 3
-    dist_query_to_v1 = stats::dist(rbind(qc, mesh$vertices[nearest_face_vertices[row_idx,],1]));
-    dist_query_to_v2 = stats::dist(rbind(qc, mesh$vertices[nearest_face_vertices[row_idx,],2]));
-    dist_query_to_v3 = stats::dist(rbind(qc, mesh$vertices[nearest_face_vertices[row_idx,],3]));
+    dist_query_to_v1 = stats::dist(rbind(qc, mesh_vertices[nearest_face_vertices[row_idx,],1]));
+    dist_query_to_v2 = stats::dist(rbind(qc, mesh_vertices[nearest_face_vertices[row_idx,],2]));
+    dist_query_to_v3 = stats::dist(rbind(qc, mesh_vertices[nearest_face_vertices[row_idx,],3]));
 
     total_dist = sum(dist_query_to_v1, dist_query_to_v2, dist_query_to_v3);
     rel_dist = c(dist_query_to_v1, dist_query_to_v2, dist_query_to_v3) / total_dist;
@@ -109,10 +135,7 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data, i
     weights = rel_dist ** - iwd_beta;
     interp_values[row_idx] = sum(weights*pervertex_data[nearest_face_vertices[row_idx,]])/ sum(weights);
   }
-
-
-  nearest_vertex_in_face = query_coords_closest_vertex; # this currently is the vertex index (global, in the mesh). Should we compute and return the index in the face (1,2, or 3L) instead?
-  return(list("interp_values"=interp_values, "nearest_vertex_in_face"=nearest_vertex_in_face, "nearest_face"=nearest_face));
+  return(interp_values);
 }
 
 
