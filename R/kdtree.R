@@ -106,7 +106,7 @@ linear_interpolate_kdtree <- function(query_coordinates, mesh, pervertex_data, i
 #'
 #' @return vector with one entry per query coordinate (i.e., \code{nrow(query_coordinates)}).
 #'
-#' @param cpp logical, whether to use the much faster \code{C++} version. Leave alone unless you know what you are doing and are a developer.
+#' @param cpp logical, whether to use the much faster \code{C++} version. Leave alone unless you know what you are doing. Changing this to \code{FALSE} will make this a lot slower.
 #'
 #' @keywords internal
 interp_tris <- function(query_coordinates, mesh_vertices, nearest_face_vertices, pervertex_data, iwd_beta = 2.0, cpp=TRUE) {
@@ -138,7 +138,7 @@ interp_tris <- function(query_coordinates, mesh_vertices, nearest_face_vertices,
     # see https://rspatial.org/raster/analysis/4-interpolation.html and
     # https://www.geo.fu-berlin.de/en/v/soga/Geodata-analysis/geostatistics/Inverse-Distance-Weighting/index.html
     weights = rel_dist ** - iwd_beta;
-    interp_values[row_idx] = sum(weights*pervertex_data[nearest_face_vertices[row_idx,]])/ sum(weights);
+    interp_values[row_idx] = sum(weights*pervertex_data[nearest_face_vertices[row_idx,]]) / sum(weights);
   }
   return(interp_values);
 }
@@ -148,20 +148,14 @@ interp_tris <- function(query_coordinates, mesh_vertices, nearest_face_vertices,
 #'
 #' @inheritParams linear_interpolate_kdtree
 #'
-#' @param mesh_vertices \code{nx3} matrix of x,y,z cartesian coordinates for the n mesh vertices (of the mesh that has the 'pervertex_data').
+#' @param mesh_vertices \code{nx3} matrix of x,y,z Cartesian coordinates for the n mesh vertices (of the mesh that has the 'pervertex_data').
 #'
 #' @return vector with one entry per query coordinate (i.e., \code{nrow(query_coordinates)}).
 #'
+#' @note No validation of input data is done, do this yourself before passing values to this function to avoid hard crashes (which happen when junk is passed to \code{C++}).
+#'
 #' @keywords internal
 interp_tris_cpp_wrapper <- function(query_coordinates, mesh_vertices, nearest_face_vertices, pervertex_data, iwd_beta = 2.0) {
-
-  if(length(pervertex_data) != nrow(mesh_vertices)) {
-    stop(sprintf("Mesh has %d vertices, but pervertex_data has %d entries, counts must match.\n", nrow(mesh_vertices), length(pervertex_data)));
-  }
-
-  if(ncol(query_coordinates) != 3L) {
-    stop("Parameter 'query_coordinates' must be an nx3 matrix.");
-  }
 
   # adjust indexing for C++
   nearest_face_vertices = nearest_face_vertices + 1L;
