@@ -13,11 +13,11 @@
 
 /* .Call calls */
 extern SEXP smooth_data(SEXP, SEXP, SEXP);
-//extern SEXP smooth_data_mat(SEXP, SEXP, SEXP);
+extern SEXP interp_tris_c(SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
   {"smooth_data", (DL_FUNC) &smooth_data, 3},
-  //{"smooth_data_mat", (DL_FUNC) &smooth_data_mat, 3},
+  {"interp_tris", (DL_FUNC) &interp_tris_c, 5},
   {NULL, NULL, 0}
 };
 
