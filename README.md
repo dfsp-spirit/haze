@@ -27,7 +27,9 @@ Other utility functions:
 * `submesh.vertex()`: Creation of a sub mesh based on vertex indices in the source mesh (known as a *patch* in FreeSurfer).
 * `find_nv_kdtree()`: Find nearest mesh vertex for query coordinates using a *k*-d tree.
 * `nn_interpolate_kdtree()`: Get per-vertex data at vertices closest to the given query coordinates on the mesh.
-* `linear_interpolate_kdtree()`: Interpolate per-vertex data at the query points. Can be used to map per-vertex data between subjects (for which you have spherical, aligned meshes).
+* `linear_interpolate_kdtree()`: Interpolate per-vertex data at the query points. Can be used to map per-vertex data between subjects (for which you have spherical, aligned meshes). 
+
+Note to neuroscientists/FreeSurfer users: The `linear_interpolate_kdtree()` function allows you to map native space brain morphometry data to standard space. So in combination with the `pervertexdata.smoothnn()` function, you can get smoothed standard space data from raw native space mesh descriptors, all in `R`.
 
 
 ### Properties of the smoothing functions
