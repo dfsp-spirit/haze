@@ -37,7 +37,7 @@ Note to neuroscientists/FreeSurfer users: The `linear_interpolate_kdtree()` func
 * fast: the smoothing is done in C++
 * supports re-use of neighborhood data for faster smoothing of several datasets on the same mesh
 * even faster for several overlays: several overlays can be smoothed in parallel on multi-core CPUs.
-* works with various standard mesh file formats like PLY, OBJ, OFF as well as FreeSurfer brain meshes
+* works with various standard mesh file formats like [PLY](http://paulbourke.net/dataformats/ply/), [OBJ](https://en.wikipedia.org/wiki/Wavefront_.obj_file), [OFF](https://de.wikipedia.org/wiki/Object_File_Format) as well as [FreeSurfer](https://freesurfer.net) brain meshes
 * the internal mesh representation is `tmesh3d` from the `rgl` package, which allows for easy visualization
 * ignores values set to `NA` during smoothing, which can be used to mask certain mesh areas (like the medial wall in neuroimaging)
 * comes with pre-computed neighborhood data for meshes commonly used in surface-based neuroimaging (FreeSurfer's fsaverage and fsaverage6)
