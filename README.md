@@ -201,7 +201,7 @@ For this data set and my machine, using more than 5 cores does not seem to help 
 
 ## Credits
 
-The fast mesh operations used in this package are implemented in the [Rvcg package](https://github.com/zarquon42b/Rvcg) by Stefan Schlager, which uses [VCGLIB](http://vcg.isti.cnr.it/vcglib/).
+The fast mesh operations used in this package are implemented in the [Rvcg package](https://github.com/zarquon42b/Rvcg) by [Stefan Schlager](https://github.com/zarquon42b/), which uses [VCGLIB](http://vcg.isti.cnr.it/vcglib/).
 
 
 ## Author and Getting help
