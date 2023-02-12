@@ -206,7 +206,7 @@ The fast mesh operations used in this package are implemented in the [Rvcg packa
 
 ## Author and Getting help
 
-The `haze` R package was written by [Tim Schäfer](http://rcmd.org/ts).
+The `haze` R package was written by [Tim Schäfer](https://ts.rcmd.org).
 
 Please [open an issue](https://github.com/dfsp-spirit/haze/issues) here on GitHub if you have found a bug or need help.
 
