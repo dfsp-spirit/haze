@@ -1,6 +1,13 @@
 haze Changes
 =============
 
+
+Version 0.3.0 -- Fixes and modernization
+-----------------------------------------
+* modernize package for recent R versions, make it pass `R CMD check --as-cran`, with exception of the package size check of course, which we cannot do anything about.
+* fix off-by-1 error in c++ code
+
+
 Version 0.2.0 -- kdtrees
 ------------------------
 * add all kdtree functions: find_nv_kdtree(), linear_interpolate_kdtree(), nn_interpolate_kdtree().
