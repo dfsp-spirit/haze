@@ -2,8 +2,26 @@
 % Please edit documentation in R/haze-package.R
 \docType{package}
 \name{haze}
+\alias{haze-package}
 \alias{haze}
 \title{haze: Smoothing of per-vertex data on triangular meshes}
 \description{
 Smoothing of per-vertex data on triangular meshes
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/dfsp-spirit/haze}
+  \item Report bugs at \url{https://github.com/dfsp-spirit/haze/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Tim Schäfer \email{ts+code@rcmd.org} (\href{https://orcid.org/0000-0002-3683-8070}{ORCID})
+
+Authors:
+\itemize{
+  \item Tim Schäfer \email{ts+code@rcmd.org} (\href{https://orcid.org/0000-0002-3683-8070}{ORCID})
+}
+
 }

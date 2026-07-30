@@ -1,6 +1,5 @@
 #include <Rcpp.h>
 using namespace Rcpp;
-// [[Rcpp::plugins(cpp11)]]
 
 #include <vector>
 #include <cassert>
@@ -38,21 +37,29 @@ RcppExport SEXP interp_tris_c(SEXP _query_coordinates, SEXP _mesh_vertices, SEXP
     qc = query_coordinates( row_idx , _ );
 
     nearest_face_vertex_indices = {nearest_face_vertices(row_idx,0), nearest_face_vertices(row_idx,1), nearest_face_vertices(row_idx,2)};
-    v1_vertex_coords = {mesh_vertices(nearest_face_vertex_indices[0], 0), mesh_vertices(nearest_face_vertex_indices[0], 1), mesh_vertices(nearest_face_vertex_indices[0], 2)};
-    v2_vertex_coords = {mesh_vertices(nearest_face_vertex_indices[1], 0), mesh_vertices(nearest_face_vertex_indices[1], 1), mesh_vertices(nearest_face_vertex_indices[1], 2)};
-    v3_vertex_coords = {mesh_vertices(nearest_face_vertex_indices[2], 0), mesh_vertices(nearest_face_vertex_indices[2], 1), mesh_vertices(nearest_face_vertex_indices[2], 2)};
+    v1_vertex_coords = {mesh_vertices(nearest_face_vertex_indices[0] - 1, 0), mesh_vertices(nearest_face_vertex_indices[0] - 1, 1), mesh_vertices(nearest_face_vertex_indices[0] - 1, 2)};
+    v2_vertex_coords = {mesh_vertices(nearest_face_vertex_indices[1] - 1, 0), mesh_vertices(nearest_face_vertex_indices[1] - 1, 1), mesh_vertices(nearest_face_vertex_indices[1] - 1, 2)};
+    v3_vertex_coords = {mesh_vertices(nearest_face_vertex_indices[2] - 1, 0), mesh_vertices(nearest_face_vertex_indices[2] - 1, 1), mesh_vertices(nearest_face_vertex_indices[2] - 1, 2)};
     dist_query_to_v1 = euclid(qc, v1_vertex_coords);
     dist_query_to_v2 = euclid(qc, v2_vertex_coords);
     dist_query_to_v3 = euclid(qc, v3_vertex_coords);
 
-    total_dist = dist_query_to_v1 + dist_query_to_v2 + dist_query_to_v3;
-    rel_dist = {dist_query_to_v1/total_dist, dist_query_to_v2/total_dist, dist_query_to_v3/total_dist};
-    weights = { std::pow(rel_dist[0], - iwd_beta), std::pow(rel_dist[1], - iwd_beta), std::pow(rel_dist[2], - iwd_beta)  };
-    total_weights = weights[0] + weights[1] + weights[2];
-    part_v1 = weights[0] * pervertex_data[nearest_face_vertices(row_idx, 0)];
-    part_v2 = weights[1] * pervertex_data[nearest_face_vertices(row_idx, 1)];
-    part_v3 = weights[2] * pervertex_data[nearest_face_vertices(row_idx, 2)];
-    interp_data[row_idx] = (part_v1 + part_v2 + part_v3) / total_weights;
+    if(dist_query_to_v1 == 0.0) {
+      interp_data[row_idx] = pervertex_data[nearest_face_vertices(row_idx, 0) - 1];
+    } else if(dist_query_to_v2 == 0.0) {
+      interp_data[row_idx] = pervertex_data[nearest_face_vertices(row_idx, 1) - 1];
+    } else if(dist_query_to_v3 == 0.0) {
+      interp_data[row_idx] = pervertex_data[nearest_face_vertices(row_idx, 2) - 1];
+    } else {
+      total_dist = dist_query_to_v1 + dist_query_to_v2 + dist_query_to_v3;
+      rel_dist = {dist_query_to_v1/total_dist, dist_query_to_v2/total_dist, dist_query_to_v3/total_dist};
+      weights = { std::pow(rel_dist[0], - iwd_beta), std::pow(rel_dist[1], - iwd_beta), std::pow(rel_dist[2], - iwd_beta)  };
+      total_weights = weights[0] + weights[1] + weights[2];
+      part_v1 = weights[0] * pervertex_data[nearest_face_vertices(row_idx, 0) - 1];
+      part_v2 = weights[1] * pervertex_data[nearest_face_vertices(row_idx, 1) - 1];
+      part_v3 = weights[2] * pervertex_data[nearest_face_vertices(row_idx, 2) - 1];
+      interp_data[row_idx] = (part_v1 + part_v2 + part_v3) / total_weights;
+    }
   }
   return(interp_data);
 }

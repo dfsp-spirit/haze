@@ -1,6 +1,5 @@
 #include <Rcpp.h>
 using namespace Rcpp;
-// [[Rcpp::plugins(cpp11)]]
 
 #include <vector>
 #include <cassert>

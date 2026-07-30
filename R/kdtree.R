@@ -131,16 +131,22 @@ interp_tris <- function(query_coordinates, mesh_vertices, nearest_face_vertices,
   for(row_idx in seq.int(nq)) {
     qc = query_coordinates[row_idx, ];
     #closest_vertex_in_closest_face_local_idx = which(nearest_face_vertices[row_idx, ] == query_coords_closest_vertex[row_idx]); # 1,2 or 3
-    dist_query_to_v1 = stats::dist(rbind(qc, mesh_vertices[nearest_face_vertices[row_idx,],1]));
-    dist_query_to_v2 = stats::dist(rbind(qc, mesh_vertices[nearest_face_vertices[row_idx,],2]));
-    dist_query_to_v3 = stats::dist(rbind(qc, mesh_vertices[nearest_face_vertices[row_idx,],3]));
+    dist_query_to_v1 = sqrt(sum((qc - mesh_vertices[nearest_face_vertices[row_idx, 1], ])^2));
+    dist_query_to_v2 = sqrt(sum((qc - mesh_vertices[nearest_face_vertices[row_idx, 2], ])^2));
+    dist_query_to_v3 = sqrt(sum((qc - mesh_vertices[nearest_face_vertices[row_idx, 3], ])^2));
 
-    total_dist = sum(dist_query_to_v1, dist_query_to_v2, dist_query_to_v3);
-    rel_dist = c(dist_query_to_v1, dist_query_to_v2, dist_query_to_v3) / total_dist;
-    # see https://rspatial.org/raster/analysis/4-interpolation.html and
-    # https://www.geo.fu-berlin.de/en/v/soga/Geodata-analysis/geostatistics/Inverse-Distance-Weighting/index.html
-    weights = rel_dist ** - iwd_beta;
-    interp_values[row_idx] = sum(weights*pervertex_data[nearest_face_vertices[row_idx,]]) / sum(weights);
+    if(dist_query_to_v1 == 0.0) {
+      interp_values[row_idx] = pervertex_data[nearest_face_vertices[row_idx, 1]];
+    } else if(dist_query_to_v2 == 0.0) {
+      interp_values[row_idx] = pervertex_data[nearest_face_vertices[row_idx, 2]];
+    } else if(dist_query_to_v3 == 0.0) {
+      interp_values[row_idx] = pervertex_data[nearest_face_vertices[row_idx, 3]];
+    } else {
+      total_dist = sum(dist_query_to_v1, dist_query_to_v2, dist_query_to_v3);
+      rel_dist = c(dist_query_to_v1, dist_query_to_v2, dist_query_to_v3) / total_dist;
+      weights = rel_dist ** - iwd_beta;
+      interp_values[row_idx] = sum(weights*pervertex_data[nearest_face_vertices[row_idx,]]) / sum(weights);
+    }
   }
   return(interp_values);
 }

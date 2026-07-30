@@ -5,6 +5,9 @@ testthat::test_that("One can Gaussian smooth data on fsaverage3 using the raw me
   if(! exists('vcgSmoothPVD', where=asNamespace('Rvcg'), mode='function')) {
     testthat::skip("The installed Rvcg version does not provide the 'vcgSmoothPVD' function. Please see the haze package installation instructions on the website on how to get the required Rvcg version.");
   }
+  if(! exists('pervertexdata.smoothgauss', where=asNamespace('haze'), mode='function')) {
+    testthat::skip("The 'pervertexdata.smoothgauss' function is not yet available in this version of haze.");
+  }
 
   fsmesh_file = system.file("extdata", "fsaverage3_mesh_lh_white", package = "haze", mustWork = TRUE);
   mesh = freesurferformats::read.fs.surface(fsmesh_file);
@@ -22,6 +25,9 @@ testthat::test_that("One can Gaussian smooth data that includes NA values.", {
 
   if(! exists('vcgSmoothPVD', where=asNamespace('Rvcg'), mode='function')) {
     testthat::skip("The installed Rvcg version does not provide the 'vcgSmoothPVD' function. Please see the haze package installation instructions on the website on how to get the required Rvcg version.");
+  }
+  if(! exists('pervertexdata.smoothgauss', where=asNamespace('haze'), mode='function')) {
+    testthat::skip("The 'pervertexdata.smoothgauss' function is not yet available in this version of haze.");
   }
 
   fsmesh_file = system.file("extdata", "fsaverage3_mesh_lh_white", package = "haze", mustWork = TRUE);
