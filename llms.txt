@@ -82,7 +82,6 @@ via `remotes`:
 ``` r
 
 install.packages("devtools");
-devtools::install_github("dfsp-spirit/Rvcg", ref="smooth_pervertex_data");
 devtools::install_github("dfsp-spirit/haze");
 ```
 
@@ -341,3 +340,9 @@ on GitHub if you have found a bug or need help.
 - [`submesh.vertex()`](https://dfsp-spirit.github.io/haze/reference/submesh.vertex.md)
   : Create a submesh including only the given vertices.
 
+# Articles
+
+### All vignettes
+
+- [Getting Started with
+  haze](https://dfsp-spirit.github.io/haze/articles/haze.md):

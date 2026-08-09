@@ -1,6 +1,8 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://dfsp-spirit.github.io/haze/404.html</loc></url>
 <url><loc>https://dfsp-spirit.github.io/haze/LICENSE-text.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/articles/haze.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/articles/index.html</loc></url>
 <url><loc>https://dfsp-spirit.github.io/haze/authors.html</loc></url>
 <url><loc>https://dfsp-spirit.github.io/haze/index.html</loc></url>
 <url><loc>https://dfsp-spirit.github.io/haze/reference/ensure.fs.surface.html</loc></url>
