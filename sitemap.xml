@@ -1,0 +1,27 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://dfsp-spirit.github.io/haze/404.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/LICENSE-text.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/authors.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/index.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/ensure.fs.surface.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/ensure.tmesh3d.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/find_nv_kdtree.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/fs.surface.to.tmesh3d.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/haze-package.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/homogeneous_to_cartesian.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/index.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/interp_tris.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/interp_tris_cpp_wrapper.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/linear_interpolate_kdtree.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/mesh.adj.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/mesh.neigh.pre.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/nn_interpolate_kdtree.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/pervertexdata.smoothnn.adj.cpp.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/pervertexdata.smoothnn.adj.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/pervertexdata.smoothnn.adj.mat.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/pervertexdata.smoothnn.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/read.vv.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/submesh.vertex.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/tmesh3d.to.fs.surface.html</loc></url>
+</urlset>
+
