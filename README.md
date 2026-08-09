@@ -49,7 +49,6 @@ via `remotes`:
 
 ```r
 install.packages("devtools");
-devtools::install_github("dfsp-spirit/Rvcg", ref="smooth_pervertex_data");
 devtools::install_github("dfsp-spirit/haze");
 ```
 or using [R universe](https://r-universe.dev/):

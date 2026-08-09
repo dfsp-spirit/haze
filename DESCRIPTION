@@ -14,12 +14,15 @@ Imports:
     freesurferformats (>= 0.1.17),
     Rvcg (>= 0.20.2)
 Suggests:
+    knitr,
     Rcpp,
     rmarkdown,
     testthat (>= 3.0.0),
     rgl,
     fsbrain (>= 0.5.3)
+VignetteBuilder: knitr
 Config/testthat/edition: 3
+Remotes: dfsp-spirit/Rvcg@smooth_pervertex_data
 LinkingTo:
     Rcpp
 Config/roxygen2/version: 8.0.0
