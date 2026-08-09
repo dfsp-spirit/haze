@@ -1,6 +1,9 @@
 haze Changes
 =============
 
+Version 0.3.2 -- Fix vignette error
+------------------------------------
+* FIX: fix vignette error
 
 Version 0.3.1 -- Fix dependency specification
 ----------------------------------------------
