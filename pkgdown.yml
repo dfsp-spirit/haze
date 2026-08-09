@@ -2,7 +2,7 @@ pandoc: 3.8.3
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2026-08-09T16:25Z
+last_built: 2026-08-09T16:29Z
 urls:
   reference: https://dfsp-spirit.github.io/haze/reference
   article: https://dfsp-spirit.github.io/haze/articles

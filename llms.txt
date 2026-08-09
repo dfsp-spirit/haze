@@ -101,6 +101,13 @@ I prefer R universe.
 
 ## Documentation and Usage
 
+## API Docs
+
+See
+[dfsp-spirit.github.io/haze/reference/](https://dfsp-spirit.github.io/haze/reference/).
+
+## Overview
+
 - The most important function in the package is
   [`pervertexdata.smoothnn()`](https://dfsp-spirit.github.io/haze/reference/pervertexdata.smoothnn.md).
   - If you would like to pre-compute the mesh neighborhood once and
