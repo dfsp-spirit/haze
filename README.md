@@ -70,6 +70,10 @@ I prefer R universe.
 
 ## Documentation and Usage
 
+## R Vignettes
+
+* [Getting Started with haze](https://dfsp-spirit.github.io/haze/articles/haze.html)
+
 ## API Docs
 
 See [dfsp-spirit.github.io/haze/reference/](https://dfsp-spirit.github.io/haze/reference/).
