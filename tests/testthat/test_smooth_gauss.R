@@ -55,6 +55,9 @@ testthat::test_that("Gaussian smoothing of thickness data looks plausible with N
   if(! exists('vcgSmoothPVD', where=asNamespace('Rvcg'), mode='function')) {
     testthat::skip("The installed Rvcg version does not provide the 'vcgSmoothPVD' function. Please see the haze package installation instructions on the website on how to get the required Rvcg version.");
   }
+  if(! exists('pervertexdata.smoothgauss', where=asNamespace('haze'), mode='function')) {
+    testthat::skip("The 'pervertexdata.smoothgauss' function is not yet available in this version of haze.");
+  }
 
 
   if(requireNamespace("fsbrain", quietly = TRUE)) {
