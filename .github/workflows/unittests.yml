@@ -56,6 +56,8 @@ jobs:
         run: |
           remotes::install_github("dfsp-spirit/Rvcg", ref = "smooth_pervertex_data")
         shell: Rscript {0}
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install haze
         run: |
