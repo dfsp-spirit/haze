@@ -2,6 +2,12 @@
 Fast smoothing of per-vertex data on triangular meshes for R.
 
 
+<!-- badges: start -->
+  [![tests_R](https://github.com/dfsp-spirit/haze/actions/workflows/unittests.yml/badge.svg?branch=main)](https://github.com/dfsp-spirit/haze/actions)
+  [![docs](https://github.com/dfsp-spirit/haze/actions/workflows/pkgdown.yaml/badge.svg?branch=main)](https://github.com/dfsp-spirit/haze/actions)
+<!-- badges: end -->
+
+
 ## About
 
 This package package performs smoothing of per-vertex data on triangular meshes, as illustrated here:
