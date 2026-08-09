@@ -2,6 +2,11 @@ haze Changes
 =============
 
 
+Version 0.3.1 -- Fix dependency specification
+----------------------------------------------
+* properly specify non-standard Rvcg dependency from Github to simplify installation
+
+
 Version 0.3.0 -- Fixes and modernization
 -----------------------------------------
 * modernize package for recent R versions, make it pass `R CMD check --as-cran`, with exception of the package size check of course, which we cannot do anything about.
