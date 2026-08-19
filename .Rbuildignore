@@ -17,3 +17,5 @@ appveyor\.yml
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+dev_tools
+
