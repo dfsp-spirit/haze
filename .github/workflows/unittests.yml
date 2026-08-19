@@ -43,6 +43,7 @@ jobs:
             "remotes",
             "Rcpp",
             "RcppEigen",
+            "Rvcg",
             "testthat",
             "rgl",
             "freesurferformats",
@@ -51,13 +52,6 @@ jobs:
             "devtools"
           ))
         shell: Rscript {0}
-
-      - name: Install special Rvcg fork (smooth_pervertex_data branch)
-        run: |
-          remotes::install_github("dfsp-spirit/Rvcg", ref = "smooth_pervertex_data")
-        shell: Rscript {0}
-        env:
-          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install haze
         run: |

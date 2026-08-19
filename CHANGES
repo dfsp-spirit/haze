@@ -1,6 +1,11 @@
 haze Changes
 =============
 
+Version 0.4.0 -- Remove dependency on custom Rvcg version
+---------------------------------------------------------
+* FIX: remove dead WIP code, the current CRAN version of Rvcg has all we need
+
+
 Version 0.3.2 -- Fix vignette error
 ------------------------------------
 * FIX: fix vignette error
