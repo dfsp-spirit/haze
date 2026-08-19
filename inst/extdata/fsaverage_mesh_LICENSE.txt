@@ -1,5 +1,14 @@
-The files `fsaverage_mesh_lh_white` and `fsaverage_mesh_rh_white` are distributed under the terms of the FreeSurfer software licence.
+The FreeSurfer template data files in this directory are distributed under
+the terms of the FreeSurfer Software License. The copyright holder is
+The General Hospital Corporation, Boston MA, USA ("MGH").
 
-See [surfer.nmr.mgh.harvard.edu/fswiki/FreeSurferSoftwareLicense](https://surfer.nmr.mgh.harvard.edu/fswiki/FreeSurferSoftwareLicense) for the license text.
+This includes the fsaverage and fsaverage6 surface meshes, the per-vertex
+morphometry data (e.g., *_thickness), the cortex labels, and the
+pre-computed vertex adjacency (*_meshdist_edge_1.vv) files, which are
+derivative works of those meshes.
+
+See inst/COPYRIGHTS in this package for the full license text, and
+https://surfer.nmr.mgh.harvard.edu/fswiki/FreeSurferSoftwareLicense for
+the canonical text.
 
 
