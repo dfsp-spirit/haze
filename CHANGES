@@ -3,7 +3,9 @@ haze Changes
 
 Version 0.4.0 -- Remove dependency on custom Rvcg version
 ---------------------------------------------------------
-* FIX: remove dead WIP code, the current CRAN version of Rvcg has all we need
+* FIX: remove dead WIP code and dependency on custom Rvcg version, now the current CRAN version of Rvcg is all we need
+* CHG: update cph in DESCRIPTION for fs data
+* DEL: reduce package size by removing unused data files
 
 
 Version 0.3.2 -- Fix vignette error
