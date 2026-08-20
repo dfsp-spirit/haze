@@ -12,7 +12,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/dfsp-spirit/haze/blob/v0.4.0/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/dfsp-spirit/haze/blob/main/DESCRIPTION)
 
 Schäfer T (2026). *haze: Smoothing of per-Vertex Data on Triangular
 Meshes*. R package version 0.4.0, <https://github.com/dfsp-spirit/haze>.
