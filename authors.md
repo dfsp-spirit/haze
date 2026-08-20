@@ -5,18 +5,22 @@
 - **Tim Schäfer**. Author, maintainer.
   [](https://orcid.org/0000-0002-3683-8070)
 
+- **The General Hospital Corporation**. Copyright holder.  
+  FreeSurfer template data distributed under the FreeSurfer Software
+  License
+
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/dfsp-spirit/haze/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/dfsp-spirit/haze/blob/v0.4.0/DESCRIPTION)
 
 Schäfer T (2026). *haze: Smoothing of per-Vertex Data on Triangular
-Meshes*. R package version 0.3.1, <https://github.com/dfsp-spirit/haze>.
+Meshes*. R package version 0.4.0, <https://github.com/dfsp-spirit/haze>.
 
     @Manual{,
       title = {haze: Smoothing of per-Vertex Data on Triangular Meshes},
       author = {Tim Schäfer},
       year = {2026},
-      note = {R package version 0.3.1},
+      note = {R package version 0.4.0},
       url = {https://github.com/dfsp-spirit/haze},
     }
