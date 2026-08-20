@@ -12,9 +12,7 @@ meshes, as illustrated here:
 Vis
 
 **Fig.1**: *Per-vertex data on a brain mesh before (left) and after
-(right) smoothing. White represents NA values. In this example, the
-smoothing has been exaggerated to better show the effect. See the
-discussion about how much smoothing to apply below.*
+(right) smoothing. White represents NA values.*
 
 Such smoothing is typically used to reduce high-frequency noise and
 improve SNR.
@@ -180,7 +178,7 @@ Vis2
 
 **Fig.2**: *Effects of nearest neighbor-smoothing (k=1) for different
 number of iterations. Left: the raw data. Center: after 5 iterations of
-NN smoothing. Right: after 155 iterations of NN smoothing.*
+NN smoothing. Right: after 155 iterations of NN smoothing (too much!).*
 
 In this case, we want to measure the curvature of gyri and sulci. The
 raw version looks quite noisy, 5 iterations look fine, and 150 are

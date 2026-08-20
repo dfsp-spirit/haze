@@ -59,7 +59,7 @@
 <div class="float">
 <img src="./web/haze.jpg?raw=true" title="Per-vertex data on a brain mesh before (left) and after (right) smoothing." alt="Vis"><div class="figcaption">Vis</div>
 </div>
-<p><strong>Fig.1</strong>: <em>Per-vertex data on a brain mesh before (left) and after (right) smoothing. White represents NA values. In this example, the smoothing has been exaggerated to better show the effect. See the discussion about how much smoothing to apply below.</em></p>
+<p><strong>Fig.1</strong>: <em>Per-vertex data on a brain mesh before (left) and after (right) smoothing. White represents NA values.</em></p>
 <p>Such smoothing is typically used to reduce high-frequency noise and improve SNR.</p>
 <div class="section level3">
 <h3 id="what-haze-is-not">What haze is not<a class="anchor" aria-label="anchor" href="#what-haze-is-not"></a>
@@ -185,7 +185,7 @@
 <div class="float">
 <img src="./web/haze_proper_smoothing.png?raw=true" title="Effects of nearest neighbor-smoothing (k=1) for different number of iterations." alt="Vis2"><div class="figcaption">Vis2</div>
 </div>
-<p><strong>Fig.2</strong>: <em>Effects of nearest neighbor-smoothing (k=1) for different number of iterations. Left: the raw data. Center: after 5 iterations of NN smoothing. Right: after 155 iterations of NN smoothing.</em></p>
+<p><strong>Fig.2</strong>: <em>Effects of nearest neighbor-smoothing (k=1) for different number of iterations. Left: the raw data. Center: after 5 iterations of NN smoothing. Right: after 155 iterations of NN smoothing (too much!).</em></p>
 <p>In this case, we want to measure the curvature of gyri and sulci. The raw version looks quite noisy, 5 iterations look fine, and 150 are clearly way over the top, as the curvature does not follow the structure of the gyri and sulci of the brain anymore.</p>
 <p>So now if you want to use the per-vertex data to predict something with an AI model and your goal is to find the best model, you could do a grid search and use different smoothing versions as input, with various values around 5 (I would maybe try 0, 5, 10, 15, 20) and compare the model performance to find the best setting. For hypothesis testing, you will want to pre-define the smoothing factor instead of trying various settings, of course. If you do this, you will know suitable values from the literature.</p>
 <div class="section level3">
