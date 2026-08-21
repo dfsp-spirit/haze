@@ -1,6 +1,12 @@
 haze Changes
 =============
 
+Version 0.5.0 -- FWHM to NN iterations conversion
+-------------------------------------------------
+* NEW: add `fwhm2niters()` and `niters2fwhm()` to convert between FreeSurfer Gaussian smoothing FWHM settings and the equivalent number of nearest neighbor smoothing iterations, so users can use the same smoothing settings as in FreeSurfer when calling `pervertexdata.smoothnn()`.
+* DOC: extend the README section on FreeSurfer Gaussian vs nearest neighbor smoothing, explaining the underlying diffusion (central limit theorem) approximation, the empirical FreeSurfer formula, and how to use the new helpers.
+
+
 Version 0.4.0 -- Remove dependency on custom Rvcg version
 ---------------------------------------------------------
 * FIX: remove dead WIP code and dependency on custom Rvcg version, now the current CRAN version of Rvcg is all we need

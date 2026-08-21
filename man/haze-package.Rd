@@ -25,4 +25,9 @@ Authors:
   \item Tim Schäfer \email{ts+code@rcmd.org} (\href{https://orcid.org/0000-0002-3683-8070}{ORCID})
 }
 
+Other contributors:
+\itemize{
+  \item The General Hospital Corporation (FreeSurfer template data distributed under the FreeSurfer Software License) [copyright holder]
+}
+
 }

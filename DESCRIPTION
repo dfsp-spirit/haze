@@ -1,7 +1,7 @@
 Package: haze
 Type: Package
 Title: Smoothing of per-Vertex Data on Triangular Meshes
-Version: 0.4.0
+Version: 0.5.0
 Authors@R: c(
     person("Tim", "Schäfer", role = c("aut", "cre"), email = "ts+code@rcmd.org", comment = c(ORCID = "0000-0002-3683-8070")),
     person("The General Hospital Corporation", role = "cph", comment = "FreeSurfer template data distributed under the FreeSurfer Software License")

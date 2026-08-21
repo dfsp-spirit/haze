@@ -34,6 +34,7 @@ Other utility functions:
 * `find_nv_kdtree()`: Find nearest mesh vertex for query coordinates using a *k*-d tree.
 * `nn_interpolate_kdtree()`: Get per-vertex data at vertices closest to the given query coordinates on the mesh.
 * `linear_interpolate_kdtree()`: Interpolate per-vertex data at the query points. Can be used to map per-vertex data between subjects (for which you have spherical, aligned meshes).
+* `fwhm2niters()` and `niters2fwhm()`: Convert between FreeSurfer Gaussian smoothing FWHM settings and the equivalent number of nearest neighbor smoothing iterations (see the [section below](#freesurfer-mapping-between-true-gaussian-smoothing-and-nearest-neighbor-smoothing)).
 
 Note to neuroscientists/FreeSurfer users: The `linear_interpolate_kdtree()` function allows you to map native space brain morphometry data to standard space. So in combination with the `pervertexdata.smoothnn()` function, you can get smoothed standard space data from raw native space mesh descriptors, all in `R`.
 
@@ -138,7 +139,30 @@ So now if you want to use the per-vertex data to predict something with an AI mo
 
 Note: The haze package can be used with arbitrary meshes, but this section is specific to computational neuroimaging (which is what we use haze for). Ignore it unless you are working with the [FreeSurfer](https://freesurfer.net) neuroimaging software suite.
 
-Nearest neighbor smoothing is a lot faster than (true) Gaussian smoothing because it does not need to compute geodesic distances along the mesh, so it is common to use several iterations of NN smoothing to emulate Gaussian smoothing. The following table shows the settings that FreeSurfer uses for the fsaverage meshes.
+True Gaussian smoothing on a triangular mesh requires geodesic distances between vertices, which is very slow to compute. FreeSurfer avoids this by *emulating* Gaussian smoothing with many iterations of nearest neighbor (1-ring) averaging -- exactly what this package does. The trick that makes this valid is that **repeated local averaging converges to a Gaussian kernel** (central limit theorem on a graph): after enough iterations, the effective smoothing kernel is approximately Gaussian, with no geodesic distances needed at all. FreeSurfer converts a requested FWHM into a number of iterations with an empirical formula (see `MRISfwhm2niters()` in `utils/mrisutils.cpp` of the FreeSurfer source):
+
+```
+gstd   = fwhm / sqrt(log(256))                     # FWHM -> Gaussian sigma (log(256) = 8*ln(2))
+niters = round(1.14 * (4 * pi * gstd^2) / (7 * avg_vertex_area))
+```
+
+where `avg_vertex_area` is the mean vertex area of the mesh (in mm^2), `7` approximates the average number of 1-ring neighbors of a vertex on a cortical surface, and `1.14` is an empirical fudge factor fitted by FreeSurfer so that the measured FWHM of the smoothed output matches the requested one.
+
+haze provides this exact conversion as a convenience, so you can use the same FWHM values as FreeSurfer when picking `num_iter`:
+
+```r
+# 'What num_iter in haze corresponds to FreeSurfer's --fwhm 10?'
+mesh = freesurferformats::read.fs.surface(system.file("extdata", "fsaverage_mesh_lh_white", package = "haze", mustWork = TRUE));
+fwhm2niters(10, surface = mesh);   # 92 iterations, approximating ~10 mm FWHM for this mesh
+
+# Or with a pre-computed mean vertex area:
+fwhm2niters(10, avg_vertex_area = 0.5);
+
+# The inverse, e.g. to report the equivalent FWHM of an iteration count:
+niters2fwhm(92, surface = mesh);   # ~10 mm
+```
+
+The following table shows the settings that FreeSurfer itself uses for the fsaverage templates. Note that these are based on the *group-average* surface area stored in the FreeSurfer template surface files (see below), so they differ slightly from what `fwhm2niters(surface = ...)` computes from the raw mesh geometry.
 
 | Gaussian Smoothing FWHM / gstd | Nearest neighbor k  | Nearest neighbor num iterations  |
 | ------------------------------ | ------------------- | -------------------------------- |
@@ -152,6 +176,14 @@ Nearest neighbor smoothing is a lot faster than (true) Gaussian smoothing becaus
 **Tbl.1**: *Mapping between true Gaussian smoothing and nearest neighbor smoothing in FreeSurfer full resolution (fsaverage) meshes. FWHM, full width at half maximum; gstd, Gaussian standard deviations; k, neighborhood size on the mesh (edge distance).*
 
 The table above was obtained by running `mris_surf2surf`, FreeSurfer v6. Once more: these values are specific to the mesh resolution and are only valid for this specific use case in computational neuroimaging.
+
+**Why the helper and the table differ:** FreeSurfer normalizes the mean vertex area by the *group-average* surface area of its templates (`group_avg_surface_area`, about 82,000 mm^2 per hemisphere for fsaverage), which is larger than the raw geometric area of the fsaverage meshes (about 65,000 mm^2 for the fsaverage lh white surface shipped with this package). FreeSurfer therefore reports fewer iterations than `fwhm2niters(surface = ...)` computes from the raw mesh (e.g. for FWHM = 10 mm: 74 iterations in FreeSurfer vs. 92 from the raw mesh area). To reproduce FreeSurfer's exact numbers, pass the FreeSurfer-equivalent mean vertex area explicitly:
+
+```r
+fwhm2niters(10, avg_vertex_area = 82167 / 163842);   # 74 iterations, matching FreeSurfer
+```
+
+The conversion is only calibrated for the 1-ring neighborhood (`k = 1`), which is what FreeSurfer uses; `fwhm2niters()` and `niters2fwhm()` issue a warning if you pass a different `k`.
 
 
 ## Performance benchmarks
