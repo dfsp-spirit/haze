@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">haze</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,6 +85,8 @@
 <code><a href="reference/nn_interpolate_kdtree.html">nn_interpolate_kdtree()</a></code>: Get per-vertex data at vertices closest to the given query coordinates on the mesh.</li>
 <li>
 <code><a href="reference/linear_interpolate_kdtree.html">linear_interpolate_kdtree()</a></code>: Interpolate per-vertex data at the query points. Can be used to map per-vertex data between subjects (for which you have spherical, aligned meshes).</li>
+<li>
+<code><a href="reference/fwhm2niters.html">fwhm2niters()</a></code> and <code><a href="reference/niters2fwhm.html">niters2fwhm()</a></code>: Convert between FreeSurfer Gaussian smoothing FWHM settings and the equivalent number of nearest neighbor smoothing iterations (see the <a href="#freesurfer-mapping-between-true-gaussian-smoothing-and-nearest-neighbor-smoothing">section below</a>).</li>
 </ul>
 <p>Note to neuroscientists/FreeSurfer users: The <code><a href="reference/linear_interpolate_kdtree.html">linear_interpolate_kdtree()</a></code> function allows you to map native space brain morphometry data to standard space. So in combination with the <code><a href="reference/pervertexdata.smoothnn.html">pervertexdata.smoothnn()</a></code> function, you can get smoothed standard space data from raw native space mesh descriptors, all in <code>R</code>.</p>
 <div class="section level3">
@@ -192,7 +194,22 @@
 <h3 id="freesurfer-mapping-between-true-gaussian-smoothing-and-nearest-neighbor-smoothing">FreeSurfer: Mapping between true Gaussian smoothing and nearest neighbor smoothing<a class="anchor" aria-label="anchor" href="#freesurfer-mapping-between-true-gaussian-smoothing-and-nearest-neighbor-smoothing"></a>
 </h3>
 <p>Note: The haze package can be used with arbitrary meshes, but this section is specific to computational neuroimaging (which is what we use haze for). Ignore it unless you are working with the <a href="https://freesurfer.net" class="external-link">FreeSurfer</a> neuroimaging software suite.</p>
-<p>Nearest neighbor smoothing is a lot faster than (true) Gaussian smoothing because it does not need to compute geodesic distances along the mesh, so it is common to use several iterations of NN smoothing to emulate Gaussian smoothing. The following table shows the settings that FreeSurfer uses for the fsaverage meshes.</p>
+<p>True Gaussian smoothing on a triangular mesh requires geodesic distances between vertices, which is very slow to compute. FreeSurfer avoids this by <em>emulating</em> Gaussian smoothing with many iterations of nearest neighbor (1-ring) averaging – exactly what this package does. The trick that makes this valid is that <strong>repeated local averaging converges to a Gaussian kernel</strong> (central limit theorem on a graph): after enough iterations, the effective smoothing kernel is approximately Gaussian, with no geodesic distances needed at all. FreeSurfer converts a requested FWHM into a number of iterations with an empirical formula (see <code>MRISfwhm2niters()</code> in <code>utils/mrisutils.cpp</code> of the FreeSurfer source):</p>
+<pre><code><span><span class="va">gstd</span>   <span class="op">=</span> <span class="va">fwhm</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">256</span><span class="op">)</span><span class="op">)</span>                     <span class="co"># FWHM -&gt; Gaussian sigma (log(256) = 8*ln(2))</span></span>
+<span><span class="va">niters</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">1.14</span> <span class="op">*</span> <span class="op">(</span><span class="fl">4</span> <span class="op">*</span> <span class="va">pi</span> <span class="op">*</span> <span class="va">gstd</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">7</span> <span class="op">*</span> <span class="va">avg_vertex_area</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+<p>where <code>avg_vertex_area</code> is the mean vertex area of the mesh (in mm^2), <code>7</code> approximates the average number of 1-ring neighbors of a vertex on a cortical surface, and <code>1.14</code> is an empirical fudge factor fitted by FreeSurfer so that the measured FWHM of the smoothed output matches the requested one.</p>
+<p>haze provides this exact conversion as a convenience, so you can use the same FWHM values as FreeSurfer when picking <code>num_iter</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># 'What num_iter in haze corresponds to FreeSurfer's --fwhm 10?'</span></span>
+<span><span class="va">mesh</span> <span class="op">=</span> <span class="fu">freesurferformats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/freesurferformats/man/read.fs.surface.html" class="external-link">read.fs.surface</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"fsaverage_mesh_lh_white"</span>, package <span class="op">=</span> <span class="st">"haze"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>;</span>
+<span><span class="fu"><a href="reference/fwhm2niters.html">fwhm2niters</a></span><span class="op">(</span><span class="fl">10</span>, surface <span class="op">=</span> <span class="va">mesh</span><span class="op">)</span>;   <span class="co"># 92 iterations, approximating ~10 mm FWHM for this mesh</span></span>
+<span></span>
+<span><span class="co"># Or with a pre-computed mean vertex area:</span></span>
+<span><span class="fu"><a href="reference/fwhm2niters.html">fwhm2niters</a></span><span class="op">(</span><span class="fl">10</span>, avg_vertex_area <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>;</span>
+<span></span>
+<span><span class="co"># The inverse, e.g. to report the equivalent FWHM of an iteration count:</span></span>
+<span><span class="fu"><a href="reference/niters2fwhm.html">niters2fwhm</a></span><span class="op">(</span><span class="fl">92</span>, surface <span class="op">=</span> <span class="va">mesh</span><span class="op">)</span>;   <span class="co"># ~10 mm</span></span></code></pre></div>
+<p>The following table shows the settings that FreeSurfer itself uses for the fsaverage templates. Note that these are based on the <em>group-average</em> surface area stored in the FreeSurfer template surface files (see below), so they differ slightly from what <code>fwhm2niters(surface = ...)</code> computes from the raw mesh geometry.</p>
 <table class="table">
 <colgroup>
 <col width="37%">
@@ -239,6 +256,10 @@
 </table>
 <p><strong>Tbl.1</strong>: <em>Mapping between true Gaussian smoothing and nearest neighbor smoothing in FreeSurfer full resolution (fsaverage) meshes. FWHM, full width at half maximum; gstd, Gaussian standard deviations; k, neighborhood size on the mesh (edge distance).</em></p>
 <p>The table above was obtained by running <code>mris_surf2surf</code>, FreeSurfer v6. Once more: these values are specific to the mesh resolution and are only valid for this specific use case in computational neuroimaging.</p>
+<p><strong>Why the helper and the table differ:</strong> FreeSurfer normalizes the mean vertex area by the <em>group-average</em> surface area of its templates (<code>group_avg_surface_area</code>, about 82,000 mm^2 per hemisphere for fsaverage), which is larger than the raw geometric area of the fsaverage meshes (about 65,000 mm^2 for the fsaverage lh white surface shipped with this package). FreeSurfer therefore reports fewer iterations than <code>fwhm2niters(surface = ...)</code> computes from the raw mesh (e.g. for FWHM = 10 mm: 74 iterations in FreeSurfer vs. 92 from the raw mesh area). To reproduce FreeSurfer’s exact numbers, pass the FreeSurfer-equivalent mean vertex area explicitly:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fwhm2niters.html">fwhm2niters</a></span><span class="op">(</span><span class="fl">10</span>, avg_vertex_area <span class="op">=</span> <span class="fl">82167</span> <span class="op">/</span> <span class="fl">163842</span><span class="op">)</span>;   <span class="co"># 74 iterations, matching FreeSurfer</span></span></code></pre></div>
+<p>The conversion is only calibrated for the 1-ring neighborhood (<code>k = 1</code>), which is what FreeSurfer uses; <code><a href="reference/fwhm2niters.html">fwhm2niters()</a></code> and <code><a href="reference/niters2fwhm.html">niters2fwhm()</a></code> issue a warning if you pass a different <code>k</code>.</p>
 </div>
 </div>
 <div class="section level2">
@@ -249,7 +270,7 @@
 <h3 id="measuring-c-versus-r-performance">Measuring C++ versus R performance<a class="anchor" aria-label="anchor" href="#measuring-c-versus-r-performance"></a>
 </h3>
 <p>The smoothing is done in C++ by default, but it is possible to manually select a pure R version instead. The following benchmark compares the performance between the C++ and the R versions of the same algorithm.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mesh</span> <span class="op">=</span> <span class="fu">freesurferformats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/freesurferformats/man/read.fs.surface.html" class="external-link">read.fs.surface</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"fsaverage_mesh_lh_white"</span>, package <span class="op">=</span> <span class="st">"haze"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>;</span>
 <span><span class="va">mesh_adj</span> <span class="op">=</span> <span class="fu"><a href="reference/mesh.adj.html">mesh.adj</a></span><span class="op">(</span><span class="va">mesh</span>, k <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span>; <span class="co"># compute 1-ring neighborhood</span></span>
 <span></span>
@@ -262,7 +283,7 @@
 <h3 id="measuring-multi-core-performance">Measuring multi-core performance<a class="anchor" aria-label="anchor" href="#measuring-multi-core-performance"></a>
 </h3>
 <p>To get a rough idea on how much faster the C++ smoothing runs with several cores, benchmark it for your data. E.g.:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mesh</span> <span class="op">=</span> <span class="fu">freesurferformats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/freesurferformats/man/read.fs.surface.html" class="external-link">read.fs.surface</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"fsaverage_mesh_lh_white"</span>, package <span class="op">=</span> <span class="st">"haze"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>;</span>
 <span><span class="va">mesh_adj</span> <span class="op">=</span> <span class="fu"><a href="reference/mesh.adj.html">mesh.adj</a></span><span class="op">(</span><span class="va">mesh</span>, k <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span>; <span class="co"># compute 1-ring neighborhood</span></span>
 <span></span>
@@ -278,7 +299,7 @@
 <h4 id="number-of-cores-versus-execution-time">Number of cores versus execution time<a class="anchor" aria-label="anchor" href="#number-of-cores-versus-execution-time"></a>
 </h4>
 <p>One could also measure this using from 1 up to 10 cores and plot the resulting execution time.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Continued from the 'Measuring multi-core performance' example.</span></span>
 <span><span class="co"># The next 2 lines just save us some typing in the microbenchmark line.</span></span>
 <span><span class="va">rf</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">nc</span>, <span class="va">details</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"mc.cores"</span> <span class="op">=</span> <span class="va">nc</span><span class="op">)</span>; <span class="fu"><a href="reference/pervertexdata.smoothnn.adj.html">pervertexdata.smoothnn.adj</a></span><span class="op">(</span><span class="va">details</span><span class="op">$</span><span class="va">mesh_adj</span>, <span class="va">details</span><span class="op">$</span><span class="va">pvd</span>, <span class="va">details</span><span class="op">$</span><span class="va">num_iter</span><span class="op">)</span>; <span class="op">}</span></span>

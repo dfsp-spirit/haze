@@ -2,6 +2,9 @@
 
 ## All functions
 
+- [`fwhm2niters()`](https://dfsp-spirit.github.io/haze/reference/fwhm2niters.md)
+  : Convert FreeSurfer Gaussian smoothing FWHM to number of NN smoothing
+  iterations.
 - [`haze`](https://dfsp-spirit.github.io/haze/reference/haze-package.md)
   [`haze-package`](https://dfsp-spirit.github.io/haze/reference/haze-package.md)
   : haze: Smoothing of per-vertex data on triangular meshes
@@ -12,6 +15,9 @@
   : Compute vertex neighborhoods for a mesh.
 - [`mesh.neigh.pre()`](https://dfsp-spirit.github.io/haze/reference/mesh.neigh.pre.md)
   : Return pre-computed neighborhood data for specific meshes.
+- [`niters2fwhm()`](https://dfsp-spirit.github.io/haze/reference/niters2fwhm.md)
+  : Convert number of NN smoothing iterations to a FreeSurfer Gaussian
+  smoothing FWHM.
 - [`nn_interpolate_kdtree()`](https://dfsp-spirit.github.io/haze/reference/nn_interpolate_kdtree.md)
   : Get per-vertex data at vertices closest to the given query
   coordinates on the mesh.

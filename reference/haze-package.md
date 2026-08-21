@@ -21,3 +21,8 @@ Authors:
 
 - Tim Schäfer <ts+code@rcmd.org>
   ([ORCID](https://orcid.org/0000-0002-3683-8070))
+
+Other contributors:
+
+- The General Hospital Corporation (FreeSurfer template data distributed
+  under the FreeSurfer Software License) \[copyright holder\]

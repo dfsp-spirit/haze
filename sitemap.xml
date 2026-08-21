@@ -9,6 +9,8 @@
 <url><loc>https://dfsp-spirit.github.io/haze/reference/ensure.tmesh3d.html</loc></url>
 <url><loc>https://dfsp-spirit.github.io/haze/reference/find_nv_kdtree.html</loc></url>
 <url><loc>https://dfsp-spirit.github.io/haze/reference/fs.surface.to.tmesh3d.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/fwhm2niters.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/get.avg.vertex.area.html</loc></url>
 <url><loc>https://dfsp-spirit.github.io/haze/reference/haze-package.html</loc></url>
 <url><loc>https://dfsp-spirit.github.io/haze/reference/homogeneous_to_cartesian.html</loc></url>
 <url><loc>https://dfsp-spirit.github.io/haze/reference/index.html</loc></url>
@@ -17,6 +19,7 @@
 <url><loc>https://dfsp-spirit.github.io/haze/reference/linear_interpolate_kdtree.html</loc></url>
 <url><loc>https://dfsp-spirit.github.io/haze/reference/mesh.adj.html</loc></url>
 <url><loc>https://dfsp-spirit.github.io/haze/reference/mesh.neigh.pre.html</loc></url>
+<url><loc>https://dfsp-spirit.github.io/haze/reference/niters2fwhm.html</loc></url>
 <url><loc>https://dfsp-spirit.github.io/haze/reference/nn_interpolate_kdtree.html</loc></url>
 <url><loc>https://dfsp-spirit.github.io/haze/reference/pervertexdata.smoothnn.adj.cpp.html</loc></url>
 <url><loc>https://dfsp-spirit.github.io/haze/reference/pervertexdata.smoothnn.adj.html</loc></url>

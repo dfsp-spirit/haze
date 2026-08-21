@@ -15,12 +15,12 @@ Source:
 [`DESCRIPTION`](https://github.com/dfsp-spirit/haze/blob/main/DESCRIPTION)
 
 Schäfer T (2026). *haze: Smoothing of per-Vertex Data on Triangular
-Meshes*. R package version 0.4.0, <https://github.com/dfsp-spirit/haze>.
+Meshes*. R package version 0.5.0, <https://github.com/dfsp-spirit/haze>.
 
     @Manual{,
       title = {haze: Smoothing of per-Vertex Data on Triangular Meshes},
       author = {Tim Schäfer},
       year = {2026},
-      note = {R package version 0.4.0},
+      note = {R package version 0.5.0},
       url = {https://github.com/dfsp-spirit/haze},
     }
