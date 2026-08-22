@@ -18,4 +18,5 @@ appveyor\.yml
 ^docs$
 ^pkgdown$
 dev_tools
+renovate.json
 
