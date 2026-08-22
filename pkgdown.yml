@@ -3,7 +3,7 @@ pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   haze: haze.html
-last_built: 2026-08-21T14:07Z
+last_built: 2026-08-22T08:49Z
 urls:
   reference: https://dfsp-spirit.github.io/haze/reference
   article: https://dfsp-spirit.github.io/haze/articles
